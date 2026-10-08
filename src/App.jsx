@@ -1,7 +1,7 @@
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment, Text } from "@react-three/drei";
 import * as THREE from "three";
-import { useEffect, useMemo, useRef, useState } from "react";
 import "./style.css";
 
 const ROOM = {
@@ -22,27 +22,36 @@ const exhibits = [
     id: "video",
     title: "Video tư liệu",
     description:
-      "Khu vực trình chiếu các video, hình ảnh và tư liệu phục vụ tham quan Không gian văn hóa Hồ Chí Minh.",
+      "Khu vực trình chiếu các video, hình ảnh và tư liệu phục vụ tham quan.",
     position: [0, 2.8, -8.7],
   },
   {
     id: "books",
     title: "Tủ sách",
     description:
-      "Nơi trưng bày sách, tài liệu và các ấn phẩm tìm hiểu về cuộc đời, tư tưởng, đạo đức và phong cách Hồ Chí Minh.",
+      "Nơi trưng bày sách và tài liệu tìm hiểu về cuộc đời, tư tưởng, đạo đức và phong cách Hồ Chí Minh.",
     position: [8, 2.4, -8.2],
   },
   {
     id: "display",
     title: "Khu trưng bày",
     description:
-      "Các hiện vật và tư liệu được sắp xếp theo chủ đề để người tham quan dễ dàng khám phá.",
+      "Các hiện vật và tư liệu được sắp xếp theo chủ đề để người tham quan khám phá.",
     position: [9.5, 1.4, 1],
   },
 ];
 
-function HumanCharacter({ keys, joystick }) {
-  const ref = useRef();
+/* =========================
+   NHÂN VẬT
+========================= */
+
+const HumanCharacter = forwardRef(function HumanCharacter(
+  { keys, joystick },
+  externalRef
+) {
+  const localRef = useRef(null);
+  const ref = externalRef || localRef;
+
   const speed = 4.6;
 
   useFrame((_, delta) => {
@@ -51,59 +60,69 @@ function HumanCharacter({ keys, joystick }) {
     let forward = 0;
     let right = 0;
 
+    // TIẾN / LÙI
     if (keys.current.arrowup || keys.current.w) forward += 1;
     if (keys.current.arrowdown || keys.current.s) forward -= 1;
 
+    // TRÁI / PHẢI
     if (keys.current.arrowleft || keys.current.a) right -= 1;
     if (keys.current.arrowright || keys.current.d) right += 1;
 
-    if (joystick.current.x !== 0 || joystick.current.y !== 0) {
+    // JOYSTICK
+    if (
+      Math.abs(joystick.current.x) > 0.01 ||
+      Math.abs(joystick.current.y) > 0.01
+    ) {
       right += joystick.current.x;
       forward += joystick.current.y;
     }
 
     const length = Math.hypot(forward, right);
 
-    if (length > 0.05) {
-      forward /= Math.max(1, length);
-      right /= Math.max(1, length);
+    if (length <= 0.01) return;
 
-      const yaw = window.__cameraYaw || 0;
+    forward /= Math.max(1, length);
+    right /= Math.max(1, length);
 
-      const forwardX = Math.sin(yaw);
-      const forwardZ = Math.cos(yaw);
+    const yaw = window.__cameraYaw || 0;
 
-      const rightX = Math.cos(yaw);
-      const rightZ = -Math.sin(yaw);
+    // HƯỚNG TIẾN THEO CAMERA
+    const forwardX = Math.sin(yaw);
+    const forwardZ = Math.cos(yaw);
 
-      const moveX = forward * forwardX + right * rightX;
-      const moveZ = forward * forwardZ + right * rightZ;
+    // HƯỚNG PHẢI THEO CAMERA
+    const rightX = Math.cos(yaw);
+    const rightZ = -Math.sin(yaw);
 
-      ref.current.position.x += moveX * speed * delta;
-      ref.current.position.z += moveZ * speed * delta;
+    const moveX = forward * forwardX + right * rightX;
+    const moveZ = forward * forwardZ + right * rightZ;
 
-      const limitX = ROOM.width / 2 - 1;
-      const limitZ = ROOM.depth / 2 - 1;
+    ref.current.position.x += moveX * speed * delta;
+    ref.current.position.z += moveZ * speed * delta;
 
-      ref.current.position.x = THREE.MathUtils.clamp(
-        ref.current.position.x,
-        -limitX,
-        limitX
-      );
+    // Không cho đi xuyên tường
+    const limitX = ROOM.width / 2 - 1;
+    const limitZ = ROOM.depth / 2 - 1;
 
-      ref.current.position.z = THREE.MathUtils.clamp(
-        ref.current.position.z,
-        -limitZ,
-        limitZ
-      );
+    ref.current.position.x = THREE.MathUtils.clamp(
+      ref.current.position.x,
+      -limitX,
+      limitX
+    );
 
-      ref.current.rotation.y = Math.atan2(moveX, moveZ);
-    }
+    ref.current.position.z = THREE.MathUtils.clamp(
+      ref.current.position.z,
+      -limitZ,
+      limitZ
+    );
+
+    // Nhân vật quay theo hướng di chuyển
+    ref.current.rotation.y = Math.atan2(moveX, moveZ);
   });
 
   return (
     <group ref={ref} position={[0, 0, 5.8]} scale={0.78}>
-      {/* chân */}
+      {/* CHÂN */}
       <mesh castShadow position={[-0.12, 0.38, 0]}>
         <capsuleGeometry args={[0.085, 0.42, 8, 12]} />
         <meshStandardMaterial color="#26384d" />
@@ -114,7 +133,7 @@ function HumanCharacter({ keys, joystick }) {
         <meshStandardMaterial color="#26384d" />
       </mesh>
 
-      {/* giày */}
+      {/* GIÀY */}
       <mesh castShadow position={[-0.12, 0.13, 0.08]}>
         <sphereGeometry args={[0.13, 16, 12]} />
         <meshStandardMaterial color="#20242a" />
@@ -125,19 +144,19 @@ function HumanCharacter({ keys, joystick }) {
         <meshStandardMaterial color="#20242a" />
       </mesh>
 
-      {/* thân */}
+      {/* THÂN */}
       <mesh castShadow position={[0, 0.88, 0]}>
         <capsuleGeometry args={[0.28, 0.48, 8, 16]} />
         <meshStandardMaterial color="#426b9a" />
       </mesh>
 
-      {/* cổ */}
+      {/* CỔ */}
       <mesh castShadow position={[0, 1.27, 0]}>
         <cylinderGeometry args={[0.105, 0.105, 0.18, 16]} />
         <meshStandardMaterial color="#d8a47c" />
       </mesh>
 
-      {/* tay */}
+      {/* TAY */}
       <mesh castShadow position={[-0.36, 0.92, 0]}>
         <capsuleGeometry args={[0.07, 0.38, 8, 12]} />
         <meshStandardMaterial color="#426b9a" />
@@ -148,7 +167,7 @@ function HumanCharacter({ keys, joystick }) {
         <meshStandardMaterial color="#426b9a" />
       </mesh>
 
-      {/* bàn tay */}
+      {/* BÀN TAY */}
       <mesh castShadow position={[-0.36, 0.65, 0]}>
         <sphereGeometry args={[0.075, 12, 10]} />
         <meshStandardMaterial color="#d8a47c" />
@@ -159,89 +178,137 @@ function HumanCharacter({ keys, joystick }) {
         <meshStandardMaterial color="#d8a47c" />
       </mesh>
 
-      {/* đầu - tạo hình oval giống người */}
+      {/* ĐẦU */}
       <group position={[0, 1.68, 0]}>
+        {/* mặt */}
         <mesh castShadow scale={[0.29, 0.34, 0.27]}>
           <sphereGeometry args={[1, 24, 20]} />
           <meshStandardMaterial color="#d8a47c" />
         </mesh>
 
-        {/* tai */}
-        <mesh castShadow position={[-0.285, 0, 0]} scale={[0.07, 0.1, 0.045]}>
+        {/* TAI */}
+        <mesh
+          castShadow
+          position={[-0.285, 0, 0]}
+          scale={[0.07, 0.1, 0.045]}
+        >
           <sphereGeometry args={[1, 16, 12]} />
           <meshStandardMaterial color="#d8a47c" />
         </mesh>
 
-        <mesh castShadow position={[0.285, 0, 0]} scale={[0.07, 0.1, 0.045]}>
+        <mesh
+          castShadow
+          position={[0.285, 0, 0]}
+          scale={[0.07, 0.1, 0.045]}
+        >
           <sphereGeometry args={[1, 16, 12]} />
           <meshStandardMaterial color="#d8a47c" />
         </mesh>
 
-        {/* tóc phía trên */}
-        <mesh castShadow position={[0, 0.22, -0.015]} scale={[0.30, 0.16, 0.28]}>
+        {/* TÓC */}
+        <mesh
+          castShadow
+          position={[0, 0.22, -0.015]}
+          scale={[0.30, 0.16, 0.28]}
+        >
           <sphereGeometry args={[1, 24, 16]} />
           <meshStandardMaterial color="#352a25" />
         </mesh>
 
-        {/* tóc hai bên */}
-        <mesh castShadow position={[-0.255, 0.13, -0.02]} scale={[0.075, 0.18, 0.15]}>
+        <mesh
+          castShadow
+          position={[-0.255, 0.13, -0.02]}
+          scale={[0.075, 0.18, 0.15]}
+        >
           <sphereGeometry args={[1, 16, 12]} />
           <meshStandardMaterial color="#352a25" />
         </mesh>
 
-        <mesh castShadow position={[0.255, 0.13, -0.02]} scale={[0.075, 0.18, 0.15]}>
+        <mesh
+          castShadow
+          position={[0.255, 0.13, -0.02]}
+          scale={[0.075, 0.18, 0.15]}
+        >
           <sphereGeometry args={[1, 16, 12]} />
           <meshStandardMaterial color="#352a25" />
         </mesh>
 
-        {/* mắt */}
-        <mesh position={[-0.105, 0.035, 0.255]} scale={[0.052, 0.06, 0.025]}>
+        {/* MẮT */}
+        <mesh
+          position={[-0.105, 0.035, 0.255]}
+          scale={[0.052, 0.06, 0.025]}
+        >
           <sphereGeometry args={[1, 16, 12]} />
           <meshStandardMaterial color="#ffffff" />
         </mesh>
 
-        <mesh position={[0.105, 0.035, 0.255]} scale={[0.052, 0.06, 0.025]}>
+        <mesh
+          position={[0.105, 0.035, 0.255]}
+          scale={[0.052, 0.06, 0.025]}
+        >
           <sphereGeometry args={[1, 16, 12]} />
           <meshStandardMaterial color="#ffffff" />
         </mesh>
 
-        {/* con ngươi */}
-        <mesh position={[-0.105, 0.035, 0.278]} scale={[0.023, 0.029, 0.012]}>
+        {/* CON NGƯƠI */}
+        <mesh
+          position={[-0.105, 0.035, 0.278]}
+          scale={[0.023, 0.029, 0.012]}
+        >
           <sphereGeometry args={[1, 12, 10]} />
           <meshStandardMaterial color="#202020" />
         </mesh>
 
-        <mesh position={[0.105, 0.035, 0.278]} scale={[0.023, 0.029, 0.012]}>
+        <mesh
+          position={[0.105, 0.035, 0.278]}
+          scale={[0.023, 0.029, 0.012]}
+        >
           <sphereGeometry args={[1, 12, 10]} />
           <meshStandardMaterial color="#202020" />
         </mesh>
 
-        {/* lông mày */}
-        <mesh position={[-0.105, 0.115, 0.255]} scale={[0.075, 0.012, 0.018]}>
+        {/* LÔNG MÀY */}
+        <mesh
+          position={[-0.105, 0.115, 0.255]}
+          scale={[0.075, 0.012, 0.018]}
+        >
           <boxGeometry args={[1, 1, 1]} />
           <meshStandardMaterial color="#352a25" />
         </mesh>
 
-        <mesh position={[0.105, 0.115, 0.255]} scale={[0.075, 0.012, 0.018]}>
+        <mesh
+          position={[0.105, 0.115, 0.255]}
+          scale={[0.075, 0.012, 0.018]}
+        >
           <boxGeometry args={[1, 1, 1]} />
           <meshStandardMaterial color="#352a25" />
         </mesh>
 
-        {/* mũi */}
-        <mesh position={[0, -0.005, 0.285]} scale={[0.035, 0.06, 0.055]}>
+        {/* MŨI */}
+        <mesh
+          position={[0, -0.005, 0.285]}
+          scale={[0.035, 0.06, 0.055]}
+        >
           <sphereGeometry args={[1, 12, 10]} />
           <meshStandardMaterial color="#c78f6d" />
         </mesh>
 
-        {/* miệng */}
-        <mesh position={[0, -0.105, 0.268]} scale={[0.065, 0.018, 0.012]}>
+        {/* MIỆNG */}
+        <mesh
+          position={[0, -0.105, 0.268]}
+          scale={[0.065, 0.018, 0.012]}
+        >
           <boxGeometry args={[1, 1, 1]} />
           <meshStandardMaterial color="#8e4e50" />
         </mesh>
       </group>
     </group>
   );
-}
+});
+
+/* =========================
+   CAMERA
+========================= */
 
 function CameraController({ characterRef }) {
   const distance = useRef(5.2);
@@ -250,7 +317,7 @@ function CameraController({ characterRef }) {
   useEffect(() => {
     window.__cameraYaw = 0;
 
-    const onWheel = (e) => {
+    const wheel = (e) => {
       distance.current = THREE.MathUtils.clamp(
         distance.current + e.deltaY * 0.006,
         2.5,
@@ -258,9 +325,13 @@ function CameraController({ characterRef }) {
       );
     };
 
-    window.addEventListener("wheel", onWheel, { passive: true });
+    window.addEventListener("wheel", wheel, {
+      passive: true,
+    });
 
-    return () => window.removeEventListener("wheel", onWheel);
+    return () => {
+      window.removeEventListener("wheel", wheel);
+    };
   }, []);
 
   useEffect(() => {
@@ -315,33 +386,50 @@ function CameraController({ characterRef }) {
     const yaw = window.__cameraYaw || 0;
 
     const horizontal = Math.cos(pitch.current);
+
     const dirX = -Math.sin(yaw);
     const dirZ = -Math.cos(yaw);
 
     let safeDistance = distance.current;
 
-    // Tự tính khoảng cách tối đa đến tường
     if (Math.abs(dirX) > 0.001) {
-      const wallX = dirX > 0 ? ROOM.width / 2 - 0.5 : -ROOM.width / 2 + 0.5;
+      const wallX =
+        dirX > 0
+          ? ROOM.width / 2 - 0.5
+          : -ROOM.width / 2 + 0.5;
+
       const tx = (wallX - target.x) / dirX;
 
-      if (tx > 0) safeDistance = Math.min(safeDistance, tx);
+      if (tx > 0) {
+        safeDistance = Math.min(safeDistance, tx);
+      }
     }
 
     if (Math.abs(dirZ) > 0.001) {
-      const wallZ = dirZ > 0 ? ROOM.depth / 2 - 0.5 : -ROOM.depth / 2 + 0.5;
+      const wallZ =
+        dirZ > 0
+          ? ROOM.depth / 2 - 0.5
+          : -ROOM.depth / 2 + 0.5;
+
       const tz = (wallZ - target.z) / dirZ;
 
-      if (tz > 0) safeDistance = Math.min(safeDistance, tz);
+      if (tz > 0) {
+        safeDistance = Math.min(safeDistance, tz);
+      }
     }
 
-    safeDistance = Math.max(1.8, safeDistance - 0.25);
+    safeDistance = Math.max(
+      1.8,
+      safeDistance - 0.25
+    );
 
     const cameraX =
-      target.x + dirX * safeDistance * horizontal;
+      target.x +
+      dirX * safeDistance * horizontal;
 
     const cameraZ =
-      target.z + dirZ * safeDistance * horizontal;
+      target.z +
+      dirZ * safeDistance * horizontal;
 
     const cameraY =
       target.y +
@@ -369,46 +457,100 @@ function CameraController({ characterRef }) {
   return null;
 }
 
+/* =========================
+   PHÒNG
+========================= */
+
 function Room() {
   return (
     <group>
-      {/* sàn */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[ROOM.width, ROOM.depth]} />
+      {/* SÀN */}
+      <mesh
+        rotation={[-Math.PI / 2, 0, 0]}
+        receiveShadow
+      >
+        <planeGeometry
+          args={[ROOM.width, ROOM.depth]}
+        />
         <meshStandardMaterial color="#d8c9ad" />
       </mesh>
 
-      {/* trần */}
-      <mesh position={[0, ROOM.height, 0]} rotation={[Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[ROOM.width, ROOM.depth]} />
+      {/* TRẦN */}
+      <mesh
+        position={[0, ROOM.height, 0]}
+        rotation={[Math.PI / 2, 0, 0]}
+      >
+        <planeGeometry
+          args={[ROOM.width, ROOM.depth]}
+        />
         <meshStandardMaterial color="#f5f1e8" />
       </mesh>
 
-      {/* tường sau */}
-      <mesh position={[0, ROOM.height / 2, -ROOM.depth / 2]}>
-        <boxGeometry args={[ROOM.width, ROOM.height, 0.35]} />
+      {/* TƯỜNG SAU */}
+      <mesh
+        position={[0, ROOM.height / 2, -ROOM.depth / 2]}
+      >
+        <boxGeometry
+          args={[
+            ROOM.width,
+            ROOM.height,
+            0.35,
+          ]}
+        />
         <meshStandardMaterial color="#eee6d7" />
       </mesh>
 
-      {/* tường trước */}
-      <mesh position={[0, ROOM.height / 2, ROOM.depth / 2]}>
-        <boxGeometry args={[ROOM.width, ROOM.height, 0.35]} />
+      {/* TƯỜNG TRƯỚC */}
+      <mesh
+        position={[0, ROOM.height / 2, ROOM.depth / 2]}
+      >
+        <boxGeometry
+          args={[
+            ROOM.width,
+            ROOM.height,
+            0.35,
+          ]}
+        />
         <meshStandardMaterial color="#eee6d7" />
       </mesh>
 
-      {/* tường trái */}
-      <mesh position={[-ROOM.width / 2, ROOM.height / 2, 0]}>
-        <boxGeometry args={[0.35, ROOM.height, ROOM.depth]} />
+      {/* TƯỜNG TRÁI */}
+      <mesh
+        position={[
+          -ROOM.width / 2,
+          ROOM.height / 2,
+          0,
+        ]}
+      >
+        <boxGeometry
+          args={[
+            0.35,
+            ROOM.height,
+            ROOM.depth,
+          ]}
+        />
         <meshStandardMaterial color="#eee6d7" />
       </mesh>
 
-      {/* tường phải */}
-      <mesh position={[ROOM.width / 2, ROOM.height / 2, 0]}>
-        <boxGeometry args={[0.35, ROOM.height, ROOM.depth]} />
+      {/* TƯỜNG PHẢI */}
+      <mesh
+        position={[
+          ROOM.width / 2,
+          ROOM.height / 2,
+          0,
+        ]}
+      >
+        <boxGeometry
+          args={[
+            0.35,
+            ROOM.height,
+            ROOM.depth,
+          ]}
+        />
         <meshStandardMaterial color="#eee6d7" />
       </mesh>
 
-      {/* tiêu đề */}
+      {/* TIÊU ĐỀ */}
       <Text
         position={[0, 4.35, -8.45]}
         fontSize={0.58}
@@ -419,7 +561,7 @@ function Room() {
         KHÔNG GIAN VĂN HÓA HỒ CHÍ MINH
       </Text>
 
-      {/* tranh */}
+      {/* TRANH */}
       <group position={[-8, 2.5, -8.25]}>
         <mesh>
           <boxGeometry args={[4.5, 3.1, 0.18]} />
@@ -441,7 +583,7 @@ function Room() {
         </Text>
       </group>
 
-      {/* màn hình */}
+      {/* MÀN HÌNH */}
       <group position={[0, 2.7, -8.25]}>
         <mesh>
           <boxGeometry args={[5.2, 3.1, 0.25]} />
@@ -464,7 +606,7 @@ function Room() {
         </Text>
       </group>
 
-      {/* tủ sách */}
+      {/* TỦ SÁCH */}
       <group position={[8, 2.2, -8.1]}>
         <mesh>
           <boxGeometry args={[3.6, 4.3, 0.65]} />
@@ -472,8 +614,17 @@ function Room() {
         </mesh>
 
         {[0.8, 1.5, 2.2, 2.9].map((y) => (
-          <mesh key={y} position={[0, -2.15 + y, 0.36]}>
-            <boxGeometry args={[3.2, 0.09, 0.05]} />
+          <mesh
+            key={y}
+            position={[
+              0,
+              -2.15 + y,
+              0.36,
+            ]}
+          >
+            <boxGeometry
+              args={[3.2, 0.09, 0.05]}
+            />
             <meshStandardMaterial color="#432b1c" />
           </mesh>
         ))}
@@ -483,20 +634,31 @@ function Room() {
             key={i}
             position={[
               -1.35 + (i % 8) * 0.38,
-              -1.65 + Math.floor(i / 8) * 1.4,
+              -1.65 +
+                Math.floor(i / 8) * 1.4,
               0.42,
             ]}
           >
-            <boxGeometry args={[0.25, 1.0, 0.08]} />
-            <meshStandardMaterial color={i % 2 ? "#a87b51" : "#486b72"} />
+            <boxGeometry
+              args={[0.25, 1, 0.08]}
+            />
+            <meshStandardMaterial
+              color={
+                i % 2
+                  ? "#a87b51"
+                  : "#486b72"
+              }
+            />
           </mesh>
         ))}
       </group>
 
-      {/* tủ trưng bày */}
+      {/* TỦ TRƯNG BÀY */}
       <group position={[9.1, 1.2, 1]}>
         <mesh>
-          <boxGeometry args={[3.4, 1.8, 1.6]} />
+          <boxGeometry
+            args={[3.4, 1.8, 1.6]}
+          />
           <meshStandardMaterial
             color="#9d7b56"
             transparent
@@ -505,15 +667,22 @@ function Room() {
         </mesh>
 
         <mesh position={[0, 0.1, 0]}>
-          <boxGeometry args={[2.8, 0.15, 1.2]} />
+          <boxGeometry
+            args={[2.8, 0.15, 1.2]}
+          />
           <meshStandardMaterial color="#e2c99d" />
         </mesh>
       </group>
 
-      {/* bàn */}
+      {/* BÀN */}
       <group position={[-5, 0, 2]}>
-        <mesh position={[0, 1.15, 0]} castShadow>
-          <boxGeometry args={[2.6, 0.18, 1.25]} />
+        <mesh
+          position={[0, 1.15, 0]}
+          castShadow
+        >
+          <boxGeometry
+            args={[2.6, 0.18, 1.25]}
+          />
           <meshStandardMaterial color="#70472d" />
         </mesh>
 
@@ -524,43 +693,58 @@ function Room() {
           [1, 0.55, 0.4],
         ].map((p, i) => (
           <mesh key={i} position={p}>
-            <boxGeometry args={[0.13, 1.1, 0.13]} />
+            <boxGeometry
+              args={[0.13, 1.1, 0.13]}
+            />
             <meshStandardMaterial color="#553522" />
           </mesh>
         ))}
       </group>
 
-      {/* ghế */}
+      {/* GHẾ */}
       <group position={[-5, 0, 4]}>
         <mesh position={[0, 0.8, 0]}>
-          <boxGeometry args={[1.2, 0.15, 1.1]} />
+          <boxGeometry
+            args={[1.2, 0.15, 1.1]}
+          />
           <meshStandardMaterial color="#795038" />
         </mesh>
 
         <mesh position={[0, 1.45, 0.45]}>
-          <boxGeometry args={[1.2, 1.3, 0.12]} />
+          <boxGeometry
+            args={[1.2, 1.3, 0.12]}
+          />
           <meshStandardMaterial color="#795038" />
         </mesh>
       </group>
 
-      {/* cây */}
+      {/* CÂY */}
       <group position={[-9, 0, 5]}>
         <mesh position={[0, 1, 0]}>
-          <cylinderGeometry args={[0.28, 0.38, 2, 16]} />
+          <cylinderGeometry
+            args={[0.28, 0.38, 2, 16]}
+          />
           <meshStandardMaterial color="#9b633b" />
         </mesh>
 
         <mesh position={[0, 2.5, 0]}>
-          <sphereGeometry args={[1.1, 16, 12]} />
+          <sphereGeometry
+            args={[1.1, 16, 12]}
+          />
           <meshStandardMaterial color="#4e7750" />
         </mesh>
       </group>
 
-      {/* đèn trần */}
+      {/* ĐÈN */}
       {[-7, 0, 7].map((x) => (
-        <group key={x} position={[x, 5.15, -2]}>
+        <group
+          key={x}
+          position={[x, 5.15, -2]}
+        >
           <mesh>
-            <cylinderGeometry args={[0.35, 0.35, 0.15, 24]} />
+            <cylinderGeometry
+              args={[0.35, 0.35, 0.15, 24]}
+            />
             <meshStandardMaterial color="#d6b76d" />
           </mesh>
 
@@ -575,8 +759,16 @@ function Room() {
   );
 }
 
-function GameScene({ keys, joystick, onExhibit }) {
-  const characterRef = useRef();
+/* =========================
+   GAME SCENE
+========================= */
+
+function GameScene({
+  keys,
+  joystick,
+  onExhibit,
+}) {
+  const characterRef = useRef(null);
   const lastExhibit = useRef(null);
 
   useFrame(() => {
@@ -586,20 +778,34 @@ function GameScene({ keys, joystick, onExhibit }) {
     let nearestDistance = Infinity;
 
     exhibits.forEach((item) => {
-      const dx = characterRef.current.position.x - item.position[0];
-      const dz = characterRef.current.position.z - item.position[2];
+      const dx =
+        characterRef.current.position.x -
+        item.position[0];
 
-      const d = Math.sqrt(dx * dx + dz * dz);
+      const dz =
+        characterRef.current.position.z -
+        item.position[2];
 
-      if (d < 3 && d < nearestDistance) {
+      const distance = Math.sqrt(
+        dx * dx + dz * dz
+      );
+
+      if (
+        distance < 3 &&
+        distance < nearestDistance
+      ) {
         nearest = item;
-        nearestDistance = d;
+        nearestDistance = distance;
       }
     });
 
-    if (nearest?.id !== lastExhibit.current) {
-      lastExhibit.current = nearest?.id || null;
-      onExhibit(nearest || null);
+    const newId = nearest
+      ? nearest.id
+      : null;
+
+    if (newId !== lastExhibit.current) {
+      lastExhibit.current = newId;
+      onExhibit(nearest);
     }
   });
 
@@ -623,15 +829,22 @@ function GameScene({ keys, joystick, onExhibit }) {
         joystick={joystick}
       />
 
-      <CameraController characterRef={characterRef} />
+      <CameraController
+        characterRef={characterRef}
+      />
 
       <Environment preset="city" />
     </>
   );
 }
 
+/* =========================
+   APP
+========================= */
+
 export default function App() {
   const [started, setStarted] = useState(false);
+
   const [visitor, setVisitor] = useState({
     name: "",
     age: "",
@@ -639,10 +852,14 @@ export default function App() {
   });
 
   const [error, setError] = useState("");
-  const [selectedExhibit, setSelectedExhibit] = useState(null);
+  const [selectedExhibit, setSelectedExhibit] =
+    useState(null);
 
   const keys = useRef({});
-  const joystick = useRef({ x: 0, y: 0 });
+  const joystick = useRef({
+    x: 0,
+    y: 0,
+  });
 
   useEffect(() => {
     const down = (e) => {
@@ -657,31 +874,51 @@ export default function App() {
     window.addEventListener("keyup", up);
 
     return () => {
-      window.removeEventListener("keydown", down);
-      window.removeEventListener("keyup", up);
+      window.removeEventListener(
+        "keydown",
+        down
+      );
+
+      window.removeEventListener(
+        "keyup",
+        up
+      );
     };
   }, []);
 
-  const updateVisitor = (field, value) => {
-    setVisitor((prev) => ({
-      ...prev,
+  const updateVisitor = (
+    field,
+    value
+  ) => {
+    setVisitor((previous) => ({
+      ...previous,
       [field]: value,
     }));
 
     setError("");
   };
 
+  /* =========================
+     VALIDATION
+  ========================= */
+
   const submit = (e) => {
     e.preventDefault();
 
-    const name = visitor.name.trim();
-    const age = String(visitor.age).trim();
+    const name =
+      visitor.name.trim();
+
+    const age =
+      String(visitor.age).trim();
 
     if (!name || !age) {
-      setError("Vui lòng nhập thông tin");
+      setError(
+        "Vui lòng nhập thông tin"
+      );
 
-      // Thông báo chắc chắn hiện
-      window.alert("Vui lòng nhập thông tin");
+      window.alert(
+        "Vui lòng nhập thông tin"
+      );
 
       return;
     }
@@ -690,73 +927,136 @@ export default function App() {
     setStarted(true);
   };
 
+  /* =========================
+     JOYSTICK
+  ========================= */
+
   const handleJoystickStart = (e) => {
     e.preventDefault();
 
-    const rect = e.currentTarget.getBoundingClientRect();
+    const joystickElement =
+      e.currentTarget;
 
-    const update = (touch) => {
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
+    const rect =
+      joystickElement.getBoundingClientRect();
 
-      let x = (touch.clientX - centerX) / (rect.width / 2);
-      let y = (centerY - touch.clientY) / (rect.height / 2);
+    const updateJoystick = (
+      touch
+    ) => {
+      const centerX =
+        rect.left +
+        rect.width / 2;
 
-      const length = Math.hypot(x, y);
+      const centerY =
+        rect.top +
+        rect.height / 2;
+
+      let x =
+        (touch.clientX - centerX) /
+        (rect.width / 2);
+
+      let y =
+        (centerY - touch.clientY) /
+        (rect.height / 2);
+
+      const length =
+        Math.hypot(x, y);
 
       if (length > 1) {
         x /= length;
         y /= length;
       }
 
-      joystick.current = { x, y };
+      joystick.current = {
+        x,
+        y,
+      };
 
-      const knob = e.currentTarget.querySelector(".joystick-knob");
+      const knob =
+        joystickElement.querySelector(
+          ".joystick-knob"
+        );
 
       if (knob) {
-        knob.style.transform = `translate(calc(-50% + ${x * 34}px), calc(-50% + ${-y * 34}px))`;
+        knob.style.transform =
+          `translate(
+            calc(-50% + ${x * 34}px),
+            calc(-50% + ${-y * 34}px)
+          )`;
       }
     };
 
-    const move = (ev) => {
-      if (ev.touches[0]) {
-        update(ev.touches[0]);
+    const move = (event) => {
+      if (event.touches[0]) {
+        event.preventDefault();
+        updateJoystick(
+          event.touches[0]
+        );
       }
     };
 
     const end = () => {
-      joystick.current = { x: 0, y: 0 };
+      joystick.current = {
+        x: 0,
+        y: 0,
+      };
 
-      const knob = e.currentTarget.querySelector(".joystick-knob");
+      const knob =
+        joystickElement.querySelector(
+          ".joystick-knob"
+        );
 
       if (knob) {
-        knob.style.transform = "translate(-50%, -50%)";
+        knob.style.transform =
+          "translate(-50%, -50%)";
       }
 
-      window.removeEventListener("touchmove", move);
-      window.removeEventListener("touchend", end);
+      window.removeEventListener(
+        "touchmove",
+        move
+      );
+
+      window.removeEventListener(
+        "touchend",
+        end
+      );
     };
 
-    update(e.touches[0]);
+    updateJoystick(e.touches[0]);
 
-    window.addEventListener("touchmove", move, {
-      passive: false,
-    });
+    window.addEventListener(
+      "touchmove",
+      move,
+      {
+        passive: false,
+      }
+    );
 
-    window.addEventListener("touchend", end);
+    window.addEventListener(
+      "touchend",
+      end
+    );
   };
+
+  /* =========================
+     MÀN HÌNH NHẬP THÔNG TIN
+  ========================= */
 
   if (!started) {
     return (
       <div className="welcome-page">
         <div className="welcome-card">
-          <div className="welcome-badge">KHÔNG GIAN VĂN HÓA</div>
+          <div className="welcome-badge">
+            KHÔNG GIAN VĂN HÓA
+          </div>
 
           <h1>Hồ Chí Minh</h1>
 
           <p className="welcome-description">
-            Chào mừng bạn đến với không gian tham quan 3D.
-            Hãy nhập thông tin để bắt đầu chuyến tham quan.
+            Chào mừng bạn đến với không
+            gian tham quan 3D. Hãy nhập
+            thông tin để bắt đầu chuyến
+            tham quan.
           </p>
 
           <form
@@ -766,11 +1066,15 @@ export default function App() {
           >
             <label>
               Họ và tên
+
               <input
                 type="text"
                 value={visitor.name}
                 onChange={(e) =>
-                  updateVisitor("name", e.target.value)
+                  updateVisitor(
+                    "name",
+                    e.target.value
+                  )
                 }
                 placeholder="Nhập họ và tên"
               />
@@ -778,13 +1082,17 @@ export default function App() {
 
             <label>
               Tuổi
+
               <input
                 type="number"
                 min="1"
                 max="100"
                 value={visitor.age}
                 onChange={(e) =>
-                  updateVisitor("age", e.target.value)
+                  updateVisitor(
+                    "age",
+                    e.target.value
+                  )
                 }
                 placeholder="Nhập tuổi"
               />
@@ -792,16 +1100,31 @@ export default function App() {
 
             <label>
               Giới tính
+
               <select
                 value={visitor.gender}
                 onChange={(e) =>
-                  updateVisitor("gender", e.target.value)
+                  updateVisitor(
+                    "gender",
+                    e.target.value
+                  )
                 }
               >
-                <option value="">Chọn giới tính</option>
-                <option value="Nam">Nam</option>
-                <option value="Nữ">Nữ</option>
-                <option value="Khác">Khác</option>
+                <option value="">
+                  Chọn giới tính
+                </option>
+
+                <option value="Nam">
+                  Nam
+                </option>
+
+                <option value="Nữ">
+                  Nữ
+                </option>
+
+                <option value="Khác">
+                  Khác
+                </option>
               </select>
             </label>
 
@@ -814,7 +1137,10 @@ export default function App() {
               </div>
             )}
 
-            <button type="submit" className="start-button">
+            <button
+              type="submit"
+              className="start-button"
+            >
               BẮT ĐẦU THAM QUAN
             </button>
           </form>
@@ -822,6 +1148,10 @@ export default function App() {
       </div>
     );
   }
+
+  /* =========================
+     PHÒNG 3D
+  ========================= */
 
   return (
     <div className="app">
@@ -835,7 +1165,10 @@ export default function App() {
           antialias: true,
         }}
       >
-        <color attach="background" args={["#b9d2e3"]} />
+        <color
+          attach="background"
+          args={["#b9d2e3"]}
+        />
 
         <GameScene
           keys={keys}
@@ -845,16 +1178,27 @@ export default function App() {
       </Canvas>
 
       <div className="top-info">
-        <strong>Không gian văn hóa Hồ Chí Minh</strong>
+        <strong>
+          Không gian văn hóa Hồ Chí Minh
+        </strong>
+
         <span>
           Xin chào, {visitor.name}
         </span>
       </div>
 
       <div className="controls">
-        <div>↑ ↓ ← → / WASD: Di chuyển</div>
-        <div>🖱 Kéo chuột: Xoay camera</div>
-        <div>🖱 Cuộn: Zoom</div>
+        <div>
+          ↑ ↓ ← → / WASD: Di chuyển
+        </div>
+
+        <div>
+          🖱 Kéo chuột: Xoay camera
+        </div>
+
+        <div>
+          🖱 Cuộn: Zoom
+        </div>
       </div>
 
       {selectedExhibit && (
@@ -869,10 +1213,11 @@ export default function App() {
         </div>
       )}
 
-      {/* joystick điện thoại */}
       <div
         className="joystick"
-        onTouchStart={handleJoystickStart}
+        onTouchStart={
+          handleJoystickStart
+        }
       >
         <div className="joystick-knob" />
       </div>
