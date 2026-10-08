@@ -41,12 +41,12 @@ const exhibits = [
   },
 ];
 
-/* =========================
+/* =====================================================
    NHÂN VẬT
-========================= */
+===================================================== */
 
 const HumanCharacter = forwardRef(function HumanCharacter(
-  { keys, joystick },
+  { keys, joystick, gender },
   externalRef
 ) {
   const localRef = useRef(null);
@@ -58,141 +58,311 @@ const HumanCharacter = forwardRef(function HumanCharacter(
     if (!ref.current) return;
 
     let forward = 0;
-    let right = 0;
+    let screenSide = 0;
 
-    // TIẾN / LÙI
-    if (keys.current.arrowup || keys.current.w) forward += 1;
-    if (keys.current.arrowdown || keys.current.s) forward -= 1;
+    /*
+      CAMERA Ở SAU LƯNG NHÂN VẬT
 
-    // TRÁI / PHẢI
-    if (keys.current.arrowleft || keys.current.a) right -= 1;
-    if (keys.current.arrowright || keys.current.d) right += 1;
+      Vì vậy:
+      ← = sang trái màn hình
+      → = sang phải màn hình
 
-    // JOYSTICK
-    if (
-      Math.abs(joystick.current.x) > 0.01 ||
-      Math.abs(joystick.current.y) > 0.01
-    ) {
-      right += joystick.current.x;
-      forward += joystick.current.y;
+      Không dùng quy ước "trái/phải của nhân vật".
+    */
+
+    if (keys.current.arrowup || keys.current.w) {
+      forward += 1;
     }
 
-    const length = Math.hypot(forward, right);
+    if (keys.current.arrowdown || keys.current.s) {
+      forward -= 1;
+    }
 
-    if (length <= 0.01) return;
+    if (keys.current.arrowleft || keys.current.a) {
+      screenSide -= 1;
+    }
+
+    if (keys.current.arrowright || keys.current.d) {
+      screenSide += 1;
+    }
+
+    /*
+      Joystick:
+      x âm = trái màn hình
+      x dương = phải màn hình
+      y dương = tiến
+      y âm = lùi
+    */
+
+    forward += joystick.current.y;
+    screenSide += joystick.current.x;
+
+    const length = Math.hypot(
+      forward,
+      screenSide
+    );
+
+    if (length < 0.01) return;
 
     forward /= Math.max(1, length);
-    right /= Math.max(1, length);
+    screenSide /= Math.max(1, length);
 
     const yaw = window.__cameraYaw || 0;
 
-    // HƯỚNG TIẾN THEO CAMERA
+    /*
+      Hướng camera nhìn về phía trước.
+      Nhân vật ở giữa màn hình.
+
+      forward:
+        + = đi về phía camera đang nhìn
+
+      screenSide:
+        - = trái màn hình
+        + = phải màn hình
+    */
+
     const forwardX = Math.sin(yaw);
     const forwardZ = Math.cos(yaw);
 
-    // HƯỚNG PHẢI THEO CAMERA
-    const rightX = Math.cos(yaw);
-    const rightZ = -Math.sin(yaw);
+    const screenRightX = Math.cos(yaw);
+    const screenRightZ = -Math.sin(yaw);
 
-    const moveX = forward * forwardX + right * rightX;
-    const moveZ = forward * forwardZ + right * rightZ;
+    const moveX =
+      forward * forwardX +
+      screenSide * screenRightX;
 
-    ref.current.position.x += moveX * speed * delta;
-    ref.current.position.z += moveZ * speed * delta;
+    const moveZ =
+      forward * forwardZ +
+      screenSide * screenRightZ;
 
-    // Không cho đi xuyên tường
+    ref.current.position.x +=
+      moveX * speed * delta;
+
+    ref.current.position.z +=
+      moveZ * speed * delta;
+
+    /*
+      Không đi xuyên tường
+    */
+
     const limitX = ROOM.width / 2 - 1;
     const limitZ = ROOM.depth / 2 - 1;
 
-    ref.current.position.x = THREE.MathUtils.clamp(
-      ref.current.position.x,
-      -limitX,
-      limitX
-    );
+    ref.current.position.x =
+      THREE.MathUtils.clamp(
+        ref.current.position.x,
+        -limitX,
+        limitX
+      );
 
-    ref.current.position.z = THREE.MathUtils.clamp(
-      ref.current.position.z,
-      -limitZ,
-      limitZ
-    );
+    ref.current.position.z =
+      THREE.MathUtils.clamp(
+        ref.current.position.z,
+        -limitZ,
+        limitZ
+      );
 
-    // Nhân vật quay theo hướng di chuyển
-    ref.current.rotation.y = Math.atan2(moveX, moveZ);
+    /*
+      Nhân vật quay theo hướng di chuyển.
+    */
+
+    ref.current.rotation.y =
+      Math.atan2(moveX, moveZ);
   });
 
+  const isFemale = gender === "Nữ";
+
   return (
-    <group ref={ref} position={[0, 0, 5.8]} scale={0.78}>
-      {/* CHÂN */}
-      <mesh castShadow position={[-0.12, 0.38, 0]}>
-        <capsuleGeometry args={[0.085, 0.42, 8, 12]} />
-        <meshStandardMaterial color="#26384d" />
+    <group
+      ref={ref}
+      position={[0, 0, 5.8]}
+      scale={0.78}
+    >
+      {/* ======================
+          CHÂN
+      ====================== */}
+
+      <mesh
+        castShadow
+        position={[-0.12, 0.38, 0]}
+      >
+        <capsuleGeometry
+          args={[0.085, 0.42, 8, 12]}
+        />
+
+        <meshStandardMaterial
+          color={
+            isFemale
+              ? "#403a54"
+              : "#26384d"
+          }
+        />
       </mesh>
 
-      <mesh castShadow position={[0.12, 0.38, 0]}>
-        <capsuleGeometry args={[0.085, 0.42, 8, 12]} />
-        <meshStandardMaterial color="#26384d" />
+      <mesh
+        castShadow
+        position={[0.12, 0.38, 0]}
+      >
+        <capsuleGeometry
+          args={[0.085, 0.42, 8, 12]}
+        />
+
+        <meshStandardMaterial
+          color={
+            isFemale
+              ? "#403a54"
+              : "#26384d"
+          }
+        />
       </mesh>
 
       {/* GIÀY */}
-      <mesh castShadow position={[-0.12, 0.13, 0.08]}>
-        <sphereGeometry args={[0.13, 16, 12]} />
+
+      <mesh
+        castShadow
+        position={[-0.12, 0.13, 0.08]}
+      >
+        <sphereGeometry
+          args={[0.13, 16, 12]}
+        />
+
         <meshStandardMaterial color="#20242a" />
       </mesh>
 
-      <mesh castShadow position={[0.12, 0.13, 0.08]}>
-        <sphereGeometry args={[0.13, 16, 12]} />
+      <mesh
+        castShadow
+        position={[0.12, 0.13, 0.08]}
+      >
+        <sphereGeometry
+          args={[0.13, 16, 12]}
+        />
+
         <meshStandardMaterial color="#20242a" />
       </mesh>
 
-      {/* THÂN */}
-      <mesh castShadow position={[0, 0.88, 0]}>
-        <capsuleGeometry args={[0.28, 0.48, 8, 16]} />
-        <meshStandardMaterial color="#426b9a" />
+      {/* ======================
+          THÂN
+      ====================== */}
+
+      <mesh
+        castShadow
+        position={[0, 0.88, 0]}
+      >
+        <capsuleGeometry
+          args={[0.28, 0.48, 8, 16]}
+        />
+
+        <meshStandardMaterial
+          color={
+            isFemale
+              ? "#a85d72"
+              : "#426b9a"
+          }
+        />
       </mesh>
 
       {/* CỔ */}
-      <mesh castShadow position={[0, 1.27, 0]}>
-        <cylinderGeometry args={[0.105, 0.105, 0.18, 16]} />
+
+      <mesh
+        castShadow
+        position={[0, 1.27, 0]}
+      >
+        <cylinderGeometry
+          args={[0.105, 0.105, 0.18, 16]}
+        />
+
         <meshStandardMaterial color="#d8a47c" />
       </mesh>
 
       {/* TAY */}
-      <mesh castShadow position={[-0.36, 0.92, 0]}>
-        <capsuleGeometry args={[0.07, 0.38, 8, 12]} />
-        <meshStandardMaterial color="#426b9a" />
+
+      <mesh
+        castShadow
+        position={[-0.36, 0.92, 0]}
+      >
+        <capsuleGeometry
+          args={[0.07, 0.38, 8, 12]}
+        />
+
+        <meshStandardMaterial
+          color={
+            isFemale
+              ? "#a85d72"
+              : "#426b9a"
+          }
+        />
       </mesh>
 
-      <mesh castShadow position={[0.36, 0.92, 0]}>
-        <capsuleGeometry args={[0.07, 0.38, 8, 12]} />
-        <meshStandardMaterial color="#426b9a" />
+      <mesh
+        castShadow
+        position={[0.36, 0.92, 0]}
+      >
+        <capsuleGeometry
+          args={[0.07, 0.38, 8, 12]}
+        />
+
+        <meshStandardMaterial
+          color={
+            isFemale
+              ? "#a85d72"
+              : "#426b9a"
+          }
+        />
       </mesh>
 
       {/* BÀN TAY */}
-      <mesh castShadow position={[-0.36, 0.65, 0]}>
-        <sphereGeometry args={[0.075, 12, 10]} />
+
+      <mesh
+        castShadow
+        position={[-0.36, 0.65, 0]}
+      >
+        <sphereGeometry
+          args={[0.075, 12, 10]}
+        />
+
         <meshStandardMaterial color="#d8a47c" />
       </mesh>
 
-      <mesh castShadow position={[0.36, 0.65, 0]}>
-        <sphereGeometry args={[0.075, 12, 10]} />
+      <mesh
+        castShadow
+        position={[0.36, 0.65, 0]}
+      >
+        <sphereGeometry
+          args={[0.075, 12, 10]}
+        />
+
         <meshStandardMaterial color="#d8a47c" />
       </mesh>
 
-      {/* ĐẦU */}
+      {/* ======================
+          ĐẦU
+      ====================== */}
+
       <group position={[0, 1.68, 0]}>
-        {/* mặt */}
-        <mesh castShadow scale={[0.29, 0.34, 0.27]}>
-          <sphereGeometry args={[1, 24, 20]} />
+        {/* MẶT */}
+
+        <mesh
+          castShadow
+          scale={[0.29, 0.34, 0.27]}
+        >
+          <sphereGeometry
+            args={[1, 24, 20]}
+          />
+
           <meshStandardMaterial color="#d8a47c" />
         </mesh>
 
         {/* TAI */}
+
         <mesh
           castShadow
           position={[-0.285, 0, 0]}
           scale={[0.07, 0.1, 0.045]}
         >
-          <sphereGeometry args={[1, 16, 12]} />
+          <sphereGeometry
+            args={[1, 16, 12]}
+          />
+
           <meshStandardMaterial color="#d8a47c" />
         </mesh>
 
@@ -201,44 +371,81 @@ const HumanCharacter = forwardRef(function HumanCharacter(
           position={[0.285, 0, 0]}
           scale={[0.07, 0.1, 0.045]}
         >
-          <sphereGeometry args={[1, 16, 12]} />
+          <sphereGeometry
+            args={[1, 16, 12]}
+          />
+
           <meshStandardMaterial color="#d8a47c" />
         </mesh>
 
-        {/* TÓC */}
+        {/* ======================
+            TÓC
+        ====================== */}
+
+        {/* tóc nam / tóc nền */}
+
         <mesh
           castShadow
           position={[0, 0.22, -0.015]}
-          scale={[0.30, 0.16, 0.28]}
+          scale={
+            isFemale
+              ? [0.32, 0.19, 0.30]
+              : [0.30, 0.16, 0.28]
+          }
         >
-          <sphereGeometry args={[1, 24, 16]} />
+          <sphereGeometry
+            args={[1, 24, 16]}
+          />
+
+          <meshStandardMaterial color="#352a25" />
+        </mesh>
+
+        {/* tóc hai bên */}
+
+        <mesh
+          castShadow
+          position={[-0.255, 0.12, -0.02]}
+          scale={
+            isFemale
+              ? [0.10, 0.28, 0.17]
+              : [0.075, 0.18, 0.15]
+          }
+        >
+          <sphereGeometry
+            args={[1, 16, 12]}
+          />
+
           <meshStandardMaterial color="#352a25" />
         </mesh>
 
         <mesh
           castShadow
-          position={[-0.255, 0.13, -0.02]}
-          scale={[0.075, 0.18, 0.15]}
+          position={[0.255, 0.12, -0.02]}
+          scale={
+            isFemale
+              ? [0.10, 0.28, 0.17]
+              : [0.075, 0.18, 0.15]
+          }
         >
-          <sphereGeometry args={[1, 16, 12]} />
+          <sphereGeometry
+            args={[1, 16, 12]}
+          />
+
           <meshStandardMaterial color="#352a25" />
         </mesh>
 
-        <mesh
-          castShadow
-          position={[0.255, 0.13, -0.02]}
-          scale={[0.075, 0.18, 0.15]}
-        >
-          <sphereGeometry args={[1, 16, 12]} />
-          <meshStandardMaterial color="#352a25" />
-        </mesh>
+        {/* ======================
+            MẮT
+        ====================== */}
 
-        {/* MẮT */}
         <mesh
           position={[-0.105, 0.035, 0.255]}
           scale={[0.052, 0.06, 0.025]}
         >
-          <sphereGeometry args={[1, 16, 12]} />
+          <sphereGeometry
+            args={[1, 16, 12]}
+          />
+
           <meshStandardMaterial color="#ffffff" />
         </mesh>
 
@@ -246,16 +453,23 @@ const HumanCharacter = forwardRef(function HumanCharacter(
           position={[0.105, 0.035, 0.255]}
           scale={[0.052, 0.06, 0.025]}
         >
-          <sphereGeometry args={[1, 16, 12]} />
+          <sphereGeometry
+            args={[1, 16, 12]}
+          />
+
           <meshStandardMaterial color="#ffffff" />
         </mesh>
 
         {/* CON NGƯƠI */}
+
         <mesh
           position={[-0.105, 0.035, 0.278]}
           scale={[0.023, 0.029, 0.012]}
         >
-          <sphereGeometry args={[1, 12, 10]} />
+          <sphereGeometry
+            args={[1, 12, 10]}
+          />
+
           <meshStandardMaterial color="#202020" />
         </mesh>
 
@@ -263,16 +477,21 @@ const HumanCharacter = forwardRef(function HumanCharacter(
           position={[0.105, 0.035, 0.278]}
           scale={[0.023, 0.029, 0.012]}
         >
-          <sphereGeometry args={[1, 12, 10]} />
+          <sphereGeometry
+            args={[1, 12, 10]}
+          />
+
           <meshStandardMaterial color="#202020" />
         </mesh>
 
         {/* LÔNG MÀY */}
+
         <mesh
           position={[-0.105, 0.115, 0.255]}
           scale={[0.075, 0.012, 0.018]}
         >
           <boxGeometry args={[1, 1, 1]} />
+
           <meshStandardMaterial color="#352a25" />
         </mesh>
 
@@ -281,24 +500,31 @@ const HumanCharacter = forwardRef(function HumanCharacter(
           scale={[0.075, 0.012, 0.018]}
         >
           <boxGeometry args={[1, 1, 1]} />
+
           <meshStandardMaterial color="#352a25" />
         </mesh>
 
         {/* MŨI */}
+
         <mesh
           position={[0, -0.005, 0.285]}
           scale={[0.035, 0.06, 0.055]}
         >
-          <sphereGeometry args={[1, 12, 10]} />
+          <sphereGeometry
+            args={[1, 12, 10]}
+          />
+
           <meshStandardMaterial color="#c78f6d" />
         </mesh>
 
         {/* MIỆNG */}
+
         <mesh
           position={[0, -0.105, 0.268]}
           scale={[0.065, 0.018, 0.012]}
         >
           <boxGeometry args={[1, 1, 1]} />
+
           <meshStandardMaterial color="#8e4e50" />
         </mesh>
       </group>
@@ -306,11 +532,13 @@ const HumanCharacter = forwardRef(function HumanCharacter(
   );
 });
 
-/* =========================
+/* =====================================================
    CAMERA
-========================= */
+===================================================== */
 
-function CameraController({ characterRef }) {
+function CameraController({
+  characterRef,
+}) {
   const distance = useRef(5.2);
   const pitch = useRef(0.38);
 
@@ -318,19 +546,26 @@ function CameraController({ characterRef }) {
     window.__cameraYaw = 0;
 
     const wheel = (e) => {
-      distance.current = THREE.MathUtils.clamp(
-        distance.current + e.deltaY * 0.006,
-        2.5,
-        7
-      );
+      distance.current =
+        THREE.MathUtils.clamp(
+          distance.current +
+            e.deltaY * 0.006,
+          2.5,
+          7
+        );
     };
 
-    window.addEventListener("wheel", wheel, {
-      passive: true,
-    });
+    window.addEventListener(
+      "wheel",
+      wheel,
+      { passive: true }
+    );
 
     return () => {
-      window.removeEventListener("wheel", wheel);
+      window.removeEventListener(
+        "wheel",
+        wheel
+      );
     };
   }, []);
 
@@ -348,147 +583,249 @@ function CameraController({ characterRef }) {
     const move = (e) => {
       if (!dragging) return;
 
-      const dx = e.clientX - lastX;
-      const dy = e.clientY - lastY;
+      const dx =
+        e.clientX - lastX;
+
+      const dy =
+        e.clientY - lastY;
 
       lastX = e.clientX;
       lastY = e.clientY;
 
       window.__cameraYaw =
-        (window.__cameraYaw || 0) - dx * 0.008;
+        (window.__cameraYaw || 0) -
+        dx * 0.008;
 
-      pitch.current = THREE.MathUtils.clamp(
-        pitch.current - dy * 0.004,
-        0.12,
-        0.95
-      );
+      pitch.current =
+        THREE.MathUtils.clamp(
+          pitch.current -
+            dy * 0.004,
+          0.12,
+          0.95
+        );
     };
 
     const up = () => {
       dragging = false;
     };
 
-    window.addEventListener("pointerdown", down);
-    window.addEventListener("pointermove", move);
-    window.addEventListener("pointerup", up);
+    window.addEventListener(
+      "pointerdown",
+      down
+    );
+
+    window.addEventListener(
+      "pointermove",
+      move
+    );
+
+    window.addEventListener(
+      "pointerup",
+      up
+    );
 
     return () => {
-      window.removeEventListener("pointerdown", down);
-      window.removeEventListener("pointermove", move);
-      window.removeEventListener("pointerup", up);
+      window.removeEventListener(
+        "pointerdown",
+        down
+      );
+
+      window.removeEventListener(
+        "pointermove",
+        move
+      );
+
+      window.removeEventListener(
+        "pointerup",
+        up
+      );
     };
   }, []);
 
-  useFrame(({ camera }, delta) => {
-    if (!characterRef.current) return;
+  useFrame(
+    ({ camera }, delta) => {
+      if (!characterRef.current) return;
 
-    const target = characterRef.current.position;
-    const yaw = window.__cameraYaw || 0;
+      const target =
+        characterRef.current.position;
 
-    const horizontal = Math.cos(pitch.current);
+      const yaw =
+        window.__cameraYaw || 0;
 
-    const dirX = -Math.sin(yaw);
-    const dirZ = -Math.cos(yaw);
+      const horizontal =
+        Math.cos(pitch.current);
 
-    let safeDistance = distance.current;
+      const dirX =
+        -Math.sin(yaw);
 
-    if (Math.abs(dirX) > 0.001) {
-      const wallX =
-        dirX > 0
-          ? ROOM.width / 2 - 0.5
-          : -ROOM.width / 2 + 0.5;
+      const dirZ =
+        -Math.cos(yaw);
 
-      const tx = (wallX - target.x) / dirX;
+      let safeDistance =
+        distance.current;
 
-      if (tx > 0) {
-        safeDistance = Math.min(safeDistance, tx);
+      /*
+        Không cho camera đi xuyên tường
+      */
+
+      if (Math.abs(dirX) > 0.001) {
+        const wallX =
+          dirX > 0
+            ? ROOM.width / 2 - 0.5
+            : -ROOM.width / 2 + 0.5;
+
+        const tx =
+          (wallX - target.x) /
+          dirX;
+
+        if (tx > 0) {
+          safeDistance =
+            Math.min(
+              safeDistance,
+              tx
+            );
+        }
       }
-    }
 
-    if (Math.abs(dirZ) > 0.001) {
-      const wallZ =
-        dirZ > 0
-          ? ROOM.depth / 2 - 0.5
-          : -ROOM.depth / 2 + 0.5;
+      if (Math.abs(dirZ) > 0.001) {
+        const wallZ =
+          dirZ > 0
+            ? ROOM.depth / 2 - 0.5
+            : -ROOM.depth / 2 + 0.5;
 
-      const tz = (wallZ - target.z) / dirZ;
+        const tz =
+          (wallZ - target.z) /
+          dirZ;
 
-      if (tz > 0) {
-        safeDistance = Math.min(safeDistance, tz);
+        if (tz > 0) {
+          safeDistance =
+            Math.min(
+              safeDistance,
+              tz
+            );
+        }
       }
+
+      safeDistance =
+        Math.max(
+          1.8,
+          safeDistance - 0.25
+        );
+
+      const cameraX =
+        target.x +
+        dirX *
+          safeDistance *
+          horizontal;
+
+      const cameraZ =
+        target.z +
+        dirZ *
+          safeDistance *
+          horizontal;
+
+      const cameraY =
+        target.y +
+        1.2 +
+        Math.sin(
+          pitch.current
+        ) *
+          safeDistance;
+
+      const desired =
+        new THREE.Vector3(
+          cameraX,
+          THREE.MathUtils.clamp(
+            cameraY,
+            1.5,
+            5.1
+          ),
+          cameraZ
+        );
+
+      camera.position.lerp(
+        desired,
+        1 -
+          Math.pow(
+            0.0005,
+            delta
+          )
+      );
+
+      camera.lookAt(
+        target.x,
+        target.y + 1.15,
+        target.z
+      );
     }
-
-    safeDistance = Math.max(
-      1.8,
-      safeDistance - 0.25
-    );
-
-    const cameraX =
-      target.x +
-      dirX * safeDistance * horizontal;
-
-    const cameraZ =
-      target.z +
-      dirZ * safeDistance * horizontal;
-
-    const cameraY =
-      target.y +
-      1.2 +
-      Math.sin(pitch.current) * safeDistance;
-
-    const desired = new THREE.Vector3(
-      cameraX,
-      THREE.MathUtils.clamp(cameraY, 1.5, 5.1),
-      cameraZ
-    );
-
-    camera.position.lerp(
-      desired,
-      1 - Math.pow(0.0005, delta)
-    );
-
-    camera.lookAt(
-      target.x,
-      target.y + 1.15,
-      target.z
-    );
-  });
+  );
 
   return null;
 }
 
-/* =========================
+/* =====================================================
    PHÒNG
-========================= */
+===================================================== */
 
 function Room() {
   return (
     <group>
       {/* SÀN */}
+
       <mesh
-        rotation={[-Math.PI / 2, 0, 0]}
+        rotation={[
+          -Math.PI / 2,
+          0,
+          0,
+        ]}
         receiveShadow
       >
         <planeGeometry
-          args={[ROOM.width, ROOM.depth]}
+          args={[
+            ROOM.width,
+            ROOM.depth,
+          ]}
         />
-        <meshStandardMaterial color="#d8c9ad" />
+
+        <meshStandardMaterial
+          color="#d8c9ad"
+        />
       </mesh>
 
       {/* TRẦN */}
+
       <mesh
-        position={[0, ROOM.height, 0]}
-        rotation={[Math.PI / 2, 0, 0]}
+        position={[
+          0,
+          ROOM.height,
+          0,
+        ]}
+        rotation={[
+          Math.PI / 2,
+          0,
+          0,
+        ]}
       >
         <planeGeometry
-          args={[ROOM.width, ROOM.depth]}
+          args={[
+            ROOM.width,
+            ROOM.depth,
+          ]}
         />
-        <meshStandardMaterial color="#f5f1e8" />
+
+        <meshStandardMaterial
+          color="#f5f1e8"
+        />
       </mesh>
 
       {/* TƯỜNG SAU */}
+
       <mesh
-        position={[0, ROOM.height / 2, -ROOM.depth / 2]}
+        position={[
+          0,
+          ROOM.height / 2,
+          -ROOM.depth / 2,
+        ]}
       >
         <boxGeometry
           args={[
@@ -497,12 +834,20 @@ function Room() {
             0.35,
           ]}
         />
-        <meshStandardMaterial color="#eee6d7" />
+
+        <meshStandardMaterial
+          color="#eee6d7"
+        />
       </mesh>
 
       {/* TƯỜNG TRƯỚC */}
+
       <mesh
-        position={[0, ROOM.height / 2, ROOM.depth / 2]}
+        position={[
+          0,
+          ROOM.height / 2,
+          ROOM.depth / 2,
+        ]}
       >
         <boxGeometry
           args={[
@@ -511,10 +856,14 @@ function Room() {
             0.35,
           ]}
         />
-        <meshStandardMaterial color="#eee6d7" />
+
+        <meshStandardMaterial
+          color="#eee6d7"
+        />
       </mesh>
 
       {/* TƯỜNG TRÁI */}
+
       <mesh
         position={[
           -ROOM.width / 2,
@@ -529,10 +878,14 @@ function Room() {
             ROOM.depth,
           ]}
         />
-        <meshStandardMaterial color="#eee6d7" />
+
+        <meshStandardMaterial
+          color="#eee6d7"
+        />
       </mesh>
 
       {/* TƯỜNG PHẢI */}
+
       <mesh
         position={[
           ROOM.width / 2,
@@ -547,12 +900,20 @@ function Room() {
             ROOM.depth,
           ]}
         />
-        <meshStandardMaterial color="#eee6d7" />
+
+        <meshStandardMaterial
+          color="#eee6d7"
+        />
       </mesh>
 
       {/* TIÊU ĐỀ */}
+
       <Text
-        position={[0, 4.35, -8.45]}
+        position={[
+          0,
+          4.35,
+          -8.45,
+        ]}
         fontSize={0.58}
         color="#59351d"
         anchorX="center"
@@ -562,19 +923,53 @@ function Room() {
       </Text>
 
       {/* TRANH */}
-      <group position={[-8, 2.5, -8.25]}>
+
+      <group
+        position={[
+          -8,
+          2.5,
+          -8.25,
+        ]}
+      >
         <mesh>
-          <boxGeometry args={[4.5, 3.1, 0.18]} />
-          <meshStandardMaterial color="#6e492d" />
+          <boxGeometry
+            args={[
+              4.5,
+              3.1,
+              0.18,
+            ]}
+          />
+
+          <meshStandardMaterial
+            color="#6e492d"
+          />
         </mesh>
 
-        <mesh position={[0, 0, 0.11]}>
-          <planeGeometry args={[4.05, 2.65]} />
-          <meshStandardMaterial color="#c9b69b" />
+        <mesh
+          position={[
+            0,
+            0,
+            0.11,
+          ]}
+        >
+          <planeGeometry
+            args={[
+              4.05,
+              2.65,
+            ]}
+          />
+
+          <meshStandardMaterial
+            color="#c9b69b"
+          />
         </mesh>
 
         <Text
-          position={[0, -1.25, 0.2]}
+          position={[
+            0,
+            -1.25,
+            0.2,
+          ]}
           fontSize={0.22}
           color="#3b281c"
           anchorX="center"
@@ -584,19 +979,53 @@ function Room() {
       </group>
 
       {/* MÀN HÌNH */}
-      <group position={[0, 2.7, -8.25]}>
+
+      <group
+        position={[
+          0,
+          2.7,
+          -8.25,
+        ]}
+      >
         <mesh>
-          <boxGeometry args={[5.2, 3.1, 0.25]} />
-          <meshStandardMaterial color="#20242a" />
+          <boxGeometry
+            args={[
+              5.2,
+              3.1,
+              0.25,
+            ]}
+          />
+
+          <meshStandardMaterial
+            color="#20242a"
+          />
         </mesh>
 
-        <mesh position={[0, 0, 0.14]}>
-          <planeGeometry args={[4.7, 2.6]} />
-          <meshStandardMaterial color="#273d4d" />
+        <mesh
+          position={[
+            0,
+            0,
+            0.14,
+          ]}
+        >
+          <planeGeometry
+            args={[
+              4.7,
+              2.6,
+            ]}
+          />
+
+          <meshStandardMaterial
+            color="#273d4d"
+          />
         </mesh>
 
         <Text
-          position={[0, 0, 0.2]}
+          position={[
+            0,
+            0,
+            0.2,
+          ]}
           fontSize={0.36}
           color="#ffffff"
           anchorX="center"
@@ -607,58 +1036,107 @@ function Room() {
       </group>
 
       {/* TỦ SÁCH */}
-      <group position={[8, 2.2, -8.1]}>
+
+      <group
+        position={[
+          8,
+          2.2,
+          -8.1,
+        ]}
+      >
         <mesh>
-          <boxGeometry args={[3.6, 4.3, 0.65]} />
-          <meshStandardMaterial color="#71472d" />
+          <boxGeometry
+            args={[
+              3.6,
+              4.3,
+              0.65,
+            ]}
+          />
+
+          <meshStandardMaterial
+            color="#71472d"
+          />
         </mesh>
 
-        {[0.8, 1.5, 2.2, 2.9].map((y) => (
-          <mesh
-            key={y}
-            position={[
-              0,
-              -2.15 + y,
-              0.36,
-            ]}
-          >
-            <boxGeometry
-              args={[3.2, 0.09, 0.05]}
-            />
-            <meshStandardMaterial color="#432b1c" />
-          </mesh>
-        ))}
+        {[0.8, 1.5, 2.2, 2.9].map(
+          (y) => (
+            <mesh
+              key={y}
+              position={[
+                0,
+                -2.15 + y,
+                0.36,
+              ]}
+            >
+              <boxGeometry
+                args={[
+                  3.2,
+                  0.09,
+                  0.05,
+                ]}
+              />
 
-        {[...Array(16)].map((_, i) => (
-          <mesh
-            key={i}
-            position={[
-              -1.35 + (i % 8) * 0.38,
-              -1.65 +
-                Math.floor(i / 8) * 1.4,
-              0.42,
-            ]}
-          >
-            <boxGeometry
-              args={[0.25, 1, 0.08]}
-            />
-            <meshStandardMaterial
-              color={
-                i % 2
-                  ? "#a87b51"
-                  : "#486b72"
-              }
-            />
-          </mesh>
-        ))}
+              <meshStandardMaterial
+                color="#432b1c"
+              />
+            </mesh>
+          )
+        )}
+
+        {[...Array(16)].map(
+          (_, i) => (
+            <mesh
+              key={i}
+              position={[
+                -1.35 +
+                  (i % 8) *
+                    0.38,
+                -1.65 +
+                  Math.floor(
+                    i / 8
+                  ) *
+                    1.4,
+                0.42,
+              ]}
+            >
+              <boxGeometry
+                args={[
+                  0.25,
+                  1,
+                  0.08,
+                ]}
+              />
+
+              <meshStandardMaterial
+                color={
+                  i % 2
+                    ? "#a87b51"
+                    : "#486b72"
+                }
+              />
+            </mesh>
+          )
+        )}
       </group>
 
       {/* TỦ TRƯNG BÀY */}
-      <group position={[9.1, 1.2, 1]}>
+
+      <group
+        position={[
+          9.1,
+          1.2,
+          1,
+        ]}
+      >
         <mesh>
           <boxGeometry
-            args={[3.4, 1.8, 1.6]}
+            args={[
+              3.4,
+              1.8,
+              1.6,
+            ]}
           />
+
           <meshStandardMaterial
             color="#9d7b56"
             transparent
@@ -666,24 +1144,55 @@ function Room() {
           />
         </mesh>
 
-        <mesh position={[0, 0.1, 0]}>
+        <mesh
+          position={[
+            0,
+            0.1,
+            0,
+          ]}
+        >
           <boxGeometry
-            args={[2.8, 0.15, 1.2]}
+            args={[
+              2.8,
+              0.15,
+              1.2,
+            ]}
           />
-          <meshStandardMaterial color="#e2c99d" />
+
+          <meshStandardMaterial
+            color="#e2c99d"
+          />
         </mesh>
       </group>
 
       {/* BÀN */}
-      <group position={[-5, 0, 2]}>
+
+      <group
+        position={[
+          -5,
+          0,
+          2,
+        ]}
+      >
         <mesh
-          position={[0, 1.15, 0]}
+          position={[
+            0,
+            1.15,
+            0,
+          ]}
           castShadow
         >
           <boxGeometry
-            args={[2.6, 0.18, 1.25]}
+            args={[
+              2.6,
+              0.18,
+              1.25,
+            ]}
           />
-          <meshStandardMaterial color="#70472d" />
+
+          <meshStandardMaterial
+            color="#70472d"
+          />
         </mesh>
 
         {[
@@ -691,120 +1200,238 @@ function Room() {
           [1, 0.55, -0.4],
           [-1, 0.55, 0.4],
           [1, 0.55, 0.4],
-        ].map((p, i) => (
-          <mesh key={i} position={p}>
-            <boxGeometry
-              args={[0.13, 1.1, 0.13]}
-            />
-            <meshStandardMaterial color="#553522" />
-          </mesh>
-        ))}
+        ].map(
+          (p, i) => (
+            <mesh
+              key={i}
+              position={p}
+            >
+              <boxGeometry
+                args={[
+                  0.13,
+                  1.1,
+                  0.13,
+                ]}
+              />
+
+              <meshStandardMaterial
+                color="#553522"
+              />
+            </mesh>
+          )
+        )}
       </group>
 
       {/* GHẾ */}
-      <group position={[-5, 0, 4]}>
-        <mesh position={[0, 0.8, 0]}>
+
+      <group
+        position={[
+          -5,
+          0,
+          4,
+        ]}
+      >
+        <mesh
+          position={[
+            0,
+            0.8,
+            0,
+          ]}
+        >
           <boxGeometry
-            args={[1.2, 0.15, 1.1]}
+            args={[
+              1.2,
+              0.15,
+              1.1,
+            ]}
           />
-          <meshStandardMaterial color="#795038" />
+
+          <meshStandardMaterial
+            color="#795038"
+          />
         </mesh>
 
-        <mesh position={[0, 1.45, 0.45]}>
+        <mesh
+          position={[
+            0,
+            1.45,
+            0.45,
+          ]}
+        >
           <boxGeometry
-            args={[1.2, 1.3, 0.12]}
+            args={[
+              1.2,
+              1.3,
+              0.12,
+            ]}
           />
-          <meshStandardMaterial color="#795038" />
+
+          <meshStandardMaterial
+            color="#795038"
+          />
         </mesh>
       </group>
 
       {/* CÂY */}
-      <group position={[-9, 0, 5]}>
-        <mesh position={[0, 1, 0]}>
+
+      <group
+        position={[
+          -9,
+          0,
+          5,
+        ]}
+      >
+        <mesh
+          position={[
+            0,
+            1,
+            0,
+          ]}
+        >
           <cylinderGeometry
-            args={[0.28, 0.38, 2, 16]}
+            args={[
+              0.28,
+              0.38,
+              2,
+              16,
+            ]}
           />
-          <meshStandardMaterial color="#9b633b" />
+
+          <meshStandardMaterial
+            color="#9b633b"
+          />
         </mesh>
 
-        <mesh position={[0, 2.5, 0]}>
+        <mesh
+          position={[
+            0,
+            2.5,
+            0,
+          ]}
+        >
           <sphereGeometry
-            args={[1.1, 16, 12]}
+            args={[
+              1.1,
+              16,
+              12,
+            ]}
           />
-          <meshStandardMaterial color="#4e7750" />
+
+          <meshStandardMaterial
+            color="#4e7750"
+          />
         </mesh>
       </group>
 
       {/* ĐÈN */}
-      {[-7, 0, 7].map((x) => (
-        <group
-          key={x}
-          position={[x, 5.15, -2]}
-        >
-          <mesh>
-            <cylinderGeometry
-              args={[0.35, 0.35, 0.15, 24]}
-            />
-            <meshStandardMaterial color="#d6b76d" />
-          </mesh>
 
-          <pointLight
-            position={[0, -0.2, 0]}
-            intensity={35}
-            distance={9}
-          />
-        </group>
-      ))}
+      {[-7, 0, 7].map(
+        (x) => (
+          <group
+            key={x}
+            position={[
+              x,
+              5.15,
+              -2,
+            ]}
+          >
+            <mesh>
+              <cylinderGeometry
+                args={[
+                  0.35,
+                  0.35,
+                  0.15,
+                  24,
+                ]}
+              />
+
+              <meshStandardMaterial
+                color="#d6b76d"
+              />
+            </mesh>
+
+            <pointLight
+              position={[
+                0,
+                -0.2,
+                0,
+              ]}
+              intensity={35}
+              distance={9}
+            />
+          </group>
+        )
+      )}
     </group>
   );
 }
 
-/* =========================
+/* =====================================================
    GAME SCENE
-========================= */
+===================================================== */
 
 function GameScene({
   keys,
   joystick,
+  gender,
   onExhibit,
 }) {
-  const characterRef = useRef(null);
-  const lastExhibit = useRef(null);
+  const characterRef =
+    useRef(null);
+
+  const lastExhibit =
+    useRef(null);
 
   useFrame(() => {
-    if (!characterRef.current) return;
+    if (!characterRef.current) {
+      return;
+    }
 
     let nearest = null;
-    let nearestDistance = Infinity;
+    let nearestDistance =
+      Infinity;
 
-    exhibits.forEach((item) => {
-      const dx =
-        characterRef.current.position.x -
-        item.position[0];
+    exhibits.forEach(
+      (item) => {
+        const dx =
+          characterRef.current
+            .position.x -
+          item.position[0];
 
-      const dz =
-        characterRef.current.position.z -
-        item.position[2];
+        const dz =
+          characterRef.current
+            .position.z -
+          item.position[2];
 
-      const distance = Math.sqrt(
-        dx * dx + dz * dz
-      );
+        const distance =
+          Math.sqrt(
+            dx * dx +
+              dz * dz
+          );
 
-      if (
-        distance < 3 &&
-        distance < nearestDistance
-      ) {
-        nearest = item;
-        nearestDistance = distance;
+        if (
+          distance < 3 &&
+          distance <
+            nearestDistance
+        ) {
+          nearest = item;
+          nearestDistance =
+            distance;
+        }
       }
-    });
+    );
 
     const newId = nearest
       ? nearest.id
       : null;
 
-    if (newId !== lastExhibit.current) {
-      lastExhibit.current = newId;
+    if (
+      newId !==
+      lastExhibit.current
+    ) {
+      lastExhibit.current =
+        newId;
+
       onExhibit(nearest);
     }
   });
@@ -827,6 +1454,7 @@ function GameScene({
         ref={characterRef}
         keys={keys}
         joystick={joystick}
+        gender={gender}
       />
 
       <CameraController
@@ -838,40 +1466,60 @@ function GameScene({
   );
 }
 
-/* =========================
+/* =====================================================
    APP
-========================= */
+===================================================== */
 
 export default function App() {
-  const [started, setStarted] = useState(false);
+  const [started, setStarted] =
+    useState(false);
 
-  const [visitor, setVisitor] = useState({
-    name: "",
-    age: "",
-    gender: "",
-  });
+  const [visitor, setVisitor] =
+    useState({
+      name: "",
+      age: "",
+      gender: "Nam",
+    });
 
-  const [error, setError] = useState("");
-  const [selectedExhibit, setSelectedExhibit] =
-    useState(null);
+  const [error, setError] =
+    useState("");
+
+  const [
+    selectedExhibit,
+    setSelectedExhibit,
+  ] = useState(null);
 
   const keys = useRef({});
+
   const joystick = useRef({
     x: 0,
     y: 0,
   });
 
+  /* BÀN PHÍM */
+
   useEffect(() => {
     const down = (e) => {
-      keys.current[e.key.toLowerCase()] = true;
+      keys.current[
+        e.key.toLowerCase()
+      ] = true;
     };
 
     const up = (e) => {
-      keys.current[e.key.toLowerCase()] = false;
+      keys.current[
+        e.key.toLowerCase()
+      ] = false;
     };
 
-    window.addEventListener("keydown", down);
-    window.addEventListener("keyup", up);
+    window.addEventListener(
+      "keydown",
+      down
+    );
+
+    window.addEventListener(
+      "keyup",
+      up
+    );
 
     return () => {
       window.removeEventListener(
@@ -890,17 +1538,17 @@ export default function App() {
     field,
     value
   ) => {
-    setVisitor((previous) => ({
-      ...previous,
-      [field]: value,
-    }));
+    setVisitor(
+      (previous) => ({
+        ...previous,
+        [field]: value,
+      })
+    );
 
     setError("");
   };
 
-  /* =========================
-     VALIDATION
-  ========================= */
+  /* SUBMIT */
 
   const submit = (e) => {
     e.preventDefault();
@@ -909,7 +1557,9 @@ export default function App() {
       visitor.name.trim();
 
     const age =
-      String(visitor.age).trim();
+      String(
+        visitor.age
+      ).trim();
 
     if (!name || !age) {
       setError(
@@ -927,11 +1577,11 @@ export default function App() {
     setStarted(true);
   };
 
-  /* =========================
-     JOYSTICK
-  ========================= */
+  /* JOYSTICK */
 
-  const handleJoystickStart = (e) => {
+  const handleJoystickStart = (
+    e
+  ) => {
     e.preventDefault();
 
     const joystickElement =
@@ -952,11 +1602,13 @@ export default function App() {
         rect.height / 2;
 
       let x =
-        (touch.clientX - centerX) /
+        (touch.clientX -
+          centerX) /
         (rect.width / 2);
 
       let y =
-        (centerY - touch.clientY) /
+        (centerY -
+          touch.clientY) /
         (rect.height / 2);
 
       const length =
@@ -989,6 +1641,7 @@ export default function App() {
     const move = (event) => {
       if (event.touches[0]) {
         event.preventDefault();
+
         updateJoystick(
           event.touches[0]
         );
@@ -1022,7 +1675,9 @@ export default function App() {
       );
     };
 
-    updateJoystick(e.touches[0]);
+    updateJoystick(
+      e.touches[0]
+    );
 
     window.addEventListener(
       "touchmove",
@@ -1039,7 +1694,7 @@ export default function App() {
   };
 
   /* =========================
-     MÀN HÌNH NHẬP THÔNG TIN
+     FORM
   ========================= */
 
   if (!started) {
@@ -1050,13 +1705,15 @@ export default function App() {
             KHÔNG GIAN VĂN HÓA
           </div>
 
-          <h1>Hồ Chí Minh</h1>
+          <h1>
+            Hồ Chí Minh
+          </h1>
 
           <p className="welcome-description">
-            Chào mừng bạn đến với không
-            gian tham quan 3D. Hãy nhập
-            thông tin để bắt đầu chuyến
-            tham quan.
+            Chào mừng bạn đến với
+            không gian tham quan 3D.
+            Hãy nhập thông tin để
+            bắt đầu chuyến tham quan.
           </p>
 
           <form
@@ -1110,20 +1767,12 @@ export default function App() {
                   )
                 }
               >
-                <option value="">
-                  Chọn giới tính
-                </option>
-
                 <option value="Nam">
                   Nam
                 </option>
 
                 <option value="Nữ">
                   Nữ
-                </option>
-
-                <option value="Khác">
-                  Khác
                 </option>
               </select>
             </label>
@@ -1158,7 +1807,11 @@ export default function App() {
       <Canvas
         shadows
         camera={{
-          position: [0, 3, 10],
+          position: [
+            0,
+            3,
+            10,
+          ],
           fov: 60,
         }}
         gl={{
@@ -1167,48 +1820,62 @@ export default function App() {
       >
         <color
           attach="background"
-          args={["#b9d2e3"]}
+          args={[
+            "#b9d2e3",
+          ]}
         />
 
         <GameScene
           keys={keys}
           joystick={joystick}
-          onExhibit={setSelectedExhibit}
+          gender={visitor.gender}
+          onExhibit={
+            setSelectedExhibit
+          }
         />
       </Canvas>
 
       <div className="top-info">
         <strong>
-          Không gian văn hóa Hồ Chí Minh
+          Không gian văn hóa
+          Hồ Chí Minh
         </strong>
 
         <span>
-          Xin chào, {visitor.name}
+          Xin chào,{" "}
+          {visitor.name}
         </span>
       </div>
 
       <div className="controls">
         <div>
-          ↑ ↓ ← → / WASD: Di chuyển
+          ↑ ↓ ← → / WASD:
+          Di chuyển
         </div>
 
         <div>
-          🖱 Kéo chuột: Xoay camera
+          🖱 Kéo chuột:
+          Xoay camera
         </div>
 
         <div>
-          🖱 Cuộn: Zoom
+          🖱 Cuộn:
+          Zoom
         </div>
       </div>
 
       {selectedExhibit && (
         <div className="exhibit-info">
           <div className="exhibit-title">
-            {selectedExhibit.title}
+            {
+              selectedExhibit.title
+            }
           </div>
 
           <div className="exhibit-description">
-            {selectedExhibit.description}
+            {
+              selectedExhibit.description
+            }
           </div>
         </div>
       )}
