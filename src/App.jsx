@@ -10,8 +10,7 @@ const ROOM = { width: 24, depth: 18, height: 5.5 };
 
 const spots = [
   { id: 0, name: "Lối vào", position: [0, 1.6, 6.5] },
-  { id: 1, name: "Không gian trung tâm", position: [0, 1.6, 3] },
-  { id: 2, name: "Khu vực tư liệu", position: [0, 1.6, -1] },
+ 
   { id: 3, name: "Chân dung Bác Hồ", position: [-6, 1.6, -4.5] },
   { id: 4, name: "Video tư liệu", position: [0, 1.6, -4.5] },
   { id: 5, name: "Tủ sách", position: [6, 1.6, -4.5] },
@@ -267,23 +266,7 @@ function Room({ onExhibit }) {
       </group>
 
       {/* Tủ trưng bày */}
-      <group
-        position={[9.1, 1.2, 1]}
-        onClick={() => onExhibit(exhibits[3])}
-      >
-        <mesh>
-          <boxGeometry args={[3.4, 1.8, 1.6]} />
-          <meshStandardMaterial
-            color="#9d7b56"
-            transparent
-            opacity={0.85}
-          />
-        </mesh>
-        <mesh position={[0, 0.1, 0]}>
-          <boxGeometry args={[2.8, 0.15, 1.2]} />
-          <meshStandardMaterial color="#e2c99d" />
-        </mesh>
-      </group>
+     
 
       {/* Bàn */}
       <group position={[-5, 0, 2]}>
@@ -336,12 +319,11 @@ function Room({ onExhibit }) {
 function NavigationMarkers({ current, onMove }) {
   const signs = [
     { id: 0, position: [0, 1.25, 5] },
-    { id: 1, position: [0, 1.25, 1.4] },
-    { id: 2, position: [0, 1.25, -2.5] },
+   
     { id: 3, position: [-6, 1.35, -6.2] },
     { id: 4, position: [0, 1.35, -6.2] },
     { id: 5, position: [6, 1.35, -6.1] },
-    { id: 6, position: [7, 1.25, 0.2] },
+    { id: 6, position: [11.7, 1.8, 1] },
   ];
 
   return (
