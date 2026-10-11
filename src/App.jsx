@@ -3,7 +3,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Environment, Text } from "@react-three/drei";
 import * as THREE from "three";
 import "./style.css";
-import { useGLTF } from "@react-three/drei";
+import { Environment, Text, useGLTF } from "@react-three/drei";
 
 const ROOM = {
   width: 24,
