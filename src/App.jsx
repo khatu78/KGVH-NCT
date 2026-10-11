@@ -51,26 +51,22 @@ const exhibits = [
 function CameraView({ spots, spotIndex, controls }) {
   const { camera } = useThree();
 
-  const getTarget = (index) => {
-    const targets = [
-      [0, 1.6, 3.5],   // Lối vào
-      [0, 1.6, -0.5],  // Trung tâm
-      [0, 1.6, -5],    // Khu tư liệu
-      [-8, 2.5, -8.2], // Chân dung Bác Hồ
-      [0, 2.7, -8.2],  // Video tư liệu
-      [8, 2.3, -8.1],  // Tủ sách
-      [9.1, 1.5, 1],   // Khu trưng bày
-    ];
-
-    return targets[index] || [0, 1.6, -2];
-  };
+  const targets = [
+    [0, 1.6, 1.5],
+    [0, 1.6, -1],
+    [0, 1.6, -5.5],
+    [-8, 2.5, -8.2],
+    [0, 2.7, -8.2],
+    [8, 2.3, -8.1],
+    [9.1, 1.5, 1],
+  ];
 
   const destination = useRef(
     new THREE.Vector3(...spots[0].position)
   );
 
   const lookTarget = useRef(
-    new THREE.Vector3(...getTarget(0))
+    new THREE.Vector3(...targets[0])
   );
 
   useEffect(() => {
@@ -78,11 +74,11 @@ function CameraView({ spots, spotIndex, controls }) {
     if (!spot) return;
 
     destination.current.set(...spot.position);
-    lookTarget.current.set(...getTarget(spotIndex));
-  }, [spots, spotIndex]);
+    lookTarget.current.set(...targets[spotIndex]);
+  }, [spotIndex, spots]);
 
   useFrame((_, delta) => {
-    const alpha = 1 - Math.exp(-3 * delta);
+    const alpha = 1 - Math.exp(-2 * delta);
 
     camera.position.lerp(destination.current, alpha);
 
@@ -373,15 +369,15 @@ function Scene({ spotIndex, onMove, onExhibit }) {
         controls={controls}
       />
 
-      <OrbitControls
-        ref={controls}
-        makeDefault
-        enablePan={false}
-        enableZoom={false}
-        rotateSpeed={0.6}
-        minPolarAngle={0.2}
-        maxPolarAngle={Math.PI - 0.2}
-      />
+     <OrbitControls
+  ref={controls}
+  makeDefault
+  enablePan={false}
+  enableZoom={false}
+  rotateSpeed={0.6}
+  minPolarAngle={0.2}
+  maxPolarAngle={Math.PI - 0.2}
+/>
 
       <Environment preset="city" />
     </>
@@ -391,45 +387,7 @@ function Scene({ spotIndex, onMove, onExhibit }) {
 
 
 
-function KeyboardNavigation({ spotIndex, setSpotIndex }) {
-  useEffect(() => {
-    const routes = {
-      0: { ArrowRight: 1 },
-      1: { ArrowLeft: 0, ArrowRight: 2 },
-      2: { ArrowLeft: 1, ArrowRight: 4 },
-      3: { ArrowRight: 4 },
-      4: {
-        ArrowLeft: 3,
-        ArrowRight: 5,
-        ArrowUp: 6,
-        ArrowDown: 2,
-      },
-      5: { ArrowLeft: 4 },
-      6: { ArrowDown: 4 },
-    };
 
-    const handleKeyDown = (event) => {
-      if (
-        event.target instanceof HTMLInputElement ||
-        event.target instanceof HTMLTextAreaElement ||
-        event.target instanceof HTMLSelectElement
-      ) {
-        return;
-      }
-
-      const nextIndex = routes[spotIndex]?.[event.key];
-      if (nextIndex === undefined) return;
-
-      event.preventDefault();
-      setSpotIndex(nextIndex);
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [spotIndex, setSpotIndex]);
-
-  return null;
-}
 
 
 
@@ -527,85 +485,28 @@ export default function App() {
   return (
     <div className="app">
       <Canvas
-       camera={{
-    position: [0, 1.6, 6.5],
-    fov: 65,
-    near: 0.1,
-    far: 100
-  }}
+        camera={{
+          position: [0, 1.6, 6.5],
+          fov: 65,
+          near: 0.1,
+          far: 100,
+        }}
       >
         <Scene
           spotIndex={spotIndex}
           onMove={setSpotIndex}
           onExhibit={setSelectedExhibit}
         />
-       <KeyboardNavigation
-  spotIndex={spotIndex}
-  setSpotIndex={setSpotIndex}
-/>
       </Canvas>
-
-      
-{showLocationNotice && (
-  <div
-    style={{
-      position: "absolute",
-      top: "76px",
-      left: "50%",
-      transform: "translateX(-50%)",
-      width: "min(340px, calc(100% - 32px))",
-      padding: "18px 42px 18px 18px",
-      background: "rgba(255, 250, 239, 0.96)",
-      color: "#493321",
-      border: "1px solid #d6bd91",
-      borderRadius: "12px",
-      boxShadow: "0 5px 22px rgba(0,0,0,0.18)",
-      zIndex: 20,
-      boxSizing: "border-box",
-    }}
-  >
-    <button
-      onClick={() => {
-        setSpotIndex(0);
-        setSelectedExhibit(null);
-      }}
-      aria-label="Quay về lối vào"
-      title="Quay về lối vào"
-      style={{
-        position: "absolute",
-        top: "7px",
-        right: "8px",
-        border: "none",
-        background: "transparent",
-        color: "#493321",
-        fontSize: "22px",
-        cursor: "pointer",
-        padding: "3px 7px",
-      }}
-    >
-      ✕
-    </button>
-
-    <div style={{ fontWeight: 700, marginBottom: "6px" }}>
-      Bạn đang tham quan
-    </div>
-
-    <div style={{ fontSize: "14px", lineHeight: 1.5 }}>
-      {spots[spotIndex].name}
-    </div>
-  </div>
-)}
-
 
       <div className="top-info">
         <strong>Không gian văn hóa Hồ Chí Minh</strong>
-        <span>Xin chào, {visitor.name}</span>
       </div>
 
       <div className="controls">
-        <div>🖱 Kéo chuột: Quan sát 360°</div>
-        <div>⬆ Nhấn mũi tên: Di chuyển đến điểm khác</div>
-        <div>📍 Vị trí: {spots[spotIndex].name}</div>
+        <div>🖱 Kéo chuột: Xoay góc nhìn 360°</div>
+        <div>📍 Nhấp biển chỉ dẫn: Di chuyển đến khu vực</div>
+        <div>Vị trí: {spots[spotIndex].name}</div>
       </div>
 
       {selectedExhibit && (
@@ -616,18 +517,17 @@ export default function App() {
           >
             ✕
           </button>
+
           <div className="exhibit-title">
             {selectedExhibit.title}
           </div>
+
           <div className="exhibit-description">
             {selectedExhibit.description}
           </div>
         </div>
       )}
-
-      <div className="navigation-hint">
-        Kéo chuột để nhìn quanh · Nhấn các mũi tên để di chuyển
-      </div>
     </div>
   );
+    
 }
