@@ -74,8 +74,7 @@ function CameraView({ spots, spotIndex, controls }) {
   }, [spotIndex, spots]);
 
  useFrame((_, delta) => {
-  const alpha = 1 - Math.exp(-2 * delta);
-
+  const alpha = 1 - Math.exp(-3 * delta);
   camera.position.lerp(destination.current, alpha);
 
   if (controls.current) {
@@ -386,12 +385,12 @@ function Scene({ spotIndex, onMove, onExhibit }) {
     <OrbitControls
   ref={controls}
   makeDefault
-  enableRotate={true}
+  enableRotate
   enablePan={false}
-  enableZoom={true}
+  enableZoom
   rotateSpeed={0.8}
-  minPolarAngle={0.2}
-  maxPolarAngle={Math.PI - 0.2}
+  minPolarAngle={0.5}
+  maxPolarAngle={2.2}
 />
 
       <Environment preset="city" />
