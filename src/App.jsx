@@ -45,35 +45,33 @@ const exhibits = [
 ];
 
 
+
 function CameraView({ spots, spotIndex, controls }) {
   const { camera } = useThree();
-  const targetPosition = useRef(new THREE.Vector3());
-  const targetLookAt = useRef(new THREE.Vector3());
-  const currentLookAt = useRef(new THREE.Vector3());
+  const targetPosition = useRef(new THREE.Vector3(...spots[0].position));
+  const targetLookAt = useRef(new THREE.Vector3(0, 1.6, -2));
 
   useEffect(() => {
     const spot = spots[spotIndex];
     if (!spot) return;
 
     targetPosition.current.set(...spot.position);
-    targetLookAt.current.set(...spot.target);
+    targetLookAt.current.set(spot.position[0], 1.6, spot.position[2] - 3);
   }, [spots, spotIndex]);
 
   useFrame((_, delta) => {
     const smooth = 1 - Math.exp(-3 * delta);
-
     camera.position.lerp(targetPosition.current, smooth);
 
     if (controls.current) {
-      const orbitTarget = controls.current.target;
-
-      orbitTarget.lerp(targetLookAt.current, smooth);
+      controls.current.target.lerp(targetLookAt.current, smooth);
       controls.current.update();
     }
   });
 
   return null;
 }
+
 
 
 function ArrowMarker({ position, onClick, label }) {
@@ -335,24 +333,40 @@ function NavigationMarkers({ current, onMove }) {
   );
 }
 
+
 function Scene({ spotIndex, onMove, onExhibit }) {
+  const controls = useRef(null);
+
   return (
     <>
       <color attach="background" args={["#b9d2e3"]} />
       <ambientLight intensity={1.5} />
-      <directionalLight
-        position={[4, 8, 5]}
-        intensity={2}
-        castShadow
-      />
+      <directionalLight position={[4, 8, 5]} intensity={2} castShadow />
 
       <Room onExhibit={onExhibit} />
       <NavigationMarkers current={spotIndex} onMove={onMove} />
-      <CameraView spotIndex={spotIndex} />
+
+      <CameraView
+        spots={spots}
+        spotIndex={spotIndex}
+        controls={controls}
+      />
+
+      <OrbitControls
+        ref={controls}
+        makeDefault
+        enablePan={false}
+        enableZoom={false}
+        rotateSpeed={0.6}
+        minPolarAngle={0.2}
+        maxPolarAngle={Math.PI - 0.2}
+      />
+
       <Environment preset="city" />
     </>
   );
 }
+
 
 function KeyboardNavigation({ spots, spotIndex, setSpotIndex }) {
   useEffect(() => {
