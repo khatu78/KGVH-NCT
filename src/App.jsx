@@ -45,8 +45,8 @@ const exhibits = [
  
 function CameraView({ spots, spotIndex, controls }) {
   const { camera } = useThree();
+  const isMovingRef = useRef(false);
 
-  // Định nghĩa các điểm nhìn (target) tương ứng với từng spot
   const targets = [
     [0, 1.6, -3],
     [-6, 2.5, -7.5],
@@ -58,6 +58,7 @@ function CameraView({ spots, spotIndex, controls }) {
   const destination = useRef(new THREE.Vector3(...spots[0].position));
   const lookTarget = useRef(new THREE.Vector3(...targets[0]));
 
+  // Khi người dùng bấm đổi mốc (spotIndex thay đổi), bật cờ di chuyển tự động
   useEffect(() => {
     const spot = spots[spotIndex];
     if (!spot) return;
@@ -66,23 +67,35 @@ function CameraView({ spots, spotIndex, controls }) {
     if (targets[spotIndex]) {
       lookTarget.current.set(...targets[spotIndex]);
     }
+    isMovingRef.current = true; 
   }, [spotIndex, spots]);
 
   useFrame((_, delta) => {
-    const alpha = 1 - Math.exp(-6 * delta); // Tăng tốc độ chuyển động một chút cho mượt
+    // Nếu không trong quá trình bay đến điểm mới thì dừng, cho phép OrbitControls hoạt động tự do
+    if (!isMovingRef.current) return;
 
-    // 1. Dịch chuyển vị trí camera
+    const alpha = 1 - Math.exp(-6 * delta);
+
+    // Dịch chuyển vị trí camera và tâm nhìn
     camera.position.lerp(destination.current, alpha);
 
-    // 2. Nếu OrbitControls đang tồn tại, cập nhật cả tâm nhìn (target) để camera không bị cắm xuống đất
     if (controls.current) {
       controls.current.target.lerp(lookTarget.current, alpha);
       controls.current.update();
     }
+
+    // Khi camera đã bay đến sát điểm đích, tắt cờ di chuyển để mở khóa xoay 360 độ
+    if (
+      camera.position.distanceTo(destination.current) < 0.05 &&
+      controls.current &&
+      controls.current.target.distanceTo(lookTarget.current) < 0.05
+    ) {
+      isMovingRef.current = false;
+    }
   });
 
   return null;
-}  
+}
 
 
 function ArrowMarker({ position, onClick, label }) {
