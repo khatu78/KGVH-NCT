@@ -616,12 +616,12 @@
 	],
 	"images":[
 		{
-			"mimeType":"image/png",
+			"mimeType":"textures/png",
 			"name":"char_cloth",
 			"uri":"char_cloth.png"
 		},
 		{
-			"mimeType":"image/png",
+			"mimeType":"textures/png",
 			"name":"hair_shoe",
 			"uri":"hair_shoe.png"
 		}
