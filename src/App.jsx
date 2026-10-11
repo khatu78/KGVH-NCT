@@ -51,26 +51,49 @@ function CameraView({ spots, spotIndex, controls }) {
   const targetPosition = useRef(new THREE.Vector3(...spots[0].position));
   const targetLookAt = useRef(new THREE.Vector3(0, 1.6, -2));
 
+  
+function CameraView({ spots, spotIndex, controls }) {
+  const { camera } = useThree();
+
+  const getTarget = (index) => {
+    const targets = [
+      [0, 1.6, 3.5],     // Lối vào
+      [0, 1.6, -0.5],    // Trung tâm
+      [0, 1.6, -5],      // Khu tư liệu
+      [-8, 2.5, -8.2],   // Chân dung Bác Hồ
+      [0, 2.7, -8.2],    // Video tư liệu
+      [8, 2.3, -8.1],    // Tủ sách
+      [9.1, 1.5, 1],     // Khu trưng bày
+    ];
+
+    return targets[index] || [0, 1.6, -2];
+  };
+
+  const destination = useRef(new THREE.Vector3(...spots[0].position));
+  const lookTarget = useRef(new THREE.Vector3(...getTarget(0)));
+
   useEffect(() => {
     const spot = spots[spotIndex];
     if (!spot) return;
 
-    targetPosition.current.set(...spot.position);
-    targetLookAt.current.set(spot.position[0], 1.6, spot.position[2] - 3);
+    destination.current.set(...spot.position);
+    lookTarget.current.set(...getTarget(spotIndex));
   }, [spots, spotIndex]);
 
   useFrame((_, delta) => {
-    const smooth = 1 - Math.exp(-3 * delta);
-    camera.position.lerp(targetPosition.current, smooth);
+    const alpha = 1 - Math.exp(-2.5 * delta);
+
+    camera.position.lerp(destination.current, alpha);
 
     if (controls.current) {
-      controls.current.target.lerp(targetLookAt.current, smooth);
+      controls.current.target.lerp(lookTarget.current, alpha);
       controls.current.update();
     }
   });
 
   return null;
 }
+
 
 
 
@@ -325,14 +348,14 @@ function NavigationMarkers({ current, onMove }) {
     return (
       <group>
         <ArrowMarker
-          position={[-2.5, 2.5, -7]}
+          position={[-2.5, 1.6, -7]}
           label="Chân dung Bác Hồ"
           arrow="←"
           onClick={() => onMove(3)}
         />
 
         <ArrowMarker
-          position={[2.5, 2.5, -7]}
+          position={[2.5, 1.6, -7]}
           label="Tủ sách"
           arrow="→"
           onClick={() => onMove(5)}
@@ -352,7 +375,7 @@ function NavigationMarkers({ current, onMove }) {
             key={spot.id}
             position={[
               spot.position[0],
-              2.5,
+              1.8,
               spot.position[2] - 1
             ]}
             label={spot.name}
@@ -364,6 +387,7 @@ function NavigationMarkers({ current, onMove }) {
     </group>
   );
 }
+
 
 
 function Scene({ spotIndex, onMove, onExhibit }) {
@@ -400,6 +424,7 @@ function Scene({ spotIndex, onMove, onExhibit }) {
 }
 
 
+
 function KeyboardNavigation({ spots, spotIndex, setSpotIndex }) {
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -434,6 +459,8 @@ function KeyboardNavigation({ spots, spotIndex, setSpotIndex }) {
 
 
 export default function App() {
+  
+  
   const [started, setStarted] = useState(false);
   const [visitor, setVisitor] = useState({
     name: "",
@@ -443,6 +470,11 @@ export default function App() {
   const [error, setError] = useState("");
   const [spotIndex, setSpotIndex] = useState(0);
   const [selectedExhibit, setSelectedExhibit] = useState(null);
+
+  const [showLocationNotice, setShowLocationNotice] = useState(false);
+  useEffect(() => {
+  setShowLocationNotice(spotIndex !== 0);
+}, [spotIndex]);
 
   const submit = (e) => {
     e.preventDefault();
@@ -538,6 +570,58 @@ export default function App() {
   setSpotIndex={setSpotIndex}
 />
       </Canvas>
+
+      
+{showLocationNotice && (
+  <div
+    style={{
+      position: "absolute",
+      top: "76px",
+      left: "50%",
+      transform: "translateX(-50%)",
+      width: "min(340px, calc(100% - 32px))",
+      padding: "18px 42px 18px 18px",
+      background: "rgba(255, 250, 239, 0.96)",
+      color: "#493321",
+      border: "1px solid #d6bd91",
+      borderRadius: "12px",
+      boxShadow: "0 5px 22px rgba(0,0,0,0.18)",
+      zIndex: 20,
+      boxSizing: "border-box",
+    }}
+  >
+    <button
+      onClick={() => {
+        setSpotIndex(0);
+        setSelectedExhibit(null);
+      }}
+      aria-label="Quay về lối vào"
+      title="Quay về lối vào"
+      style={{
+        position: "absolute",
+        top: "7px",
+        right: "8px",
+        border: "none",
+        background: "transparent",
+        color: "#493321",
+        fontSize: "22px",
+        cursor: "pointer",
+        padding: "3px 7px",
+      }}
+    >
+      ✕
+    </button>
+
+    <div style={{ fontWeight: 700, marginBottom: "6px" }}>
+      Bạn đang tham quan
+    </div>
+
+    <div style={{ fontSize: "14px", lineHeight: 1.5 }}>
+      {spots[spotIndex].name}
+    </div>
+  </div>
+)}
+
 
       <div className="top-info">
         <strong>Không gian văn hóa Hồ Chí Minh</strong>
