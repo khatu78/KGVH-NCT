@@ -463,3 +463,29 @@ select {
   cursor: pointer;
   pointer-events: auto;
 }
+
+.return-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 20;
+  padding: 11px 18px;
+  border: 1px solid #d4af37;
+  border-radius: 8px;
+  background: #7a1010;
+  color: #ffd700;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.return-button:hover:not(:disabled) {
+  background: #a51c1c;
+  transform: translateY(-2px);
+}
+
+.return-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
