@@ -1,9 +1,8 @@
 import { forwardRef, useEffect, useRef, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { Environment, Text } from "@react-three/drei";
 import * as THREE from "three";
 import "./style.css";
-import { useGLTF } from "@react-three/drei";
+import { Environment, Text, useGLTF } from "@react-three/drei";
 
 const ROOM = {
   width: 24,
@@ -45,23 +44,7 @@ const exhibits = [
 /* =====================================================
    NHÂN VẬT
 ===================================================== */
-function TexturedModel({ modelPath, texturePath }) {
-  const { scene } = useGLTF(modelPath);
-  const texture = useTexture(texturePath);
 
-  useEffect(() => {
-    scene.traverse((child) => {
-      if (!child.isMesh) return;
-
-      child.material = child.material.clone();
-      child.material.map = texture;
-      child.material.color.set("#ffffff");
-      child.material.needsUpdate = true;
-    });
-  }, [scene, texture]);
-
-  return <primitive object={scene} />;
-}
 
 const HumanCharacter = forwardRef(function HumanCharacter(
   { keys, joystick, gender },
@@ -201,22 +184,7 @@ const femaleModel = useGLTF(
   const model = isFemale
     ? femaleModel.scene
     : maleModel.scene;
-  useEffect(() => {
-  model.traverse((child) => {
-    if (child.isMesh && child.material) {
-      const materials = Array.isArray(child.material)
-        ? child.material
-        : [child.material];
-
-      materials.forEach((material) => {
-        material.transparent = false;
-        material.opacity = 1;
-        material.depthWrite = true;
-        material.needsUpdate = true;
-      });
-    }
-  });
-}, [model]);
+  
 
   return (
     <group
@@ -224,17 +192,11 @@ const femaleModel = useGLTF(
       position={[0, 0, 5.8]}
       scale={0.78}
     >
-     {isFemale ? (
-  <TexturedModel
-    modelPath={`${import.meta.env.BASE_URL}models/nu/scene.gltf`}
-    texturePath={`${import.meta.env.BASE_URL}models/nu/textures/TEN_ANH.png`}
-  />
-) : (
-  <TexturedModel
-    modelPath={`${import.meta.env.BASE_URL}models/nam/chibi.gltf`}
-    texturePath={`${import.meta.env.BASE_URL}models/nam/textures/char_cloth.png`}
-    texturePath={`${import.meta.env.BASE_URL}models/nam/textures/hair_shoe.png`}
-  />
+     <primitive
+  object={model}
+  position={[0, 0, 0]}
+  rotation={[0, Math.PI, 0]}
+/>
 )}
     </group>
   );
