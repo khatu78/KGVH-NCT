@@ -9,7 +9,7 @@ const ROOM = { width: 24, depth: 18, height: 5.5 };
 
 
 const spots = [
-  { id: 0, name: "Lối vào", position: [0, 1.6, 4.5] },
+  { id: 0, name: "Lối vào", position: [0, 1.6, 1] },
   { id: 1, name: "Chân dung Bác Hồ", position: [-4.5, 1.6, -2.5] },
   { id: 2, name: "Video tư liệu", position: [0, 1.6, -2.5] },
   { id: 3, name: "Tủ sách", position: [4.5, 1.6, -2.5] },
@@ -49,7 +49,7 @@ function CameraView({ spots, spotIndex, controls }) {
   const { camera } = useThree();
 
   const targets = [
-  [0, 1.6, 1.5],
+  [0, 1.6, -2],
   [-6, 2.5, -7.5],
   [0, 2.7, -7.5],
   [6, 2.3, -7.5],
@@ -384,12 +384,13 @@ function Scene({ spotIndex, onMove, onExhibit }) {
         controls={controls}
       />
 
-     <OrbitControls
+    <OrbitControls
   ref={controls}
   makeDefault
+  enableRotate={true}
   enablePan={false}
-  enableZoom={false}
-  rotateSpeed={0.6}
+  enableZoom={true}
+  rotateSpeed={0.8}
   minPolarAngle={0.2}
   maxPolarAngle={Math.PI - 0.2}
 />
