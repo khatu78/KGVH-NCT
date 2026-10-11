@@ -91,12 +91,9 @@ function CameraView({ spots, spotIndex, controls }) {
   return null;
 }
 
-
-
-
-
-
 function ArrowMarker({ position, onClick, label }) {
+  const [hovered, setHovered] = useState(false);
+
   return (
     <group
       position={position}
@@ -104,24 +101,43 @@ function ArrowMarker({ position, onClick, label }) {
         e.stopPropagation();
         onClick();
       }}
+      onPointerOver={(e) => {
+        e.stopPropagation();
+        setHovered(true);
+        document.body.style.cursor = "pointer";
+      }}
+      onPointerOut={() => {
+        setHovered(false);
+        document.body.style.cursor = "auto";
+      }}
+      scale={hovered ? 1.08 : 1}
     >
-      <mesh>
-        <boxGeometry args={[2, 0.5, 0.1]} />
+      {/* Thân cột màu đỏ */}
+      <mesh position={[0, 0.65, 0]}>
+        <boxGeometry args={[0.65, 1.3, 0.25]} />
         <meshStandardMaterial
-          color="#176b52"
-          emissive="#176b52"
-          emissiveIntensity={0.15}
+          color={hovered ? "#b71c1c" : "#8b0000"}
+          emissive="#5c0000"
+          emissiveIntensity={hovered ? 0.35 : 0.1}
         />
       </mesh>
 
+      {/* Chân cột */}
+      <mesh position={[0, 0.05, 0]}>
+        <cylinderGeometry args={[0.22, 0.3, 0.1, 12]} />
+        <meshStandardMaterial color="#6b0000" />
+      </mesh>
+
+      {/* Chữ vàng */}
       <Text
-        position={[0, 0, 0.06]}
-        fontSize={0.17}
-        color="white"
+        position={[0, 0.68, 0.131]}
+        fontSize={0.105}
+        color="#ffd700"
         anchorX="center"
         anchorY="middle"
-        maxWidth={1.85}
+        maxWidth={0.56}
         textAlign="center"
+        lineHeight={1.2}
       >
         {label}
       </Text>
