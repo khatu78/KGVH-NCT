@@ -43,19 +43,11 @@ const exhibits = [
     position: [9.5, 1.4, 1],
   },
 ];
-
-
-
-function CameraView({ spots, spotIndex, controls }) {
-  const { camera } = useThree();
-  const targetPosition = useRef(new THREE.Vector3(...spots[0].position));
-  const targetLookAt = useRef(new THREE.Vector3(0, 1.6, -2));
-
+ 
   
 function CameraView({ spots, spotIndex, controls }) {
   const { camera } = useThree();
-
-  const getTarget = (index) => {
+    const getTarget = (index) => {
     const targets = [
       [0, 1.6, 3.5],     // Lối vào
       [0, 1.6, -0.5],    // Trung tâm
