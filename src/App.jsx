@@ -308,9 +308,7 @@ function Room({ onExhibit }) {
           <pointLight position={[0, -0.2, 0]} intensity={20} distance={9} />
         </group>
       ))}
-    </group>
-
-    {/* Chữ KHU TRƯNG BÀY gắn trên vách tường bên phải */}
+       {/* Chữ KHU TRƯNG BÀY gắn trên vách tường bên phải */}
 <group
   position={[11.78, 2.7, 1.5]}
   rotation={[0, -Math.PI / 2, 0]}
@@ -335,6 +333,9 @@ function Room({ onExhibit }) {
     KHU TRƯNG BÀY
   </Text>
 </group>
+    </group>
+
+  
   );
 }
 
@@ -524,17 +525,18 @@ const returnToPreviousSpot = () => {
       >
         <Scene
           spotIndex={spotIndex}
-          onMove={setSpotIndex}
+          onMove={moveToSpot}
           onExhibit={setSelectedExhibit}
         />
-        <button
+       
+      </Canvas>
+       <button
   className="return-button"
   onClick={returnToPreviousSpot}
   disabled={spotIndex === previousSpotIndex}
 >
   ↩ Quay về vị trí cũ
 </button>
-      </Canvas>
 
       <div className="top-info">
         <strong>Không gian văn hóa Hồ Chí Minh</strong>
