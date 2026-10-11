@@ -45,6 +45,23 @@ const exhibits = [
 /* =====================================================
    NHÂN VẬT
 ===================================================== */
+function TexturedModel({ modelPath, texturePath }) {
+  const { scene } = useGLTF(modelPath);
+  const texture = useTexture(texturePath);
+
+  useEffect(() => {
+    scene.traverse((child) => {
+      if (!child.isMesh) return;
+
+      child.material = child.material.clone();
+      child.material.map = texture;
+      child.material.color.set("#ffffff");
+      child.material.needsUpdate = true;
+    });
+  }, [scene, texture]);
+
+  return <primitive object={scene} />;
+}
 
 const HumanCharacter = forwardRef(function HumanCharacter(
   { keys, joystick, gender },
@@ -207,11 +224,18 @@ const femaleModel = useGLTF(
       position={[0, 0, 5.8]}
       scale={0.78}
     >
-      <primitive
-        object={model}
-        position={[0, 0, 0]}
-        rotation={[0, Math.PI, 0]}
-      />
+     {isFemale ? (
+  <TexturedModel
+    modelPath={`${import.meta.env.BASE_URL}models/nu/scene.gltf`}
+    texturePath={`${import.meta.env.BASE_URL}models/nu/textures/TEN_ANH.png`}
+  />
+) : (
+  <TexturedModel
+    modelPath={`${import.meta.env.BASE_URL}models/nam/chibi.gltf`}
+    texturePath={`${import.meta.env.BASE_URL}models/nam/textures/char_cloth.png`}
+    texturePath={`${import.meta.env.BASE_URL}models/nam/textures/hair_shoe.png`}
+  />
+)}
     </group>
   );
 });
