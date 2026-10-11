@@ -10,11 +10,10 @@ const ROOM = { width: 24, depth: 18, height: 5.5 };
 
 const spots = [
   { id: 0, name: "Lối vào", position: [0, 1.6, 6.5] },
- 
-  { id: 3, name: "Chân dung Bác Hồ", position: [-6, 1.6, -4.5] },
-  { id: 4, name: "Video tư liệu", position: [0, 1.6, -4.5] },
-  { id: 5, name: "Tủ sách", position: [6, 1.6, -4.5] },
-  { id: 6, name: "Khu trưng bày", position: [7, 1.6, 2.5] },
+  { id: 1, name: "Chân dung Bác Hồ", position: [-6, 1.6, -4.5] },
+  { id: 2, name: "Video tư liệu", position: [0, 1.6, -4.5] },
+  { id: 3, name: "Tủ sách", position: [6, 1.6, -4.5] },
+  { id: 4, name: "Khu trưng bày", position: [7, 1.6, 2.5] },
 ];
 
 
@@ -51,14 +50,12 @@ function CameraView({ spots, spotIndex, controls }) {
   const { camera } = useThree();
 
   const targets = [
-    [0, 1.6, 1.5],
-    [0, 1.6, -1],
-    [0, 1.6, -5.5],
-    [-8, 2.5, -8.2],
-    [0, 2.7, -8.2],
-    [8, 2.3, -8.1],
-    [9.1, 1.5, 1],
-  ];
+  [0, 1.6, 1.5],
+  [-8, 2.5, -8.2],
+  [0, 2.7, -8.2],
+  [8, 2.3, -8.1],
+  [9.1, 1.5, 1],
+];
 
   const destination = useRef(
     new THREE.Vector3(...spots[0].position)
@@ -318,12 +315,11 @@ function Room({ onExhibit }) {
 
 function NavigationMarkers({ current, onMove }) {
   const signs = [
-    { id: 0, position: [0, 1.25, 5] },
-   
-    { id: 3, position: [-6, 1.35, -6.2] },
-    { id: 4, position: [0, 1.35, -6.2] },
-    { id: 5, position: [6, 1.35, -6.1] },
-    { id: 6, position: [11.7, 1.8, 1] },
+    { id: 0, position: [0, 0, 5] },
+    { id: 1, position: [-6, 0, -6.2] },
+    { id: 2, position: [0, 0, -6.2] },
+    { id: 3, position: [6, 0, -6.1] },
+    { id: 4, position: [11.7, 0, 1] },
   ];
 
   return (
@@ -339,7 +335,6 @@ function NavigationMarkers({ current, onMove }) {
     </group>
   );
 }
-
 
 
 function Scene({ spotIndex, onMove, onExhibit }) {
