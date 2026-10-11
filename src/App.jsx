@@ -96,7 +96,7 @@ function ArrowMarker({ position, onClick, label }) {
 
   return (
     <group
-      position={position}
+      position={[position[0], 0, position[2]]}
       onClick={(e) => {
         e.stopPropagation();
         onClick();
@@ -110,34 +110,27 @@ function ArrowMarker({ position, onClick, label }) {
         setHovered(false);
         document.body.style.cursor = "auto";
       }}
-      scale={hovered ? 1.08 : 1}
+      scale={hovered ? 1.06 : 1}
     >
-      {/* Thân cột màu đỏ */}
+      {/* Tấm biển đỏ nằm ngang, sát mặt đất */}
       <mesh position={[0, 0.65, 0]}>
-        <boxGeometry args={[0.65, 1.3, 0.25]} />
+        <boxGeometry args={[1.5, 0.42, 0.1]} />
         <meshStandardMaterial
-          color={hovered ? "#b71c1c" : "#8b0000"}
+          color={hovered ? "#c62828" : "#8b0000"}
           emissive="#5c0000"
-          emissiveIntensity={hovered ? 0.35 : 0.1}
+          emissiveIntensity={hovered ? 0.3 : 0.1}
         />
       </mesh>
 
-      {/* Chân cột */}
-      <mesh position={[0, 0.05, 0]}>
-        <cylinderGeometry args={[0.22, 0.3, 0.1, 12]} />
-        <meshStandardMaterial color="#6b0000" />
-      </mesh>
-
-      {/* Chữ vàng */}
+      {/* Chữ vàng nhỏ */}
       <Text
-        position={[0, 0.68, 0.131]}
-        fontSize={0.105}
+        position={[0, 0.65, 0.056]}
+        fontSize={0.12}
         color="#ffd700"
         anchorX="center"
         anchorY="middle"
-        maxWidth={0.56}
+        maxWidth={1.4}
         textAlign="center"
-        lineHeight={1.2}
       >
         {label}
       </Text>
