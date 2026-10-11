@@ -74,7 +74,8 @@ function CameraView({ spots, spotIndex, controls }) {
 
 
 
-function ArrowMarker({ position, onClick, label }) {
+
+function ArrowMarker({ position, onClick, label, arrow = "↑" }) {
   return (
     <group
       position={position}
@@ -83,41 +84,45 @@ function ArrowMarker({ position, onClick, label }) {
         onClick();
       }}
     >
-      <mesh position={[0, 0.08, 0]}>
-        <cylinderGeometry args={[0.48, 0.48, 0.12, 32]} />
+      {/* Biển chỉ dẫn lơ lửng */}
+      <mesh>
+        <boxGeometry args={[3.2, 0.72, 0.12]} />
         <meshStandardMaterial
-          color="#168b73"
-          emissive="#087c66"
-          emissiveIntensity={0.45}
+          color="#176b52"
+          emissive="#0a3d2f"
+          emissiveIntensity={0.25}
         />
       </mesh>
 
+      {/* Mũi tên */}
       <Text
-        position={[0, 0.17, 0]}
-        fontSize={0.48}
+        position={[0, 0.08, 0.075]}
+        fontSize={0.38}
+        color="#ffe2a6"
+        anchorX="center"
+        anchorY="middle"
+        outlineWidth={0.01}
+        outlineColor="#164c42"
+      >
+        {arrow}
+      </Text>
+
+      {/* Tên khu vực */}
+      <Text
+        position={[0, -0.2, 0.075]}
+        fontSize={0.19}
         color="white"
         anchorX="center"
         anchorY="middle"
-        outlineWidth={0.015}
-        outlineColor="#075e4e"
-      >
-        ↑
-      </Text>
-
-      <Text
-        position={[0, 0.38, 0]}
-        fontSize={0.19}
-        color="#ffffff"
-        anchorX="center"
-        anchorY="middle"
-        outlineWidth={0.025}
-        outlineColor="#164c42"
+        maxWidth={2.9}
+        textAlign="center"
       >
         {label}
       </Text>
     </group>
   );
 }
+
 
 function Room({ onExhibit }) {
   return (
@@ -311,20 +316,47 @@ function Room({ onExhibit }) {
   );
 }
 
+
 function NavigationMarkers({ current, onMove }) {
+  // Đang ở khu vực Video tư liệu:
+  // Chỉ cho phép đi sang trái đến chân dung Bác Hồ
+  // hoặc sang phải đến tủ sách.
+  if (current === 4) {
+    return (
+      <group>
+        <ArrowMarker
+          position={[-2.5, 2.5, -7]}
+          label="Chân dung Bác Hồ"
+          arrow="←"
+          onClick={() => onMove(3)}
+        />
+
+        <ArrowMarker
+          position={[2.5, 2.5, -7]}
+          label="Tủ sách"
+          arrow="→"
+          onClick={() => onMove(5)}
+        />
+      </group>
+    );
+  }
+
+  // Các điểm tham quan còn lại
   return (
     <group>
       {spots.map((spot) => {
         if (spot.id === current) return null;
 
-        const x = spot.position[0];
-        const z = spot.position[2];
-
         return (
           <ArrowMarker
             key={spot.id}
-            position={[x, 0.04, z]}
+            position={[
+              spot.position[0],
+              2.5,
+              spot.position[2] - 1
+            ]}
             label={spot.name}
+            arrow="↑"
             onClick={() => onMove(spot.id)}
           />
         );
