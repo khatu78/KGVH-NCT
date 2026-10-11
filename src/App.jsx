@@ -184,6 +184,22 @@ const femaleModel = useGLTF(
   const model = isFemale
     ? femaleModel.scene
     : maleModel.scene;
+  useEffect(() => {
+  model.traverse((child) => {
+    if (child.isMesh && child.material) {
+      const materials = Array.isArray(child.material)
+        ? child.material
+        : [child.material];
+
+      materials.forEach((material) => {
+        material.transparent = false;
+        material.opacity = 1;
+        material.depthWrite = true;
+        material.needsUpdate = true;
+      });
+    }
+  });
+}, [model]);
 
   return (
     <group
