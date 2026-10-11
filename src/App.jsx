@@ -1,39 +1,42 @@
-import { forwardRef, useEffect, useRef, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+
+import { useEffect, useRef, useState } from "react";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Environment, OrbitControls, Text } from "@react-three/drei";
 import * as THREE from "three";
 import "./style.css";
-import { Environment, Text, useGLTF } from "@react-three/drei";
 
-const ROOM = {
-  width: 24,
-  depth: 18,
-  height: 5.5,
-};
+const ROOM = { width: 24, depth: 18, height: 5.5 };
+
+const spots = [
+  { id: 0, name: "Lối vào", position: [0, 1.6, 6.5] },
+  { id: 1, name: "Không gian trung tâm", position: [0, 1.6, 2.5] },
+  { id: 2, name: "Khu vực tư liệu", position: [0, 1.6, -2] },
+  { id: 3, name: "Chân dung Bác Hồ", position: [-6, 1.6, -5] },
+  { id: 4, name: "Video tư liệu", position: [0, 1.6, -5] },
+  { id: 5, name: "Tủ sách", position: [6, 1.6, -5] },
+  { id: 6, name: "Khu trưng bày", position: [7, 1.6, 1] },
+];
 
 const exhibits = [
   {
-    id: "portrait",
     title: "Chân dung Chủ tịch Hồ Chí Minh",
     description:
       "Không gian giới thiệu hình ảnh và những dấu ấn tiêu biểu trong cuộc đời, sự nghiệp của Chủ tịch Hồ Chí Minh.",
     position: [-8, 2.7, -8.7],
   },
   {
-    id: "video",
     title: "Video tư liệu",
     description:
-      "Khu vực trình chiếu các video, hình ảnh và tư liệu phục vụ tham quan.",
+      "Khu vực trình chiếu video, hình ảnh và tư liệu phục vụ tham quan.",
     position: [0, 2.8, -8.7],
   },
   {
-    id: "books",
     title: "Tủ sách",
     description:
       "Nơi trưng bày sách và tài liệu tìm hiểu về cuộc đời, tư tưởng, đạo đức và phong cách Hồ Chí Minh.",
     position: [8, 2.4, -8.2],
   },
   {
-    id: "display",
     title: "Khu trưng bày",
     description:
       "Các hiện vật và tư liệu được sắp xếp theo chủ đề để người tham quan khám phá.",
@@ -41,550 +44,123 @@ const exhibits = [
   },
 ];
 
-/* =====================================================
-   NHÂN VẬT
-===================================================== */
+function CameraView({ spotIndex }) {
+  const { camera } = useThree();
+  const controls = useRef();
 
+  useEffect(() => {
+    const spot = spots[spotIndex];
+    if (!spot || !controls.current) return;
 
-const HumanCharacter = forwardRef(function HumanCharacter(
-  { keys, joystick, gender },
-  externalRef
-) {
-  const localRef = useRef(null);
-  const ref = externalRef || localRef;
-
-  const speed = 4.6;
-
-  useFrame((_, delta) => {
-    if (!ref.current) return;
-
-    let forward = 0;
-    let screenSide = 0;
-
-    /*
-      CAMERA Ở SAU LƯNG NHÂN VẬT
-
-      Vì vậy:
-      ← = sang trái màn hình
-      → = sang phải màn hình
-
-      Không dùng quy ước "trái/phải của nhân vật".
-    */
-
-    if (keys.current.arrowup || keys.current.w) {
-      forward += 1;
-    }
-
-    if (keys.current.arrowdown || keys.current.s) {
-      forward -= 1;
-    }
-
-    if (keys.current.arrowleft || keys.current.a) {
-      screenSide -= 1;
-    }
-
-    if (keys.current.arrowright || keys.current.d) {
-      screenSide += 1;
-    }
-
-    /*
-      Joystick:
-      x âm = trái màn hình
-      x dương = phải màn hình
-      y dương = tiến
-      y âm = lùi
-    */
-
-    forward += joystick.current.y;
-    screenSide += joystick.current.x;
-
-    const length = Math.hypot(
-      forward,
-      screenSide
+    camera.position.set(...spot.position);
+    controls.current.target.set(
+      spot.position[0],
+      spot.position[1],
+      spot.position[2] - 1
     );
-
-    if (length < 0.01) return;
-
-    forward /= Math.max(1, length);
-    screenSide /= Math.max(1, length);
-
-    const yaw = window.__cameraYaw || 0;
-
-    /*
-      Hướng camera nhìn về phía trước.
-      Nhân vật ở giữa màn hình.
-
-      forward:
-        + = đi về phía camera đang nhìn
-
-      screenSide:
-        - = trái màn hình
-        + = phải màn hình
-    */
-
-    const forwardX = Math.sin(yaw);
-    const forwardZ = Math.cos(yaw);
-
-    const screenRightX = Math.cos(yaw);
-    const screenRightZ = -Math.sin(yaw);
-
-    const moveX =
-      forward * forwardX +
-      screenSide * screenRightX;
-
-    const moveZ =
-      forward * forwardZ +
-      screenSide * screenRightZ;
-
-    ref.current.position.x +=
-      moveX * speed * delta;
-
-    ref.current.position.z +=
-      moveZ * speed * delta;
-
-    /*
-      Không đi xuyên tường
-    */
-
-    const limitX = ROOM.width / 2 - 1;
-    const limitZ = ROOM.depth / 2 - 1;
-
-    ref.current.position.x =
-      THREE.MathUtils.clamp(
-        ref.current.position.x,
-        -limitX,
-        limitX
-      );
-
-    ref.current.position.z =
-      THREE.MathUtils.clamp(
-        ref.current.position.z,
-        -limitZ,
-        limitZ
-      );
-
-    /*
-      Nhân vật quay theo hướng di chuyển.
-    */
-
-    ref.current.rotation.y =
-      Math.atan2(moveX, moveZ);
-  });
-
-    const isFemale = gender === "Nữ";
-
- const maleModel = useGLTF(
-  `${import.meta.env.BASE_URL}models/nam/chibi.gltf`
-);
-
-const femaleModel = useGLTF(
-  `${import.meta.env.BASE_URL}models/nu/scene.gltf`
-);
-
-  const model = isFemale
-    ? femaleModel.scene
-    : maleModel.scene;
-  
+    controls.current.update();
+  }, [spotIndex, camera]);
 
   return (
-    <group
-      ref={ref}
-      position={[0, 0, 5.8]}
-      scale={0.78}
-    >
-     <primitive
-  object={model}
-  position={[0, 0, 0]}
-  rotation={[0, Math.PI, 0]}
-/>
-)}
-    </group>
+    <OrbitControls
+      ref={controls}
+      makeDefault
+      enablePan={false}
+      enableZoom={false}
+      enableDamping
+      dampingFactor={0.08}
+      rotateSpeed={0.45}
+      minPolarAngle={0.12}
+      maxPolarAngle={Math.PI - 0.12}
+    />
   );
-});
-
-/* =====================================================
-   CAMERA
-===================================================== */
-
-function CameraController({
-  characterRef,
-}) {
-  const distance = useRef(5.2);
-  const pitch = useRef(0.38);
-
-  useEffect(() => {
-    window.__cameraYaw = 0;
-
-    const wheel = (e) => {
-      distance.current =
-        THREE.MathUtils.clamp(
-          distance.current +
-            e.deltaY * 0.006,
-          2.5,
-          7
-        );
-    };
-
-    window.addEventListener(
-      "wheel",
-      wheel,
-      { passive: true }
-    );
-
-    return () => {
-      window.removeEventListener(
-        "wheel",
-        wheel
-      );
-    };
-  }, []);
-
-  useEffect(() => {
-    let dragging = false;
-    let lastX = 0;
-    let lastY = 0;
-
-    const down = (e) => {
-      dragging = true;
-      lastX = e.clientX;
-      lastY = e.clientY;
-    };
-
-    const move = (e) => {
-      if (!dragging) return;
-
-      const dx =
-        e.clientX - lastX;
-
-      const dy =
-        e.clientY - lastY;
-
-      lastX = e.clientX;
-      lastY = e.clientY;
-
-      window.__cameraYaw =
-        (window.__cameraYaw || 0) -
-        dx * 0.008;
-
-      pitch.current =
-        THREE.MathUtils.clamp(
-          pitch.current -
-            dy * 0.004,
-          0.12,
-          0.95
-        );
-    };
-
-    const up = () => {
-      dragging = false;
-    };
-
-    window.addEventListener(
-      "pointerdown",
-      down
-    );
-
-    window.addEventListener(
-      "pointermove",
-      move
-    );
-
-    window.addEventListener(
-      "pointerup",
-      up
-    );
-
-    return () => {
-      window.removeEventListener(
-        "pointerdown",
-        down
-      );
-
-      window.removeEventListener(
-        "pointermove",
-        move
-      );
-
-      window.removeEventListener(
-        "pointerup",
-        up
-      );
-    };
-  }, []);
-
-  useFrame(
-    ({ camera }, delta) => {
-      if (!characterRef.current) return;
-
-      const target =
-        characterRef.current.position;
-
-      const yaw =
-        window.__cameraYaw || 0;
-
-      const horizontal =
-        Math.cos(pitch.current);
-
-      const dirX =
-        -Math.sin(yaw);
-
-      const dirZ =
-        -Math.cos(yaw);
-
-      let safeDistance =
-        distance.current;
-
-      /*
-        Không cho camera đi xuyên tường
-      */
-
-      if (Math.abs(dirX) > 0.001) {
-        const wallX =
-          dirX > 0
-            ? ROOM.width / 2 - 0.5
-            : -ROOM.width / 2 + 0.5;
-
-        const tx =
-          (wallX - target.x) /
-          dirX;
-
-        if (tx > 0) {
-          safeDistance =
-            Math.min(
-              safeDistance,
-              tx
-            );
-        }
-      }
-
-      if (Math.abs(dirZ) > 0.001) {
-        const wallZ =
-          dirZ > 0
-            ? ROOM.depth / 2 - 0.5
-            : -ROOM.depth / 2 + 0.5;
-
-        const tz =
-          (wallZ - target.z) /
-          dirZ;
-
-        if (tz > 0) {
-          safeDistance =
-            Math.min(
-              safeDistance,
-              tz
-            );
-        }
-      }
-
-      safeDistance =
-        Math.max(
-          1.8,
-          safeDistance - 0.25
-        );
-
-      const cameraX =
-        target.x +
-        dirX *
-          safeDistance *
-          horizontal;
-
-      const cameraZ =
-        target.z +
-        dirZ *
-          safeDistance *
-          horizontal;
-
-      const cameraY =
-        target.y +
-        1.2 +
-        Math.sin(
-          pitch.current
-        ) *
-          safeDistance;
-
-      const desired =
-        new THREE.Vector3(
-          cameraX,
-          THREE.MathUtils.clamp(
-            cameraY,
-            1.5,
-            5.1
-          ),
-          cameraZ
-        );
-
-      camera.position.lerp(
-        desired,
-        1 -
-          Math.pow(
-            0.0005,
-            delta
-          )
-      );
-
-      camera.lookAt(
-        target.x,
-        target.y + 1.15,
-        target.z
-      );
-    }
-  );
-
-  return null;
 }
 
-/* =====================================================
-   PHÒNG
-===================================================== */
-
-function Room() {
+function ArrowMarker({ position, onClick, label }) {
   return (
-    <group>
-      {/* SÀN */}
-
-      <mesh
-        rotation={[
-          -Math.PI / 2,
-          0,
-          0,
-        ]}
-        receiveShadow
-      >
-        <planeGeometry
-          args={[
-            ROOM.width,
-            ROOM.depth,
-          ]}
-        />
-
+    <group
+      position={position}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick();
+      }}
+    >
+      <mesh position={[0, 0.08, 0]}>
+        <cylinderGeometry args={[0.48, 0.48, 0.12, 32]} />
         <meshStandardMaterial
-          color="#d8c9ad"
+          color="#168b73"
+          emissive="#087c66"
+          emissiveIntensity={0.45}
         />
       </mesh>
-
-      {/* TRẦN */}
-
-      <mesh
-        position={[
-          0,
-          ROOM.height,
-          0,
-        ]}
-        rotation={[
-          Math.PI / 2,
-          0,
-          0,
-        ]}
-      >
-        <planeGeometry
-          args={[
-            ROOM.width,
-            ROOM.depth,
-          ]}
-        />
-
-        <meshStandardMaterial
-          color="#f5f1e8"
-        />
-      </mesh>
-
-      {/* TƯỜNG SAU */}
-
-      <mesh
-        position={[
-          0,
-          ROOM.height / 2,
-          -ROOM.depth / 2,
-        ]}
-      >
-        <boxGeometry
-          args={[
-            ROOM.width,
-            ROOM.height,
-            0.35,
-          ]}
-        />
-
-        <meshStandardMaterial
-          color="#eee6d7"
-        />
-      </mesh>
-
-      {/* TƯỜNG TRƯỚC */}
-
-      <mesh
-        position={[
-          0,
-          ROOM.height / 2,
-          ROOM.depth / 2,
-        ]}
-      >
-        <boxGeometry
-          args={[
-            ROOM.width,
-            ROOM.height,
-            0.35,
-          ]}
-        />
-
-        <meshStandardMaterial
-          color="#eee6d7"
-        />
-      </mesh>
-
-      {/* TƯỜNG TRÁI */}
-
-      <mesh
-        position={[
-          -ROOM.width / 2,
-          ROOM.height / 2,
-          0,
-        ]}
-      >
-        <boxGeometry
-          args={[
-            0.35,
-            ROOM.height,
-            ROOM.depth,
-          ]}
-        />
-
-        <meshStandardMaterial
-          color="#eee6d7"
-        />
-      </mesh>
-
-      {/* TƯỜNG PHẢI */}
-
-      <mesh
-        position={[
-          ROOM.width / 2,
-          ROOM.height / 2,
-          0,
-        ]}
-      >
-        <boxGeometry
-          args={[
-            0.35,
-            ROOM.height,
-            ROOM.depth,
-          ]}
-        />
-
-        <meshStandardMaterial
-          color="#eee6d7"
-        />
-      </mesh>
-
-      {/* TIÊU ĐỀ */}
 
       <Text
-        position={[
-          0,
-          4.35,
-          -8.45,
-        ]}
-        fontSize={0.58}
+        position={[0, 0.17, 0]}
+        fontSize={0.48}
+        color="white"
+        anchorX="center"
+        anchorY="middle"
+        outlineWidth={0.015}
+        outlineColor="#075e4e"
+      >
+        ↑
+      </Text>
+
+      <Text
+        position={[0, 0.38, 0]}
+        fontSize={0.19}
+        color="#ffffff"
+        anchorX="center"
+        anchorY="middle"
+        outlineWidth={0.025}
+        outlineColor="#164c42"
+      >
+        {label}
+      </Text>
+    </group>
+  );
+}
+
+function Room({ onExhibit }) {
+  return (
+    <group>
+      {/* Sàn */}
+      <mesh
+        rotation={[-Math.PI / 2, 0, 0]}
+        position={[0, 0, 0]}
+        receiveShadow
+      >
+        <planeGeometry args={[ROOM.width, ROOM.depth]} />
+        <meshStandardMaterial color="#d8c9ad" />
+      </mesh>
+
+      {/* Trần */}
+      <mesh position={[0, ROOM.height, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[ROOM.width, ROOM.depth]} />
+        <meshStandardMaterial color="#f5f1e8" side={THREE.DoubleSide} />
+      </mesh>
+
+      {/* Tường sau */}
+      <mesh position={[0, ROOM.height / 2, -ROOM.depth / 2]}>
+        <boxGeometry args={[ROOM.width, ROOM.height, 0.3]} />
+        <meshStandardMaterial color="#eee6d7" />
+      </mesh>
+
+      {/* Tường trái và phải */}
+      {[-1, 1].map((side) => (
+        <mesh
+          key={side}
+          position={[side * ROOM.width / 2, ROOM.height / 2, 0]}
+        >
+          <boxGeometry args={[0.3, ROOM.height, ROOM.depth]} />
+          <meshStandardMaterial color="#eee6d7" />
+        </mesh>
+      ))}
+
+      {/* Tiêu đề */}
+      <Text
+        position={[0, 4.35, -8.3]}
+        fontSize={0.52}
         color="#59351d"
         anchorX="center"
         anchorY="middle"
@@ -592,54 +168,21 @@ function Room() {
         KHÔNG GIAN VĂN HÓA HỒ CHÍ MINH
       </Text>
 
-      {/* TRANH */}
-
+      {/* Chân dung */}
       <group
-        position={[
-          -8,
-          2.5,
-          -8.25,
-        ]}
+        position={[-8, 2.65, -8.25]}
+        onClick={() => onExhibit(exhibits[0])}
       >
         <mesh>
-          <boxGeometry
-            args={[
-              4.5,
-              3.1,
-              0.18,
-            ]}
-          />
-
-          <meshStandardMaterial
-            color="#6e492d"
-          />
+          <boxGeometry args={[4.5, 3.1, 0.18]} />
+          <meshStandardMaterial color="#6e492d" />
         </mesh>
-
-        <mesh
-          position={[
-            0,
-            0,
-            0.11,
-          ]}
-        >
-          <planeGeometry
-            args={[
-              4.05,
-              2.65,
-            ]}
-          />
-
-          <meshStandardMaterial
-            color="#c9b69b"
-          />
+        <mesh position={[0, 0, 0.11]}>
+          <planeGeometry args={[4.05, 2.65]} />
+          <meshStandardMaterial color="#c9b69b" />
         </mesh>
-
         <Text
-          position={[
-            0,
-            -1.25,
-            0.2,
-          ]}
+          position={[0, -1.25, 0.2]}
           fontSize={0.22}
           color="#3b281c"
           anchorX="center"
@@ -648,56 +191,23 @@ function Room() {
         </Text>
       </group>
 
-      {/* MÀN HÌNH */}
-
+      {/* Màn hình tư liệu */}
       <group
-        position={[
-          0,
-          2.7,
-          -8.25,
-        ]}
+        position={[0, 2.7, -8.25]}
+        onClick={() => onExhibit(exhibits[1])}
       >
         <mesh>
-          <boxGeometry
-            args={[
-              5.2,
-              3.1,
-              0.25,
-            ]}
-          />
-
-          <meshStandardMaterial
-            color="#20242a"
-          />
+          <boxGeometry args={[5.2, 3.1, 0.25]} />
+          <meshStandardMaterial color="#20242a" />
         </mesh>
-
-        <mesh
-          position={[
-            0,
-            0,
-            0.14,
-          ]}
-        >
-          <planeGeometry
-            args={[
-              4.7,
-              2.6,
-            ]}
-          />
-
-          <meshStandardMaterial
-            color="#273d4d"
-          />
+        <mesh position={[0, 0, 0.14]}>
+          <planeGeometry args={[4.7, 2.6]} />
+          <meshStandardMaterial color="#273d4d" />
         </mesh>
-
         <Text
-          position={[
-            0,
-            0,
-            0.2,
-          ]}
+          position={[0, 0, 0.2]}
           fontSize={0.36}
-          color="#ffffff"
+          color="white"
           anchorX="center"
           anchorY="middle"
         >
@@ -705,541 +215,161 @@ function Room() {
         </Text>
       </group>
 
-      {/* TỦ SÁCH */}
-
+      {/* Tủ sách */}
       <group
-        position={[
-          8,
-          2.2,
-          -8.1,
-        ]}
+        position={[8, 2.2, -8.1]}
+        onClick={() => onExhibit(exhibits[2])}
       >
         <mesh>
-          <boxGeometry
-            args={[
-              3.6,
-              4.3,
-              0.65,
-            ]}
-          />
-
-          <meshStandardMaterial
-            color="#71472d"
-          />
+          <boxGeometry args={[3.6, 4.3, 0.65]} />
+          <meshStandardMaterial color="#71472d" />
         </mesh>
 
-        {[0.8, 1.5, 2.2, 2.9].map(
-          (y) => (
-            <mesh
-              key={y}
-              position={[
-                0,
-                -2.15 + y,
-                0.36,
-              ]}
-            >
-              <boxGeometry
-                args={[
-                  3.2,
-                  0.09,
-                  0.05,
-                ]}
-              />
+        {[0.8, 1.5, 2.2, 2.9].map((y) => (
+          <mesh key={y} position={[0, -2.15 + y, 0.36]}>
+            <boxGeometry args={[3.2, 0.09, 0.05]} />
+            <meshStandardMaterial color="#432b1c" />
+          </mesh>
+        ))}
 
-              <meshStandardMaterial
-                color="#432b1c"
-              />
-            </mesh>
-          )
-        )}
-
-        {[...Array(16)].map(
-          (_, i) => (
-            <mesh
-              key={i}
-              position={[
-                -1.35 +
-                  (i % 8) *
-                    0.38,
-                -1.65 +
-                  Math.floor(
-                    i / 8
-                  ) *
-                    1.4,
-                0.42,
-              ]}
-            >
-              <boxGeometry
-                args={[
-                  0.25,
-                  1,
-                  0.08,
-                ]}
-              />
-
-              <meshStandardMaterial
-                color={
-                  i % 2
-                    ? "#a87b51"
-                    : "#486b72"
-                }
-              />
-            </mesh>
-          )
-        )}
+        {[...Array(16)].map((_, i) => (
+          <mesh
+            key={i}
+            position={[
+              -1.35 + (i % 8) * 0.38,
+              -1.65 + Math.floor(i / 8) * 1.4,
+              0.42,
+            ]}
+          >
+            <boxGeometry args={[0.25, 1, 0.08]} />
+            <meshStandardMaterial
+              color={i % 2 ? "#a87b51" : "#486b72"}
+            />
+          </mesh>
+        ))}
       </group>
 
-      {/* TỦ TRƯNG BÀY */}
-
+      {/* Tủ trưng bày */}
       <group
-        position={[
-          9.1,
-          1.2,
-          1,
-        ]}
+        position={[9.1, 1.2, 1]}
+        onClick={() => onExhibit(exhibits[3])}
       >
         <mesh>
-          <boxGeometry
-            args={[
-              3.4,
-              1.8,
-              1.6,
-            ]}
-          />
-
+          <boxGeometry args={[3.4, 1.8, 1.6]} />
           <meshStandardMaterial
             color="#9d7b56"
             transparent
             opacity={0.85}
           />
         </mesh>
-
-        <mesh
-          position={[
-            0,
-            0.1,
-            0,
-          ]}
-        >
-          <boxGeometry
-            args={[
-              2.8,
-              0.15,
-              1.2,
-            ]}
-          />
-
-          <meshStandardMaterial
-            color="#e2c99d"
-          />
+        <mesh position={[0, 0.1, 0]}>
+          <boxGeometry args={[2.8, 0.15, 1.2]} />
+          <meshStandardMaterial color="#e2c99d" />
         </mesh>
       </group>
 
-      {/* BÀN */}
-
-      <group
-        position={[
-          -5,
-          0,
-          2,
-        ]}
-      >
-        <mesh
-          position={[
-            0,
-            1.15,
-            0,
-          ]}
-          castShadow
-        >
-          <boxGeometry
-            args={[
-              2.6,
-              0.18,
-              1.25,
-            ]}
-          />
-
-          <meshStandardMaterial
-            color="#70472d"
-          />
+      {/* Bàn */}
+      <group position={[-5, 0, 2]}>
+        <mesh position={[0, 1.15, 0]} castShadow>
+          <boxGeometry args={[2.6, 0.18, 1.25]} />
+          <meshStandardMaterial color="#70472d" />
         </mesh>
-
         {[
           [-1, 0.55, -0.4],
           [1, 0.55, -0.4],
           [-1, 0.55, 0.4],
           [1, 0.55, 0.4],
-        ].map(
-          (p, i) => (
-            <mesh
-              key={i}
-              position={p}
-            >
-              <boxGeometry
-                args={[
-                  0.13,
-                  1.1,
-                  0.13,
-                ]}
-              />
-
-              <meshStandardMaterial
-                color="#553522"
-              />
-            </mesh>
-          )
-        )}
+        ].map((p, i) => (
+          <mesh key={i} position={p}>
+            <boxGeometry args={[0.13, 1.1, 0.13]} />
+            <meshStandardMaterial color="#553522" />
+          </mesh>
+        ))}
       </group>
 
-      {/* GHẾ */}
-
-      <group
-        position={[
-          -5,
-          0,
-          4,
-        ]}
-      >
-        <mesh
-          position={[
-            0,
-            0.8,
-            0,
-          ]}
-        >
-          <boxGeometry
-            args={[
-              1.2,
-              0.15,
-              1.1,
-            ]}
-          />
-
-          <meshStandardMaterial
-            color="#795038"
-          />
+      {/* Cây */}
+      <group position={[-9, 0, 5]}>
+        <mesh position={[0, 1, 0]}>
+          <cylinderGeometry args={[0.28, 0.38, 2, 16]} />
+          <meshStandardMaterial color="#9b633b" />
         </mesh>
-
-        <mesh
-          position={[
-            0,
-            1.45,
-            0.45,
-          ]}
-        >
-          <boxGeometry
-            args={[
-              1.2,
-              1.3,
-              0.12,
-            ]}
-          />
-
-          <meshStandardMaterial
-            color="#795038"
-          />
+        <mesh position={[0, 2.5, 0]}>
+          <sphereGeometry args={[1.1, 16, 12]} />
+          <meshStandardMaterial color="#4e7750" />
         </mesh>
       </group>
 
-      {/* CÂY */}
-
-      <group
-        position={[
-          -9,
-          0,
-          5,
-        ]}
-      >
-        <mesh
-          position={[
-            0,
-            1,
-            0,
-          ]}
-        >
-          <cylinderGeometry
-            args={[
-              0.28,
-              0.38,
-              2,
-              16,
-            ]}
-          />
-
-          <meshStandardMaterial
-            color="#9b633b"
-          />
-        </mesh>
-
-        <mesh
-          position={[
-            0,
-            2.5,
-            0,
-          ]}
-        >
-          <sphereGeometry
-            args={[
-              1.1,
-              16,
-              12,
-            ]}
-          />
-
-          <meshStandardMaterial
-            color="#4e7750"
-          />
-        </mesh>
-      </group>
-
-      {/* ĐÈN */}
-
-      {[-7, 0, 7].map(
-        (x) => (
-          <group
-            key={x}
-            position={[
-              x,
-              5.15,
-              -2,
-            ]}
-          >
-            <mesh>
-              <cylinderGeometry
-                args={[
-                  0.35,
-                  0.35,
-                  0.15,
-                  24,
-                ]}
-              />
-
-              <meshStandardMaterial
-                color="#d6b76d"
-              />
-            </mesh>
-
-            <pointLight
-              position={[
-                0,
-                -0.2,
-                0,
-              ]}
-              intensity={35}
-              distance={9}
-            />
-          </group>
-        )
-      )}
+      {/* Ánh sáng */}
+      {[-7, 0, 7].map((x) => (
+        <group key={x} position={[x, 5.15, -2]}>
+          <mesh>
+            <cylinderGeometry args={[0.35, 0.35, 0.15, 24]} />
+            <meshStandardMaterial color="#d6b76d" />
+          </mesh>
+          <pointLight position={[0, -0.2, 0]} intensity={20} distance={9} />
+        </group>
+      ))}
     </group>
   );
 }
 
-/* =====================================================
-   GAME SCENE
-===================================================== */
+function NavigationMarkers({ current, onMove }) {
+  return (
+    <group>
+      {spots.map((spot) => {
+        if (spot.id === current) return null;
 
-function GameScene({
-  keys,
-  joystick,
-  gender,
-  onExhibit,
-}) {
-  const characterRef =
-    useRef(null);
+        const x = spot.position[0];
+        const z = spot.position[2];
 
-  const lastExhibit =
-    useRef(null);
+        return (
+          <ArrowMarker
+            key={spot.id}
+            position={[x, 0.04, z]}
+            label={spot.name}
+            onClick={() => onMove(spot.id)}
+          />
+        );
+      })}
+    </group>
+  );
+}
 
-  useFrame(() => {
-    if (!characterRef.current) {
-      return;
-    }
-
-    let nearest = null;
-    let nearestDistance =
-      Infinity;
-
-    exhibits.forEach(
-      (item) => {
-        const dx =
-          characterRef.current
-            .position.x -
-          item.position[0];
-
-        const dz =
-          characterRef.current
-            .position.z -
-          item.position[2];
-
-        const distance =
-          Math.sqrt(
-            dx * dx +
-              dz * dz
-          );
-
-        if (
-          distance < 3 &&
-          distance <
-            nearestDistance
-        ) {
-          nearest = item;
-          nearestDistance =
-            distance;
-        }
-      }
-    );
-
-    const newId = nearest
-      ? nearest.id
-      : null;
-
-    if (
-      newId !==
-      lastExhibit.current
-    ) {
-      lastExhibit.current =
-        newId;
-
-      onExhibit(nearest);
-    }
-  });
-
+function Scene({ spotIndex, onMove, onExhibit }) {
   return (
     <>
-      <ambientLight intensity={1.7} />
-
+      <color attach="background" args={["#b9d2e3"]} />
+      <ambientLight intensity={1.5} />
       <directionalLight
         position={[4, 8, 5]}
-        intensity={2.5}
+        intensity={2}
         castShadow
-        shadow-mapSize-width={2048}
-        shadow-mapSize-height={2048}
       />
 
-      <Room />
-
-      <HumanCharacter
-        ref={characterRef}
-        keys={keys}
-        joystick={joystick}
-        gender={gender}
-      />
-
-      <CameraController
-        characterRef={characterRef}
-      />
-
+      <Room onExhibit={onExhibit} />
+      <NavigationMarkers current={spotIndex} onMove={onMove} />
+      <CameraView spotIndex={spotIndex} />
       <Environment preset="city" />
     </>
   );
 }
 
-/* =====================================================
-   APP
-===================================================== */
-
 export default function App() {
-  const [started, setStarted] =
-    useState(false);
-
-  const [visitor, setVisitor] =
-    useState({
-      name: "",
-      age: "",
-      gender: "Nam",
-    });
-
-  const [error, setError] =
-    useState("");
-
-  const [
-    selectedExhibit,
-    setSelectedExhibit,
-  ] = useState(null);
-
-  const keys = useRef({});
-
-  const joystick = useRef({
-    x: 0,
-    y: 0,
+  const [started, setStarted] = useState(false);
+  const [visitor, setVisitor] = useState({
+    name: "",
+    age: "",
+    gender: "Nam",
   });
-
-  /* BÀN PHÍM */
-
-  useEffect(() => {
-    const down = (e) => {
-      keys.current[
-        e.key.toLowerCase()
-      ] = true;
-    };
-
-    const up = (e) => {
-      keys.current[
-        e.key.toLowerCase()
-      ] = false;
-    };
-
-    window.addEventListener(
-      "keydown",
-      down
-    );
-
-    window.addEventListener(
-      "keyup",
-      up
-    );
-
-    return () => {
-      window.removeEventListener(
-        "keydown",
-        down
-      );
-
-      window.removeEventListener(
-        "keyup",
-        up
-      );
-    };
-  }, []);
-
-  const updateVisitor = (
-    field,
-    value
-  ) => {
-    setVisitor(
-      (previous) => ({
-        ...previous,
-        [field]: value,
-      })
-    );
-
-    setError("");
-  };
-
-  /* SUBMIT */
+  const [error, setError] = useState("");
+  const [spotIndex, setSpotIndex] = useState(0);
+  const [selectedExhibit, setSelectedExhibit] = useState(null);
 
   const submit = (e) => {
     e.preventDefault();
 
-    const name =
-      visitor.name.trim();
-
-    const age =
-      String(
-        visitor.age
-      ).trim();
-
-    if (!name || !age) {
-      setError(
-        "Vui lòng nhập thông tin"
-      );
-
-      window.alert(
-        "Vui lòng nhập thông tin"
-      );
-
+    if (!visitor.name.trim() || !String(visitor.age).trim()) {
+      setError("Vui lòng nhập đầy đủ họ tên và tuổi.");
       return;
     }
 
@@ -1247,161 +377,24 @@ export default function App() {
     setStarted(true);
   };
 
-  /* JOYSTICK */
-
-  const handleJoystickStart = (
-    e
-  ) => {
-    e.preventDefault();
-
-    const joystickElement =
-      e.currentTarget;
-
-    const rect =
-      joystickElement.getBoundingClientRect();
-
-    const updateJoystick = (
-      touch
-    ) => {
-      const centerX =
-        rect.left +
-        rect.width / 2;
-
-      const centerY =
-        rect.top +
-        rect.height / 2;
-
-      let x =
-        (touch.clientX -
-          centerX) /
-        (rect.width / 2);
-
-      let y =
-        (centerY -
-          touch.clientY) /
-        (rect.height / 2);
-
-      const length =
-        Math.hypot(x, y);
-
-      if (length > 1) {
-        x /= length;
-        y /= length;
-      }
-
-      joystick.current = {
-        x,
-        y,
-      };
-
-      const knob =
-        joystickElement.querySelector(
-          ".joystick-knob"
-        );
-
-      if (knob) {
-        knob.style.transform =
-          `translate(
-            calc(-50% + ${x * 34}px),
-            calc(-50% + ${-y * 34}px)
-          )`;
-      }
-    };
-
-    const move = (event) => {
-      if (event.touches[0]) {
-        event.preventDefault();
-
-        updateJoystick(
-          event.touches[0]
-        );
-      }
-    };
-
-    const end = () => {
-      joystick.current = {
-        x: 0,
-        y: 0,
-      };
-
-      const knob =
-        joystickElement.querySelector(
-          ".joystick-knob"
-        );
-
-      if (knob) {
-        knob.style.transform =
-          "translate(-50%, -50%)";
-      }
-
-      window.removeEventListener(
-        "touchmove",
-        move
-      );
-
-      window.removeEventListener(
-        "touchend",
-        end
-      );
-    };
-
-    updateJoystick(
-      e.touches[0]
-    );
-
-    window.addEventListener(
-      "touchmove",
-      move,
-      {
-        passive: false,
-      }
-    );
-
-    window.addEventListener(
-      "touchend",
-      end
-    );
-  };
-
-  /* =========================
-     FORM
-  ========================= */
-
   if (!started) {
     return (
       <div className="welcome-page">
         <div className="welcome-card">
-          <div className="welcome-badge">
-            KHÔNG GIAN VĂN HÓA
-          </div>
-
-          <h1>
-            Hồ Chí Minh
-          </h1>
-
+          <div className="welcome-badge">KHÔNG GIAN VĂN HÓA</div>
+          <h1>Hồ Chí Minh</h1>
           <p className="welcome-description">
-            Chào mừng bạn đến với
-            không gian tham quan 3D.
-            Hãy nhập thông tin để
-            bắt đầu chuyến tham quan.
+            Chào mừng bạn đến với không gian tham quan 3D.
+            Hãy nhập thông tin để bắt đầu chuyến tham quan.
           </p>
 
-          <form
-            onSubmit={submit}
-            noValidate
-            className="visitor-form"
-          >
+          <form onSubmit={submit} className="visitor-form">
             <label>
               Họ và tên
-
               <input
-                type="text"
                 value={visitor.name}
                 onChange={(e) =>
-                  updateVisitor(
-                    "name",
-                    e.target.value
-                  )
+                  setVisitor({ ...visitor, name: e.target.value })
                 }
                 placeholder="Nhập họ và tên"
               />
@@ -1409,17 +402,13 @@ export default function App() {
 
             <label>
               Tuổi
-
               <input
                 type="number"
                 min="1"
                 max="100"
                 value={visitor.age}
                 onChange={(e) =>
-                  updateVisitor(
-                    "age",
-                    e.target.value
-                  )
+                  setVisitor({ ...visitor, age: e.target.value })
                 }
                 placeholder="Nhập tuổi"
               />
@@ -1427,39 +416,20 @@ export default function App() {
 
             <label>
               Giới tính
-
               <select
                 value={visitor.gender}
                 onChange={(e) =>
-                  updateVisitor(
-                    "gender",
-                    e.target.value
-                  )
+                  setVisitor({ ...visitor, gender: e.target.value })
                 }
               >
-                <option value="Nam">
-                  Nam
-                </option>
-
-                <option value="Nữ">
-                  Nữ
-                </option>
+                <option value="Nam">Nam</option>
+                <option value="Nữ">Nữ</option>
               </select>
             </label>
 
-            {error && (
-              <div
-                className="form-error"
-                role="alert"
-              >
-                ⚠ {error}
-              </div>
-            )}
+            {error && <div className="form-error">{error}</div>}
 
-            <button
-              type="submit"
-              className="start-button"
-            >
+            <button type="submit" className="start-button">
               BẮT ĐẦU THAM QUAN
             </button>
           </form>
@@ -1468,99 +438,54 @@ export default function App() {
     );
   }
 
-  /* =========================
-     PHÒNG 3D
-  ========================= */
-
   return (
     <div className="app">
       <Canvas
-        shadows
         camera={{
-          position: [
-            0,
-            3,
-            10,
-          ],
-          fov: 60,
+          position: spots[spotIndex].position,
+          fov: 75,
+          near: 0.1,
+          far: 100,
         }}
-        gl={{
-          antialias: true,
-        }}
+        gl={{ antialias: true }}
       >
-        <color
-          attach="background"
-          args={[
-            "#b9d2e3",
-          ]}
-        />
-
-        <GameScene
-          keys={keys}
-          joystick={joystick}
-          gender={visitor.gender}
-          onExhibit={
-            setSelectedExhibit
-          }
+        <Scene
+          spotIndex={spotIndex}
+          onMove={setSpotIndex}
+          onExhibit={setSelectedExhibit}
         />
       </Canvas>
 
       <div className="top-info">
-        <strong>
-          Không gian văn hóa
-          Hồ Chí Minh
-        </strong>
-
-        <span>
-          Xin chào,{" "}
-          {visitor.name}
-        </span>
+        <strong>Không gian văn hóa Hồ Chí Minh</strong>
+        <span>Xin chào, {visitor.name}</span>
       </div>
 
       <div className="controls">
-        <div>
-          ↑ ↓ ← → / WASD:
-          Di chuyển
-        </div>
-
-        <div>
-          🖱 Kéo chuột:
-          Xoay camera
-        </div>
-
-        <div>
-          🖱 Cuộn:
-          Zoom
-        </div>
+        <div>🖱 Kéo chuột: Quan sát 360°</div>
+        <div>⬆ Nhấn mũi tên: Di chuyển đến điểm khác</div>
+        <div>📍 Vị trí: {spots[spotIndex].name}</div>
       </div>
 
       {selectedExhibit && (
         <div className="exhibit-info">
+          <button
+            className="close-exhibit"
+            onClick={() => setSelectedExhibit(null)}
+          >
+            ✕
+          </button>
           <div className="exhibit-title">
-            {
-              selectedExhibit.title
-            }
+            {selectedExhibit.title}
           </div>
-
           <div className="exhibit-description">
-            {
-              selectedExhibit.description
-            }
+            {selectedExhibit.description}
           </div>
         </div>
       )}
 
-      <div
-        className="joystick"
-        onTouchStart={
-          handleJoystickStart
-        }
-      >
-        <div className="joystick-knob" />
-      </div>
-
-      <div className="mobile-hint">
-        Kéo joystick để di chuyển
+      <div className="navigation-hint">
+        Kéo chuột để nhìn quanh · Nhấn các mũi tên để di chuyển
       </div>
     </div>
   );
