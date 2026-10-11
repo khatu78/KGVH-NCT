@@ -448,3 +448,15 @@ select {
     font-size: 11px;
   }
 }
+.exhibit-info {
+  position: fixed;
+  z-index: 1000;
+  pointer-events: auto;
+}
+
+.close-exhibit {
+  position: absolute;
+  z-index: 1001;
+  pointer-events: auto;
+  cursor: pointer;
+}
