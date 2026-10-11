@@ -510,7 +510,7 @@ export default function App() {
       </div>
 
       {selectedExhibit && (
-        <div className="exhibit-info">
+        <div className="exhibit-info" style={{ pointerEvents: "auto", zIndex: 1000 }}>
           <button
             className="close-exhibit"
             onClick={() => {
