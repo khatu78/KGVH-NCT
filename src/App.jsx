@@ -173,8 +173,13 @@ const HumanCharacter = forwardRef(function HumanCharacter(
 
     const isFemale = gender === "Nữ";
 
- const maleModel = useGLTF("/models/nam/chibi.gltf");
-  const femaleModel = useGLTF("/models/nu/scene.gltf");
+ const maleModel = useGLTF(
+  `${import.meta.env.BASE_URL}models/nam/chibi.gltf`
+);
+
+const femaleModel = useGLTF(
+  `${import.meta.env.BASE_URL}models/nu/scene.gltf`
+);
 
   const model = isFemale
     ? femaleModel.scene
