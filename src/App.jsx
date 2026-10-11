@@ -354,6 +354,39 @@ function Scene({ spotIndex, onMove, onExhibit }) {
   );
 }
 
+function KeyboardNavigation({ spots, spotIndex, setSpotIndex }) {
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      const keys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
+      if (!keys.includes(event.key)) return;
+
+      // Không điều hướng khi đang nhập biểu mẫu
+      if (
+        event.target instanceof HTMLInputElement ||
+        event.target instanceof HTMLTextAreaElement
+      ) return;
+
+      event.preventDefault();
+
+      let nextIndex = spotIndex;
+
+      if (event.key === "ArrowRight" || event.key === "ArrowUp") {
+        nextIndex = (spotIndex + 1) % spots.length;
+      } else {
+        nextIndex = (spotIndex - 1 + spots.length) % spots.length;
+      }
+
+      setSpotIndex(nextIndex);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [spots, spotIndex, setSpotIndex]);
+
+  return null;
+}
+
+
 export default function App() {
   const [started, setStarted] = useState(false);
   const [visitor, setVisitor] = useState({
@@ -441,19 +474,23 @@ export default function App() {
   return (
     <div className="app">
       <Canvas
-        camera={{
-          position: spots[spotIndex].position,
-          fov: 75,
-          near: 0.1,
-          far: 100,
-        }}
-        gl={{ antialias: true }}
+       camera={{
+    position: [0, 1.6, 6.5],
+    fov: 85,
+    near: 0.1,
+    far: 100
+  }}
       >
         <Scene
           spotIndex={spotIndex}
           onMove={setSpotIndex}
           onExhibit={setSelectedExhibit}
         />
+        <KeyboardNavigation
+  spots={spots}
+  spotIndex={spotIndex}
+  setSpotIndex={setSpotIndex}
+/>
       </Canvas>
 
       <div className="top-info">
