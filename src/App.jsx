@@ -513,7 +513,10 @@ export default function App() {
         <div className="exhibit-info">
           <button
             className="close-exhibit"
-            onClick={() => setSelectedExhibit(null)}
+            onClick={() => {
+  setSelectedExhibit(null);
+  setSpotIndex(0);
+}}
           >
             ✕
           </button>
