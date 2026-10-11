@@ -10,12 +10,12 @@ const ROOM = { width: 24, depth: 18, height: 5.5 };
 
 const spots = [
   { id: 0, name: "Lối vào", position: [0, 1.6, 6.5] },
-  { id: 1, name: "Không gian trung tâm", position: [0, 1.6, 2.5] },
-  { id: 2, name: "Khu vực tư liệu", position: [0, 1.6, -2] },
-  { id: 3, name: "Chân dung Bác Hồ", position: [-6, 1.6, -5] },
-  { id: 4, name: "Video tư liệu", position: [0, 1.6, -5] },
-  { id: 5, name: "Tủ sách", position: [6, 1.6, -5] },
-  { id: 6, name: "Khu trưng bày", position: [0, 1.6, -1] },
+  { id: 1, name: "Không gian trung tâm", position: [0, 1.6, 3] },
+  { id: 2, name: "Khu vực tư liệu", position: [0, 1.6, -1] },
+  { id: 3, name: "Chân dung Bác Hồ", position: [-6, 1.6, -4.5] },
+  { id: 4, name: "Video tư liệu", position: [0, 1.6, -4.5] },
+  { id: 5, name: "Tủ sách", position: [6, 1.6, -4.5] },
+  { id: 6, name: "Khu trưng bày", position: [7, 1.6, 2.5] },
 ];
 
 
@@ -100,7 +100,7 @@ function CameraView({ spots, spotIndex, controls }) {
 
 
 
-function ArrowMarker({ position, onClick, label, arrow = "↑" }) {
+function ArrowMarker({ position, onClick, label }) {
   return (
     <group
       position={position}
@@ -109,37 +109,22 @@ function ArrowMarker({ position, onClick, label, arrow = "↑" }) {
         onClick();
       }}
     >
-      {/* Biển chỉ dẫn lơ lửng */}
       <mesh>
-        <boxGeometry args={[3.2, 0.72, 0.12]} />
+        <boxGeometry args={[2, 0.5, 0.1]} />
         <meshStandardMaterial
           color="#176b52"
-          emissive="#0a3d2f"
-          emissiveIntensity={0.25}
+          emissive="#176b52"
+          emissiveIntensity={0.15}
         />
       </mesh>
 
-      {/* Mũi tên */}
       <Text
-        position={[0, 0.08, 0.075]}
-        fontSize={0.38}
-        color="#ffe2a6"
-        anchorX="center"
-        anchorY="middle"
-        outlineWidth={0.01}
-        outlineColor="#164c42"
-      >
-        {arrow}
-      </Text>
-
-      {/* Tên khu vực */}
-      <Text
-        position={[0, -0.2, 0.075]}
-        fontSize={0.19}
+        position={[0, 0, 0.06]}
+        fontSize={0.17}
         color="white"
         anchorX="center"
         anchorY="middle"
-        maxWidth={2.9}
+        maxWidth={1.85}
         textAlign="center"
       >
         {label}
@@ -147,7 +132,6 @@ function ArrowMarker({ position, onClick, label, arrow = "↑" }) {
     </group>
   );
 }
-
 
 function Room({ onExhibit }) {
   return (
@@ -345,123 +329,29 @@ function Room({ onExhibit }) {
 
 
 function NavigationMarkers({ current, onMove }) {
-  const directions = {
-    // Lối vào
-    0: [
-      {
-        id: 1,
-        arrow: "↑",
-        label: "Không gian trung tâm",
-        position: [0, 1.25, 4.5],
-      },
-    ],
-
-    // Không gian trung tâm
-    1: [
-      {
-        id: 0,
-        arrow: "↓",
-        label: "Lối vào",
-        position: [0, 1.25, 4.5],
-      },
-      {
-        id: 2,
-        arrow: "↑",
-        label: "Khu vực tư liệu",
-        position: [0, 1.25, 0],
-      },
-    ],
-
-    // Khu vực tư liệu
-    2: [
-      {
-        id: 1,
-        arrow: "↓",
-        label: "Không gian trung tâm",
-        position: [0, 1.25, 0],
-      },
-      {
-        id: 4,
-        arrow: "↑",
-        label: "Video tư liệu",
-        position: [0, 1.25, -4],
-      },
-    ],
-
-    // Chân dung Bác Hồ
-    3: [
-      {
-        id: 4,
-        arrow: "→",
-        label: "Video tư liệu",
-        position: [-4, 1.25, -6.5],
-      },
-    ],
-
-    // Video tư liệu
-    4: [
-      {
-        id: 3,
-        arrow: "←",
-        label: "Chân dung Bác Hồ",
-        position: [-2.5, 1.25, -6.5],
-      },
-      {
-        id: 5,
-        arrow: "→",
-        label: "Tủ sách",
-        position: [2.5, 1.25, -6.5],
-      },
-      {
-        id: 6,
-        arrow: "↑",
-        label: "Khu trưng bày",
-        position: [0, 1.25, -6.5],
-      },
-      {
-        id: 2,
-        arrow: "↓",
-        label: "Khu vực tư liệu",
-        position: [0, 1.25, -3.5],
-      },
-    ],
-
-    // Tủ sách
-    5: [
-      {
-        id: 4,
-        arrow: "←",
-        label: "Video tư liệu",
-        position: [4, 1.25, -6.5],
-      },
-    ],
-
-    // Khu trưng bày
-    6: [
-      {
-        id: 4,
-        arrow: "↓",
-        label: "Video tư liệu",
-        position: [0, 1.25, -3.5],
-      },
-    ],
-  };
+  const signs = [
+    { id: 0, position: [0, 1.25, 5] },
+    { id: 1, position: [0, 1.25, 1.4] },
+    { id: 2, position: [0, 1.25, -2.5] },
+    { id: 3, position: [-6, 1.35, -6.2] },
+    { id: 4, position: [0, 1.35, -6.2] },
+    { id: 5, position: [6, 1.35, -6.1] },
+    { id: 6, position: [7, 1.25, 0.2] },
+  ];
 
   return (
     <group>
-      {(directions[current] || []).map((item) => (
+      {signs.map((sign) => (
         <ArrowMarker
-          key={item.id}
-          position={item.position}
-          label={item.label}
-          arrow={item.arrow}
-          onClick={() => onMove(item.id)}
+          key={sign.id}
+          position={sign.position}
+          label={spots[sign.id].name}
+          onClick={() => onMove(sign.id)}
         />
       ))}
     </group>
   );
 }
-
 
 
 
