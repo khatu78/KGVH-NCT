@@ -9,13 +9,12 @@ const ROOM = { width: 24, depth: 18, height: 5.5 };
 
 
 const spots = [
-  { id: 0, name: "Lối vào", position: [0, 1.6, 6.5] },
-  { id: 1, name: "Chân dung Bác Hồ", position: [-6, 1.6, -4.5] },
-  { id: 2, name: "Video tư liệu", position: [0, 1.6, -4.5] },
-  { id: 3, name: "Tủ sách", position: [6, 1.6, -4.5] },
-  { id: 4, name: "Khu trưng bày", position: [7, 1.6, 2.5] },
+  { id: 0, name: "Lối vào", position: [0, 1.6, 4.5] },
+  { id: 1, name: "Chân dung Bác Hồ", position: [-4.5, 1.6, -2.5] },
+  { id: 2, name: "Video tư liệu", position: [0, 1.6, -2.5] },
+  { id: 3, name: "Tủ sách", position: [4.5, 1.6, -2.5] },
+  { id: 4, name: "Khu trưng bày", position: [7, 1.6, 1.5] },
 ];
-
 
 const exhibits = [
   {
@@ -51,10 +50,10 @@ function CameraView({ spots, spotIndex, controls }) {
 
   const targets = [
   [0, 1.6, 1.5],
-  [-8, 2.5, -8.2],
-  [0, 2.7, -8.2],
-  [8, 2.3, -8.1],
-  [9.1, 1.5, 1],
+  [-6, 2.5, -7.5],
+  [0, 2.7, -7.5],
+  [6, 2.3, -7.5],
+  [10.5, 2, 1.5],
 ];
 
   const destination = useRef(
@@ -226,6 +225,9 @@ function Room({ onExhibit }) {
         >
           VIDEO TƯ LIỆU
         </Text>
+
+
+        
       </group>
 
       {/* Tủ sách */}
@@ -307,6 +309,32 @@ function Room({ onExhibit }) {
         </group>
       ))}
     </group>
+
+    {/* Chữ KHU TRƯNG BÀY gắn trên vách tường bên phải */}
+<group
+  position={[11.78, 2.7, 1.5]}
+  rotation={[0, -Math.PI / 2, 0]}
+>
+  <mesh>
+    <boxGeometry args={[3.2, 0.65, 0.08]} />
+    <meshStandardMaterial
+      color="#5c1717"
+      metalness={0.25}
+      roughness={0.5}
+    />
+  </mesh>
+
+  <Text
+    position={[0, 0, 0.055]}
+    fontSize={0.27}
+    color="#ffd700"
+    anchorX="center"
+    anchorY="middle"
+    textAlign="center"
+  >
+    KHU TRƯNG BÀY
+  </Text>
+</group>
   );
 }
 
@@ -389,6 +417,22 @@ export default function App() {
   const [error, setError] = useState("");
   const [spotIndex, setSpotIndex] = useState(0);
   const [selectedExhibit, setSelectedExhibit] = useState(null);
+
+  const [previousSpotIndex, setPreviousSpotIndex] = useState(0);
+
+const moveToSpot = (nextIndex) => {
+  if (nextIndex === spotIndex) return;
+
+  setPreviousSpotIndex(spotIndex);
+  setSpotIndex(nextIndex);
+};
+
+const returnToPreviousSpot = () => {
+  const currentIndex = spotIndex;
+
+  setSpotIndex(previousSpotIndex);
+  setPreviousSpotIndex(currentIndex);
+};
 
   const [showLocationNotice, setShowLocationNotice] = useState(false);
   useEffect(() => {
@@ -483,6 +527,13 @@ export default function App() {
           onMove={setSpotIndex}
           onExhibit={setSelectedExhibit}
         />
+        <button
+  className="return-button"
+  onClick={returnToPreviousSpot}
+  disabled={spotIndex === previousSpotIndex}
+>
+  ↩ Quay về vị trí cũ
+</button>
       </Canvas>
 
       <div className="top-info">
