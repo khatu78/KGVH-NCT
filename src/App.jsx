@@ -334,7 +334,8 @@ function Room({ onExhibit }) {
 
 
 function NavigationMarkers({ current, onMove }) {
-  const directions = {
+  
+const directions = {
   // 0: Lối vào
   0: [
     { id: 1, arrow: "↑", label: "Không gian trung tâm", position: [0, 1.25, 4.5] },
@@ -344,20 +345,16 @@ function NavigationMarkers({ current, onMove }) {
   1: [
     { id: 0, arrow: "↓", label: "Lối vào", position: [0, 1.25, 4.5] },
     { id: 2, arrow: "↑", label: "Khu vực tư liệu", position: [0, 1.25, -0.5] },
-    { id: 6, arrow: "→", label: "Khu trưng bày", position: [5, 1.25, 1] },
   ],
 
   // 2: Khu vực tư liệu
   2: [
     { id: 1, arrow: "↓", label: "Không gian trung tâm", position: [0, 1.25, 0] },
-    { id: 3, arrow: "←", label: "Chân dung Bác Hồ", position: [-3, 1.25, -4] },
     { id: 4, arrow: "↑", label: "Video tư liệu", position: [0, 1.25, -4] },
-    { id: 5, arrow: "→", label: "Tủ sách", position: [3, 1.25, -4] },
   ],
 
   // 3: Chân dung Bác Hồ
   3: [
-    { id: 2, arrow: "↓", label: "Khu vực tư liệu", position: [-5, 1.25, -3] },
     { id: 4, arrow: "→", label: "Video tư liệu", position: [-4, 1.25, -6] },
   ],
 
@@ -365,33 +362,35 @@ function NavigationMarkers({ current, onMove }) {
   4: [
     { id: 3, arrow: "←", label: "Chân dung Bác Hồ", position: [-2.5, 1.25, -6.5] },
     { id: 5, arrow: "→", label: "Tủ sách", position: [2.5, 1.25, -6.5] },
+    { id: 6, arrow: "↑", label: "Khu trưng bày", position: [0, 1.25, -3.5] },
+    { id: 2, arrow: "↓", label: "Khu vực tư liệu", position: [0, 1.25, -1] },
   ],
 
   // 5: Tủ sách
   5: [
     { id: 4, arrow: "←", label: "Video tư liệu", position: [4, 1.25, -6] },
-    { id: 2, arrow: "↓", label: "Khu vực tư liệu", position: [5, 1.25, -3] },
   ],
 
   // 6: Khu trưng bày
   6: [
-    { id: 1, arrow: "←", label: "Không gian trung tâm", position: [5, 1.25, 1] },
+    { id: 4, arrow: "↓", label: "Video tư liệu", position: [0, 1.25, -4] },
   ],
 };
 
+
   return (
-    <group>
-      {(directions[current] || []).map((item) => (
-        <ArrowMarker
-          key={item.id}
-          position={item.position}
-          label={item.label}
-          arrow={item.arrow}
-          onClick={() => onMove(item.id)}
-        />
-      ))}
-    </group>
-  );
+  <group>
+    {(directions[current] || []).map((item) => (
+      <ArrowMarker
+        key={item.id}
+        position={item.position}
+        label={item.label}
+        arrow={item.arrow}
+        onClick={() => onMove(item.id)}
+      />
+    ))}
+  </group>
+);
 }
 
 
