@@ -7,6 +7,7 @@ import "./style.css";
 
 const ROOM = { width: 24, depth: 18, height: 5.5 };
 
+
 const spots = [
   { id: 0, name: "Lối vào", position: [0, 1.6, 6.5] },
   { id: 1, name: "Không gian trung tâm", position: [0, 1.6, 2.5] },
@@ -14,8 +15,9 @@ const spots = [
   { id: 3, name: "Chân dung Bác Hồ", position: [-6, 1.6, -5] },
   { id: 4, name: "Video tư liệu", position: [0, 1.6, -5] },
   { id: 5, name: "Tủ sách", position: [6, 1.6, -5] },
-  { id: 6, name: "Khu trưng bày", position: [7, 1.6, 1] },
+  { id: 6, name: "Khu trưng bày", position: [0, 1.6, -1] },
 ];
+
 
 const exhibits = [
   {
@@ -45,24 +47,31 @@ const exhibits = [
 ];
  
   
+
 function CameraView({ spots, spotIndex, controls }) {
   const { camera } = useThree();
-    const getTarget = (index) => {
+
+  const getTarget = (index) => {
     const targets = [
-      [0, 1.6, 3.5],     // Lối vào
-      [0, 1.6, -0.5],    // Trung tâm
-      [0, 1.6, -5],      // Khu tư liệu
-      [-8, 2.5, -8.2],   // Chân dung Bác Hồ
-      [0, 2.7, -8.2],    // Video tư liệu
-      [8, 2.3, -8.1],    // Tủ sách
-      [9.1, 1.5, 1],     // Khu trưng bày
+      [0, 1.6, 3.5],   // Lối vào
+      [0, 1.6, -0.5],  // Trung tâm
+      [0, 1.6, -5],    // Khu tư liệu
+      [-8, 2.5, -8.2], // Chân dung Bác Hồ
+      [0, 2.7, -8.2],  // Video tư liệu
+      [8, 2.3, -8.1],  // Tủ sách
+      [9.1, 1.5, 1],   // Khu trưng bày
     ];
 
     return targets[index] || [0, 1.6, -2];
   };
 
-  const destination = useRef(new THREE.Vector3(...spots[0].position));
-  const lookTarget = useRef(new THREE.Vector3(...getTarget(0)));
+  const destination = useRef(
+    new THREE.Vector3(...spots[0].position)
+  );
+
+  const lookTarget = useRef(
+    new THREE.Vector3(...getTarget(0))
+  );
 
   useEffect(() => {
     const spot = spots[spotIndex];
@@ -73,7 +82,7 @@ function CameraView({ spots, spotIndex, controls }) {
   }, [spots, spotIndex]);
 
   useFrame((_, delta) => {
-    const alpha = 1 - Math.exp(-2.5 * delta);
+    const alpha = 1 - Math.exp(-3 * delta);
 
     camera.position.lerp(destination.current, alpha);
 
@@ -85,6 +94,7 @@ function CameraView({ spots, spotIndex, controls }) {
 
   return null;
 }
+
 
 
 
@@ -333,65 +343,125 @@ function Room({ onExhibit }) {
 
 
 
+
 function NavigationMarkers({ current, onMove }) {
-  
-const directions = {
-  // 0: Lối vào
-  0: [
-    { id: 1, arrow: "↑", label: "Không gian trung tâm", position: [0, 1.25, 4.5] },
-  ],
+  const directions = {
+    // Lối vào
+    0: [
+      {
+        id: 1,
+        arrow: "↑",
+        label: "Không gian trung tâm",
+        position: [0, 1.25, 4.5],
+      },
+    ],
 
-  // 1: Không gian trung tâm
-  1: [
-    { id: 0, arrow: "↓", label: "Lối vào", position: [0, 1.25, 4.5] },
-    { id: 2, arrow: "↑", label: "Khu vực tư liệu", position: [0, 1.25, -0.5] },
-  ],
+    // Không gian trung tâm
+    1: [
+      {
+        id: 0,
+        arrow: "↓",
+        label: "Lối vào",
+        position: [0, 1.25, 4.5],
+      },
+      {
+        id: 2,
+        arrow: "↑",
+        label: "Khu vực tư liệu",
+        position: [0, 1.25, 0],
+      },
+    ],
 
-  // 2: Khu vực tư liệu
-  2: [
-    { id: 1, arrow: "↓", label: "Không gian trung tâm", position: [0, 1.25, 0] },
-    { id: 4, arrow: "↑", label: "Video tư liệu", position: [0, 1.25, -4] },
-  ],
+    // Khu vực tư liệu
+    2: [
+      {
+        id: 1,
+        arrow: "↓",
+        label: "Không gian trung tâm",
+        position: [0, 1.25, 0],
+      },
+      {
+        id: 4,
+        arrow: "↑",
+        label: "Video tư liệu",
+        position: [0, 1.25, -4],
+      },
+    ],
 
-  // 3: Chân dung Bác Hồ
-  3: [
-    { id: 4, arrow: "→", label: "Video tư liệu", position: [-4, 1.25, -6] },
-  ],
+    // Chân dung Bác Hồ
+    3: [
+      {
+        id: 4,
+        arrow: "→",
+        label: "Video tư liệu",
+        position: [-4, 1.25, -6.5],
+      },
+    ],
 
-  // 4: Video tư liệu
-  4: [
-    { id: 3, arrow: "←", label: "Chân dung Bác Hồ", position: [-2.5, 1.25, -6.5] },
-    { id: 5, arrow: "→", label: "Tủ sách", position: [2.5, 1.25, -6.5] },
-    { id: 6, arrow: "↑", label: "Khu trưng bày", position: [0, 1.25, -3.5] },
-    { id: 2, arrow: "↓", label: "Khu vực tư liệu", position: [0, 1.25, -1] },
-  ],
+    // Video tư liệu
+    4: [
+      {
+        id: 3,
+        arrow: "←",
+        label: "Chân dung Bác Hồ",
+        position: [-2.5, 1.25, -6.5],
+      },
+      {
+        id: 5,
+        arrow: "→",
+        label: "Tủ sách",
+        position: [2.5, 1.25, -6.5],
+      },
+      {
+        id: 6,
+        arrow: "↑",
+        label: "Khu trưng bày",
+        position: [0, 1.25, -6.5],
+      },
+      {
+        id: 2,
+        arrow: "↓",
+        label: "Khu vực tư liệu",
+        position: [0, 1.25, -3.5],
+      },
+    ],
 
-  // 5: Tủ sách
-  5: [
-    { id: 4, arrow: "←", label: "Video tư liệu", position: [4, 1.25, -6] },
-  ],
+    // Tủ sách
+    5: [
+      {
+        id: 4,
+        arrow: "←",
+        label: "Video tư liệu",
+        position: [4, 1.25, -6.5],
+      },
+    ],
 
-  // 6: Khu trưng bày
-  6: [
-    { id: 4, arrow: "↓", label: "Video tư liệu", position: [0, 1.25, -4] },
-  ],
-};
-
+    // Khu trưng bày
+    6: [
+      {
+        id: 4,
+        arrow: "↓",
+        label: "Video tư liệu",
+        position: [0, 1.25, -3.5],
+      },
+    ],
+  };
 
   return (
-  <group>
-    {(directions[current] || []).map((item) => (
-      <ArrowMarker
-        key={item.id}
-        position={item.position}
-        label={item.label}
-        arrow={item.arrow}
-        onClick={() => onMove(item.id)}
-      />
-    ))}
-  </group>
-);
+    <group>
+      {(directions[current] || []).map((item) => (
+        <ArrowMarker
+          key={item.id}
+          position={item.position}
+          label={item.label}
+          arrow={item.arrow}
+          onClick={() => onMove(item.id)}
+        />
+      ))}
+    </group>
+  );
 }
+
 
 
 
@@ -430,37 +500,47 @@ function Scene({ spotIndex, onMove, onExhibit }) {
 
 
 
-function KeyboardNavigation({ spots, spotIndex, setSpotIndex }) {
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      const keys = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"];
-      if (!keys.includes(event.key)) return;
 
-      // Không điều hướng khi đang nhập biểu mẫu
+function KeyboardNavigation({ spotIndex, setSpotIndex }) {
+  useEffect(() => {
+    const routes = {
+      0: { ArrowRight: 1 },
+      1: { ArrowLeft: 0, ArrowRight: 2 },
+      2: { ArrowLeft: 1, ArrowRight: 4 },
+      3: { ArrowRight: 4 },
+      4: {
+        ArrowLeft: 3,
+        ArrowRight: 5,
+        ArrowUp: 6,
+        ArrowDown: 2,
+      },
+      5: { ArrowLeft: 4 },
+      6: { ArrowDown: 4 },
+    };
+
+    const handleKeyDown = (event) => {
       if (
         event.target instanceof HTMLInputElement ||
-        event.target instanceof HTMLTextAreaElement
-      ) return;
-
-      event.preventDefault();
-
-      let nextIndex = spotIndex;
-
-      if (event.key === "ArrowRight" || event.key === "ArrowUp") {
-        nextIndex = (spotIndex + 1) % spots.length;
-      } else {
-        nextIndex = (spotIndex - 1 + spots.length) % spots.length;
+        event.target instanceof HTMLTextAreaElement ||
+        event.target instanceof HTMLSelectElement
+      ) {
+        return;
       }
 
+      const nextIndex = routes[spotIndex]?.[event.key];
+      if (nextIndex === undefined) return;
+
+      event.preventDefault();
       setSpotIndex(nextIndex);
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [spots, spotIndex, setSpotIndex]);
+  }, [spotIndex, setSpotIndex]);
 
   return null;
 }
+
 
 
 export default function App() {
@@ -569,8 +649,7 @@ export default function App() {
           onMove={setSpotIndex}
           onExhibit={setSelectedExhibit}
         />
-        <KeyboardNavigation
-  spots={spots}
+       <KeyboardNavigation
   spotIndex={spotIndex}
   setSpotIndex={setSpotIndex}
 />
