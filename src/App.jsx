@@ -43,46 +43,47 @@ const exhibits = [
   },
 ];
  
-  
-
 function CameraView({ spots, spotIndex, controls }) {
   const { camera } = useThree();
-  const [isMoving, setIsMoving] = useState(false);
 
+  // Định nghĩa các điểm nhìn (target) tương ứng với từng spot
   const targets = [
-  [0, 1.6, -3],
-  [-6, 2.5, -7.5],
-  [0, 2.7, -7.5],
-  [6, 2.3, -7.5],
-  [10.5, 2, 1.5],
-];
+    [0, 1.6, -3],
+    [-6, 2.5, -7.5],
+    [0, 2.7, -7.5],
+    [6, 2.3, -7.5],
+    [10.5, 2, 1.5],
+  ];
 
-  const destination = useRef(
-    new THREE.Vector3(...spots[0].position)
-  );
-
-  const lookTarget = useRef(
-    new THREE.Vector3(...targets[0])
-  );
+  const destination = useRef(new THREE.Vector3(...spots[0].position));
+  const lookTarget = useRef(new THREE.Vector3(...targets[0]));
 
   useEffect(() => {
     const spot = spots[spotIndex];
     if (!spot) return;
 
     destination.current.set(...spot.position);
-    lookTarget.current.set(...targets[spotIndex]);
+    if (targets[spotIndex]) {
+      lookTarget.current.set(...targets[spotIndex]);
+    }
   }, [spotIndex, spots]);
 
- useFrame((_, delta) => {
-  const alpha = 1 - Math.exp(-3 * delta);
-  camera.position.lerp(destination.current, alpha);
+  useFrame((_, delta) => {
+    const alpha = 1 - Math.exp(-6 * delta); // Tăng tốc độ chuyển động một chút cho mượt
 
-  if (controls.current) {
-    controls.current.update();
-  }
-});
+    // 1. Dịch chuyển vị trí camera
+    camera.position.lerp(destination.current, alpha);
+
+    // 2. Nếu OrbitControls đang tồn tại, cập nhật cả tâm nhìn (target) để camera không bị cắm xuống đất
+    if (controls.current) {
+      controls.current.target.lerp(lookTarget.current, alpha);
+      controls.current.update();
+    }
+  });
+
   return null;
-}
+}  
+
 
 function ArrowMarker({ position, onClick, label }) {
   const [hovered, setHovered] = useState(false);
