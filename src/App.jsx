@@ -44,37 +44,37 @@ const exhibits = [
   },
 ];
 
-function CameraView({ spotIndex }) {
+
+function CameraView({ spots, spotIndex, controls }) {
   const { camera } = useThree();
-  const controls = useRef();
+  const targetPosition = useRef(new THREE.Vector3());
+  const targetLookAt = useRef(new THREE.Vector3());
+  const currentLookAt = useRef(new THREE.Vector3());
 
   useEffect(() => {
     const spot = spots[spotIndex];
-    if (!spot || !controls.current) return;
+    if (!spot) return;
 
-    camera.position.set(...spot.position);
-    controls.current.target.set(
-      spot.position[0],
-      spot.position[1],
-      spot.position[2] - 1
-    );
-    controls.current.update();
-  }, [spotIndex, camera]);
+    targetPosition.current.set(...spot.position);
+    targetLookAt.current.set(...spot.target);
+  }, [spots, spotIndex]);
 
-  return (
-    <OrbitControls
-      ref={controls}
-      makeDefault
-      enablePan={false}
-      enableZoom={false}
-      enableDamping
-      dampingFactor={0.08}
-      rotateSpeed={0.45}
-      minPolarAngle={0.12}
-      maxPolarAngle={Math.PI - 0.12}
-    />
-  );
+  useFrame((_, delta) => {
+    const smooth = 1 - Math.exp(-3 * delta);
+
+    camera.position.lerp(targetPosition.current, smooth);
+
+    if (controls.current) {
+      const orbitTarget = controls.current.target;
+
+      orbitTarget.lerp(targetLookAt.current, smooth);
+      controls.current.update();
+    }
+  });
+
+  return null;
 }
+
 
 function ArrowMarker({ position, onClick, label }) {
   return (
@@ -476,7 +476,7 @@ export default function App() {
       <Canvas
        camera={{
     position: [0, 1.6, 6.5],
-    fov: 85,
+    fov: 65,
     near: 0.1,
     far: 100
   }}
