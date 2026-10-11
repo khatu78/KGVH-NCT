@@ -332,50 +332,51 @@ function Room({ onExhibit }) {
 }
 
 
+
 function NavigationMarkers({ current, onMove }) {
-  // Đang ở khu vực Video tư liệu:
-  // Chỉ cho phép đi sang trái đến chân dung Bác Hồ
-  // hoặc sang phải đến tủ sách.
-  if (current === 4) {
-    return (
-      <group>
-        <ArrowMarker
-          position={[-2.5, 1.6, -7]}
-          label="Chân dung Bác Hồ"
-          arrow="←"
-          onClick={() => onMove(3)}
-        />
+  const directions = {
+    0: [
+      { id: 1, arrow: "↑", label: "Không gian trung tâm", position: [0, 1.25, 4.5] },
+    ],
+    1: [
+      { id: 2, arrow: "↑", label: "Khu vực tư liệu", position: [0, 1.25, 0.5] },
+      { id: 0, arrow: "↓", label: "Lối vào", position: [0, 1.25, 4.5] },
+      { id: 6, arrow: "→", label: "Khu trưng bày", position: [5, 1.25, 1] },
+    ],
+    2: [
+      { id: 3, arrow: "←", label: "Chân dung Bác Hồ", position: [-2.5, 1.25, -4.5] },
+      { id: 4, arrow: "↑", label: "Video tư liệu", position: [0, 1.25, -3.5] },
+      { id: 5, arrow: "→", label: "Tủ sách", position: [2.5, 1.25, -4.5] },
+      { id: 1, arrow: "↓", label: "Không gian trung tâm", position: [0, 1.25, 0] },
+    ],
+    3: [
+      { id: 2, arrow: "↓", label: "Khu vực tư liệu", position: [-6, 1.25, -3] },
+      { id: 4, arrow: "→", label: "Video tư liệu", position: [-4, 1.25, -5] },
+    ],
+    4: [
+      { id: 3, arrow: "←", label: "Chân dung Bác Hồ", position: [-2.5, 1.25, -6.5] },
+      { id: 5, arrow: "→", label: "Tủ sách", position: [2.5, 1.25, -6.5] },
+    ],
+    5: [
+      { id: 4, arrow: "←", label: "Video tư liệu", position: [4, 1.25, -5] },
+      { id: 2, arrow: "↓", label: "Khu vực tư liệu", position: [6, 1.25, -3] },
+    ],
+    6: [
+      { id: 1, arrow: "←", label: "Không gian trung tâm", position: [5, 1.25, 1] },
+    ],
+  };
 
-        <ArrowMarker
-          position={[2.5, 1.6, -7]}
-          label="Tủ sách"
-          arrow="→"
-          onClick={() => onMove(5)}
-        />
-      </group>
-    );
-  }
-
-  // Các điểm tham quan còn lại
   return (
     <group>
-      {spots.map((spot) => {
-        if (spot.id === current) return null;
-
-        return (
-          <ArrowMarker
-            key={spot.id}
-            position={[
-              spot.position[0],
-              1.8,
-              spot.position[2] - 1
-            ]}
-            label={spot.name}
-            arrow="↑"
-            onClick={() => onMove(spot.id)}
-          />
-        );
-      })}
+      {(directions[current] || []).map((item) => (
+        <ArrowMarker
+          key={item.id}
+          position={item.position}
+          label={item.label}
+          arrow={item.arrow}
+          onClick={() => onMove(item.id)}
+        />
+      ))}
     </group>
   );
 }
