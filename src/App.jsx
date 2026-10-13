@@ -480,8 +480,9 @@ function Room({ onExhibit }) {
 
 {/* 10 khung ảnh treo tường theo hình chữ S */}
 {Array.from({ length: 10 }, (_, i) => {
-  const z = -4.5 + i * 0.9;
-  const x = Math.sin(i * Math.PI / 4.5) * 0.7;
+  const t = i / 9;
+const z = -4.5 + t * 9;
+const x = Math.sin(t * Math.PI * 2) * 0.8;
 
   return (
     <group
@@ -514,6 +515,7 @@ function Room({ onExhibit }) {
     </group>
   );
 })}
+
 <group
   position={[11.78, 2.7, 1.5]}
   rotation={[0, -Math.PI / 2, 0]}
