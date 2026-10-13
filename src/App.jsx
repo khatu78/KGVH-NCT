@@ -220,7 +220,7 @@ function ArrowMarker({ position, onClick, label }) {
 
 
 function Room({ onExhibit }) {
-   const banDo = useTexture(".../images/bandoVN.jpg");
+   const banDo = useTexture("/images/bandoVN.jpg");
   return (
     <group>
         {/* Bản đồ Việt Nam trên tường */}
