@@ -586,42 +586,6 @@ function Room({ onExhibit, onSpaceClick }) {
       {/* Tủ trưng bày */}
      
 
-      {/* Bàn */}
-     
-{/* Bàn */}
-<group position={[10, 0, 1.5]}>
-  {/* Mặt bàn */}
-  <mesh position={[0, 1.15, 0]} castShadow>
-    <boxGeometry args={[1.25, 0.18, 2.6]} />
-    <meshStandardMaterial color="#70472d" />
-  </mesh>
-
-  {/* 4 chân bàn */}
-  {[
-    [-0.45, 0.55, -1],
-    [0.45, 0.55, -1],
-    [-0.45, 0.55, 1],
-    [0.45, 0.55, 1],
-  ].map((p, i) => (
-    <mesh key={i} position={p}>
-      <boxGeometry args={[0.13, 1.1, 0.13]} />
-      <meshStandardMaterial color="#553522" />
-    </mesh>
-  ))}
-</group>
-
-
-      {/* Cây */}
-      <group position={[9, 0, 5]}>
-        <mesh position={[0, 1, 0]}>
-          <cylinderGeometry args={[0.28, 0.38, 2, 16]} />
-          <meshStandardMaterial color="#9b633b" />
-        </mesh>
-        <mesh position={[0, 2.5, 0]}>
-          <sphereGeometry args={[1.1, 16, 12]} />
-          <meshStandardMaterial color="#4e7750" />
-        </mesh>
-      </group>
 
       {/* Ánh sáng */}
       {[-7, 0, 7].map((x) => (
@@ -634,6 +598,7 @@ function Room({ onExhibit, onSpaceClick }) {
         </group>
       ))}
        {/* Chữ KHU TRƯNG BÀY gắn trên vách tường bên phải */}
+
 
 {/* 10 khung ảnh treo tường theo hình chữ S */}
 {Array.from({ length: 10 }, (_, i) => {
