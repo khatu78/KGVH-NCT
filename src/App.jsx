@@ -50,10 +50,11 @@ const exhibits = [
 ];
  
 
-function CameraView({ spots, spotIndex, controls }) {
+
+function CameraView({ spots, spotIndex }) {
   const { camera } = useThree();
-  const isMovingRef = useRef(false);
   const isFirstRender = useRef(true);
+  const isMovingRef = useRef(false);
 
   const destination = useRef(
     new THREE.Vector3(...spots[0].position)
@@ -73,20 +74,15 @@ function CameraView({ spots, spotIndex, controls }) {
     lookTarget.current.set(...target);
 
     if (isFirstRender.current) {
-      camera.position.set(...spot.position);
-
-      if (controls.current) {
-        controls.current.target.set(...target);
-        controls.current.update();
-      }
-
+      camera.position.copy(destination.current);
+      camera.lookAt(lookTarget.current);
       isFirstRender.current = false;
       isMovingRef.current = false;
       return;
     }
 
     isMovingRef.current = true;
-  }, [spotIndex, spots, camera, controls]);
+  }, [spotIndex, spots, camera]);
 
   useFrame((_, delta) => {
     if (!isMovingRef.current) return;
@@ -94,29 +90,77 @@ function CameraView({ spots, spotIndex, controls }) {
     const alpha = 1 - Math.exp(-5 * delta);
 
     camera.position.lerp(destination.current, alpha);
+    camera.lookAt(lookTarget.current);
 
-    if (controls.current) {
-      controls.current.target.lerp(
-        lookTarget.current,
-        alpha
-      );
-      controls.current.update();
-    }
-
-    if (
-      camera.position.distanceTo(destination.current) < 0.03 &&
-      controls.current &&
-      controls.current.target.distanceTo(lookTarget.current) < 0.03
-    ) {
+    if (camera.position.distanceTo(destination.current) < 0.03) {
       camera.position.copy(destination.current);
-      controls.current.target.copy(lookTarget.current);
-      controls.current.update();
+      camera.lookAt(lookTarget.current);
       isMovingRef.current = false;
     }
   });
 
   return null;
 }
+
+function FixedLookControls() {
+  const { camera, gl } = useThree();
+
+  useEffect(() => {
+    const element = gl.domElement;
+    let dragging = false;
+    let startX = 0;
+    let startY = 0;
+    let startYaw = 0;
+    let startPitch = 0;
+
+    const onPointerDown = (e) => {
+      if (e.button !== 0) return;
+
+      dragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      startYaw = camera.rotation.y;
+      startPitch = camera.rotation.x;
+      element.style.cursor = "grabbing";
+    };
+
+    const onPointerMove = (e) => {
+      if (!dragging) return;
+
+      const sensitivity = 0.004;
+
+      camera.rotation.order = "YXZ";
+      camera.rotation.y =
+        startYaw - (e.clientX - startX) * sensitivity;
+
+      camera.rotation.x = THREE.MathUtils.clamp(
+        startPitch - (e.clientY - startY) * sensitivity,
+        -1.2,
+        1.2
+      );
+    };
+
+    const onPointerUp = () => {
+      dragging = false;
+      element.style.cursor = "grab";
+    };
+
+    element.style.cursor = "grab";
+    element.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerup", onPointerUp);
+
+    return () => {
+      element.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerup", onPointerUp);
+      element.style.cursor = "";
+    };
+  }, [camera, gl]);
+
+  return null;
+}
+
 
 
 function ArrowMarker({ position, onClick, label }) {
@@ -386,9 +430,7 @@ function NavigationMarkers({ current, onMove }) {
 
   return (
     <group>
-      {signs
-  .filter((sign) => sign.id !== current)
-  .map((sign) => (
+    {signs.map((sign) => (
         <ArrowMarker
           key={sign.id}
           position={sign.position}
@@ -402,7 +444,7 @@ function NavigationMarkers({ current, onMove }) {
 
 
 function Scene({ spotIndex, onMove, onExhibit }) {
-  const controls = useRef(null);
+ 
 
   return (
     <>
@@ -413,23 +455,12 @@ function Scene({ spotIndex, onMove, onExhibit }) {
       <Room onExhibit={onExhibit} />
       <NavigationMarkers current={spotIndex} onMove={onMove} />
 
-      <CameraView
-        spots={spots}
-        spotIndex={spotIndex}
-        controls={controls}
-      />
-
-    <OrbitControls
-  ref={controls}
-  makeDefault
-  enableRotate
-  enablePan={false}
-  enableZoom
-  rotateSpeed={0.8}
-  minPolarAngle={0.5}
-  maxPolarAngle={2.2}
+     <CameraView
+  spots={spots}
+  spotIndex={spotIndex}
 />
 
+    
       <Environment preset="city" />
     </>
   );
@@ -465,10 +496,8 @@ const moveToSpot = (nextIndex) => {
 };
 
 const returnToPreviousSpot = () => {
-  const currentIndex = spotIndex;
-
-  setSpotIndex(previousSpotIndex);
-  setPreviousSpotIndex(currentIndex);
+  setSpotIndex(0);
+  setPreviousSpotIndex(0);
 };
 
   const [showLocationNotice, setShowLocationNotice] = useState(false);
@@ -566,12 +595,12 @@ const returnToPreviousSpot = () => {
         />
        
       </Canvas>
-       <button
-  className="return-button"
-  onClick={returnToPreviousSpot}
-  disabled={spotIndex === previousSpotIndex}
+     <button
+  className="return-button"
+  onClick={returnToPreviousSpot}
+  disabled={spotIndex === 0}
 >
-  ↩ Quay về vị trí cũ
+    ↩ Quay về lối vào
 </button>
 
       <div className="top-info">
