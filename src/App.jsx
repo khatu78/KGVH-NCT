@@ -430,7 +430,7 @@ function Room({ onExhibit }) {
      
 
       {/* Bàn */}
-      <group position={[-5, 0, 2]}>
+      <group position={[8.5, 0, 1.5]}>
         <mesh position={[0, 1.15, 0]} castShadow>
           <boxGeometry args={[2.6, 0.18, 1.25]} />
           <meshStandardMaterial color="#70472d" />
@@ -449,7 +449,7 @@ function Room({ onExhibit }) {
       </group>
 
       {/* Cây */}
-      <group position={[-9, 0, 5]}>
+      <group position={[9, 0, 5]}>
         <mesh position={[0, 1, 0]}>
           <cylinderGeometry args={[0.28, 0.38, 2, 16]} />
           <meshStandardMaterial color="#9b633b" />
