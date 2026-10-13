@@ -74,13 +74,13 @@ function CameraView({ spots, spotIndex }) {
     lookTarget.current.set(...target);
     
     // id1 và id3 nhìn chính diện giống id2
-//if (spotIndex === 1 || spotIndex === 3) {
- // lookTarget.current.set(
-  // destination.current.x,
-  // destination.current.y,
-   // -10
- // );
-//}
+if (spotIndex === 1 || spotIndex === 3) {
+  lookTarget.current.set(
+   destination.current.x,
+   destination.current.y,
+    -10
+  );
+}
 
     if (isFirstRender.current) {
       camera.position.set(...spots[0].position);
