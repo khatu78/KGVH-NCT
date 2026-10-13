@@ -477,6 +477,43 @@ function Room({ onExhibit }) {
         </group>
       ))}
        {/* Chữ KHU TRƯNG BÀY gắn trên vách tường bên phải */}
+
+{/* 10 khung ảnh treo tường theo hình chữ S */}
+{Array.from({ length: 10 }, (_, i) => {
+  const z = -4.5 + i * 0.9;
+  const x = Math.sin(i * Math.PI / 4.5) * 0.7;
+
+  return (
+    <group
+      key={i}
+      position={[11.78, 3.7 + x, z]}
+      rotation={[0, -Math.PI / 2, 0]}
+    >
+      {/* Viền khung */}
+      <mesh>
+        <boxGeometry args={[0.24, 0.24, 0.06]} />
+        <meshStandardMaterial color="#70472d" />
+      </mesh>
+
+      {/* Mặt ảnh */}
+      <mesh position={[0, 0, 0.035]}>
+        <planeGeometry args={[0.2, 0.2]} />
+        <meshStandardMaterial color="#d8c9ad" />
+      </mesh>
+
+      {/* Số thứ tự tạm thời */}
+      <Text
+        position={[0, 0, 0.04]}
+        fontSize={0.07}
+        color="#5c1717"
+        anchorX="center"
+        anchorY="middle"
+      >
+        {i + 1}
+      </Text>
+    </group>
+  );
+})}
 <group
   position={[11.78, 2.7, 1.5]}
   rotation={[0, -Math.PI / 2, 0]}
