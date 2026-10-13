@@ -9,19 +9,20 @@ const ROOM = { width: 24, depth: 18, height: 5.5 };
 
 
 const spots = [
-  { id: 0, name: "Lối vào", position: [0, 1.6, 3] },
-  { id: 1, name: "Chân dung Bác Hồ", position: [-3.5, 1.6, 0] },
-  { id: 2, name: "Video tư liệu", position: [0, 1.6, 0] },
-  { id: 3, name: "Tủ sách", position: [3.5, 1.6, 0] },
-  { id: 4, name: "Khu trưng bày", position: [5, 1.6, 1.5] },
+  { id: 0, name: "Lối vào", position: [0, 1.6, 7] },
+  { id: 1, name: "Chân dung Bác Hồ", position: [-5, 1.6, 2] },
+  { id: 2, name: "Video tư liệu", position: [0, 1.6, 2] },
+  { id: 3, name: "Tủ sách", position: [5, 1.6, 2] },
+  { id: 4, name: "Khu trưng bày", position: [8, 1.6, 1] },
 ];
-// Bổ sung mảng tâm nhìn tương ứng cho từng spot
+
+// 2. Tọa độ điểm nhìn (target) tương ứng cho từng spot
 const targets = [
-  [0, 1.6, -4],        // Hướng nhìn của ID 0 (Lối vào)
-  [-8, 2.65, -8.25],   // Hướng nhìn của ID 1 (Chân dung Bác Hồ)
-  [0, 2.7, -8.25],     // Hướng nhìn của ID 2 (Video tư liệu)
-  [8, 2.2, -8.1],      // Hướng nhìn của ID 3 (Tủ sách)
-  [11.78, 2.7, 1.5],   // Hướng nhìn của ID 4 (Khu trưng bày)
+  [0, 1.6, -8.25],
+  [-8, 2.65, -8.25],
+  [0, 2.7, -8.25],
+  [8, 2.2, -8.1],
+  [11.78, 2.7, 1.5],
 ];
 const exhibits = [
   {
@@ -347,17 +348,17 @@ function Room({ onExhibit }) {
 
 function NavigationMarkers({ current, onMove }) {
   const signs = [
-    { id: 0, position: [0, 0, 4.2] },
-    { id: 1, position: [-3.5, 0, 1.2] },
-    { id: 2, position: [1.2, 0, 1.2] }, // Dịch lệch sang phải một chút để không che tầm nhìn từ cửa vào
-    { id: 3, position: [3.5, 0, 1.2] },
-    { id: 4, position: [5, 0, 2.7] },
+    { id: 0, position: [0, 0, 8.5] },   // Đặt lùi ra phía sau cửa vào
+    { id: 1, position: [-4, 0, 4.5] },   // Biển bên trái
+    { id: 2, position: [0, 0, 4.5] },    // Biển ở giữa nhưng đẩy lên xa (z = 4.5)
+    { id: 3, position: [4, 0, 4.5] },    // Biển bên phải
+    { id: 4, position: [8, 0, 3] },      // Biển khu trưng bày
   ];
 
   return (
     <group>
       {signs
-        .filter((sign) => sign.id !== current) // Ẩn biển chỉ dẫn của vị trí hiện tại đang đứng
+        .filter((sign) => sign.id !== current) // Ẩn biển của vị trí đang đứng
         .map((sign) => (
           <ArrowMarker
             key={sign.id}
@@ -524,17 +525,17 @@ const returnToPreviousSpot = () => {
     <div className="app">
       <Canvas
         camera={{
-          position: spots[0].position,
+          position: spots[0].position, // Khởi tạo đúng tại [0, 1.6, 7]
           fov: 65,
           near: 0.1,
           far: 100,
-        }}
+        }}
       >
-        <Scene
-         spotIndex={spotIndex}
+       <Scene
+          spotIndex={spotIndex}
           onMove={moveToSpot}
           onExhibit={setSelectedExhibit}
-        />
+        />
        
       </Canvas>
        <button
