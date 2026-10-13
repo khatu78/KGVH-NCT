@@ -50,7 +50,7 @@ const exhibits = [
 ];
  
 
-
+{/* 
 function CameraView({ spots, spotIndex }) {
   const { camera } = useThree();
   const isFirstRender = useRef(true);
@@ -102,6 +102,69 @@ camera.rotation.order = "YXZ";
 
   return null;
 }
+  */}
+
+function CameraView({ spots, spotIndex }) {
+  const { camera } = useThree();
+  const isFirstRender = useRef(true);
+  const isMovingRef = useRef(false);
+
+  const destination = useRef(
+    new THREE.Vector3(...spots[0].position)
+  );
+
+  const lookTarget = useRef(
+    new THREE.Vector3(...targets[0])
+  );
+
+  useEffect(() => {
+    const spot = spots[spotIndex];
+    const target = targets[spotIndex];
+
+    if (!spot || !target) return;
+
+    destination.current.set(...spot.position);
+    lookTarget.current.set(...target);
+
+    // Chân dung Bác Hồ và tủ sách:
+    // giữ hướng nhìn ngang để tránh camera bị chúc lên hoặc cúi xuống
+    if (spotIndex === 1 || spotIndex === 3) {
+      lookTarget.current.y = destination.current.y;
+    }
+
+    if (isFirstRender.current) {
+      camera.position.set(...spots[0].position);
+      camera.rotation.order = "YXZ";
+      camera.lookAt(...targets[0]);
+
+      isFirstRender.current = false;
+      isMovingRef.current = false;
+      return;
+    }
+
+    isMovingRef.current = true;
+  }, [spotIndex, spots, camera]);
+
+  useFrame((_, delta) => {
+    if (!isMovingRef.current) return;
+
+    const alpha = 1 - Math.exp(-5 * delta);
+
+    camera.position.lerp(destination.current, alpha);
+
+    // Cập nhật hướng nhìn trong lúc di chuyển
+    camera.lookAt(lookTarget.current);
+
+    if (camera.position.distanceTo(destination.current) < 0.03) {
+      camera.position.copy(destination.current);
+      camera.lookAt(lookTarget.current);
+      isMovingRef.current = false;
+    }
+  });
+
+  return null;
+}
+
 
 function FixedLookControls() {
   const { camera, gl } = useThree();
