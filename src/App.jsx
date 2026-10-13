@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, OrbitControls, Text } from "@react-three/drei";
@@ -7,7 +6,7 @@ import "./style.css";
 
 const ROOM = { width: 24, depth: 18, height: 5.5 };
 
-
+// 1. Tọa độ các vị trí camera đứng (ID 0 là Lối vào tại [0, 1.6, 3])
 const spots = [
   { id: 0, name: "Lối vào", position: [0, 1.6, 3] },
   { id: 1, name: "Chân dung Bác Hồ", position: [-3.5, 1.6, 0] },
@@ -16,6 +15,7 @@ const spots = [
   { id: 4, name: "Khu trưng bày", position: [5, 1.6, 1.5] },
 ];
 
+// 2. Tọa độ điểm nhìn (target) tương ứng cho từng spot
 const targets = [
   [0, 1.6, -4],
   [-8, 2.65, -8.25],
@@ -23,6 +23,7 @@ const targets = [
   [8, 2.2, -8.1],
   [11.78, 2.7, 1.5],
 ];
+
 const exhibits = [
   {
     title: "Chân dung Chủ tịch Hồ Chí Minh",
@@ -49,27 +50,15 @@ const exhibits = [
     position: [9.5, 1.4, 1],
   },
 ];
- 
+
 function CameraView({ spots, spotIndex, controls }) {
   const { camera } = useThree();
   const isMovingRef = useRef(false);
-  const isFirstRender = useRef(true);
 
   const destination = useRef(new THREE.Vector3(...spots[0].position));
   const lookTarget = useRef(new THREE.Vector3(...targets[0]));
 
   useEffect(() => {
-    // Ngay khi vừa vào trang, đặt thẳng camera và target vào điểm xuất phát số 0
-    if (isFirstRender.current) {
-      camera.position.set(...spots[0].position);
-      if (controls.current) {
-        controls.current.target.set(...targets[0]);
-        controls.current.update();
-      }
-      isFirstRender.current = false;
-      return;
-    }
-
     const spot = spots[spotIndex];
     if (!spot) return;
 
@@ -77,6 +66,19 @@ function CameraView({ spots, spotIndex, controls }) {
     if (targets[spotIndex]) {
       lookTarget.current.set(...targets[spotIndex]);
     }
+
+    // Nếu đang ở ID 0 (Lối vào), đặt camera & target trực tiếp ngay lập tức
+    if (spotIndex === 0) {
+      camera.position.set(...spots[0].position);
+      if (controls.current) {
+        controls.current.target.set(...targets[0]);
+        controls.current.update();
+      }
+      isMovingRef.current = false;
+      return;
+    }
+
+    // Với các ID khác, bật hiệu ứng di chuyển camera mượt
     isMovingRef.current = true;
   }, [spotIndex, spots, camera, controls]);
 
@@ -92,7 +94,7 @@ function CameraView({ spots, spotIndex, controls }) {
       controls.current.update();
     }
 
-    // Khi đã đến nơi, tắt cờ di chuyển để mở khóa xoay 360 độ tự do
+    // Tắt cờ di chuyển để mở khóa xoay 360 độ tự do khi đến nơi
     if (
       camera.position.distanceTo(destination.current) < 0.05 &&
       controls.current &&
@@ -104,7 +106,6 @@ function CameraView({ spots, spotIndex, controls }) {
 
   return null;
 }
-
 
 function ArrowMarker({ position, onClick, label }) {
   const [hovered, setHovered] = useState(false);
@@ -127,7 +128,6 @@ function ArrowMarker({ position, onClick, label }) {
       }}
       scale={hovered ? 1.06 : 1}
     >
-      {/* Tấm biển đỏ nằm ngang, sát mặt đất */}
       <mesh position={[0, 0.65, 0]}>
         <boxGeometry args={[1.5, 0.42, 0.1]} />
         <meshStandardMaterial
@@ -137,7 +137,6 @@ function ArrowMarker({ position, onClick, label }) {
         />
       </mesh>
 
-      {/* Chữ vàng nhỏ */}
       <Text
         position={[0, 0.65, 0.056]}
         fontSize={0.12}
@@ -157,11 +156,7 @@ function Room({ onExhibit }) {
   return (
     <group>
       {/* Sàn */}
-      <mesh
-        rotation={[-Math.PI / 2, 0, 0]}
-        position={[0, 0, 0]}
-        receiveShadow
-      >
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
         <planeGeometry args={[ROOM.width, ROOM.depth]} />
         <meshStandardMaterial color="#d8c9ad" />
       </mesh>
@@ -182,7 +177,7 @@ function Room({ onExhibit }) {
       {[-1, 1].map((side) => (
         <mesh
           key={side}
-          position={[side * ROOM.width / 2, ROOM.height / 2, 0]}
+          position={[(side * ROOM.width) / 2, ROOM.height / 2, 0]}
         >
           <boxGeometry args={[0.3, ROOM.height, ROOM.depth]} />
           <meshStandardMaterial color="#eee6d7" />
@@ -245,16 +240,10 @@ function Room({ onExhibit }) {
         >
           VIDEO TƯ LIỆU
         </Text>
-
-
-        
       </group>
 
       {/* Tủ sách */}
-      <group
-        position={[8, 2.2, -8.1]}
-        onClick={() => onExhibit(exhibits[2])}
-      >
+      <group position={[8, 2.2, -8.1]} onClick={() => onExhibit(exhibits[2])}>
         <mesh>
           <boxGeometry args={[3.6, 4.3, 0.65]} />
           <meshStandardMaterial color="#71472d" />
@@ -277,15 +266,10 @@ function Room({ onExhibit }) {
             ]}
           >
             <boxGeometry args={[0.25, 1, 0.08]} />
-            <meshStandardMaterial
-              color={i % 2 ? "#a87b51" : "#486b72"}
-            />
+            <meshStandardMaterial color={i % 2 ? "#a87b51" : "#486b72"} />
           </mesh>
         ))}
       </group>
-
-      {/* Tủ trưng bày */}
-     
 
       {/* Bàn */}
       <group position={[-5, 0, 2]}>
@@ -328,43 +312,36 @@ function Room({ onExhibit }) {
           <pointLight position={[0, -0.2, 0]} intensity={20} distance={9} />
         </group>
       ))}
-       {/* Chữ KHU TRƯNG BÀY gắn trên vách tường bên phải */}
-<group
-  position={[11.78, 2.7, 1.5]}
-  rotation={[0, -Math.PI / 2, 0]}
->
-  <mesh>
-    <boxGeometry args={[3.2, 0.65, 0.08]} />
-    <meshStandardMaterial
-      color="#5c1717"
-      metalness={0.25}
-      roughness={0.5}
-    />
-  </mesh>
 
-  <Text
-    position={[0, 0, 0.055]}
-    fontSize={0.27}
-    color="#ffd700"
-    anchorX="center"
-    anchorY="middle"
-    textAlign="center"
-  >
-    KHU TRƯNG BÀY
-  </Text>
-</group>
+      {/* Chữ KHU TRƯNG BÀY gắn trên vách tường bên phải */}
+      <group position={[11.78, 2.7, 1.5]} rotation={[0, -Math.PI / 2, 0]}>
+        <mesh>
+          <boxGeometry args={[3.2, 0.65, 0.08]} />
+          <meshStandardMaterial
+            color="#5c1717"
+            metalness={0.25}
+            roughness={0.5}
+          />
+        </mesh>
+
+        <Text
+          position={[0, 0, 0.055]}
+          fontSize={0.27}
+          color="#ffd700"
+          anchorX="center"
+          anchorY="middle"
+          textAlign="center"
+        >
+          KHU TRƯNG BÀY
+        </Text>
+      </group>
     </group>
-
-  
   );
 }
 
-
-
-
 function NavigationMarkers({ current, onMove }) {
   const signs = [
-   { id: 0, position: [0, 0, 4.2] },
+    { id: 0, position: [0, 0, 4.2] },
     { id: 1, position: [-3.5, 0, 1.2] },
     { id: 2, position: [0, 0, 1.2] },
     { id: 3, position: [3.5, 0, 1.2] },
@@ -385,7 +362,6 @@ function NavigationMarkers({ current, onMove }) {
   );
 }
 
-
 function Scene({ spotIndex, onMove, onExhibit }) {
   const controls = useRef(null);
 
@@ -398,38 +374,25 @@ function Scene({ spotIndex, onMove, onExhibit }) {
       <Room onExhibit={onExhibit} />
       <NavigationMarkers current={spotIndex} onMove={onMove} />
 
-      <CameraView
-        spots={spots}
-        spotIndex={spotIndex}
-        controls={controls}
-      />
+      <CameraView spots={spots} spotIndex={spotIndex} controls={controls} />
 
-    <OrbitControls
-  ref={controls}
-  makeDefault
-  enableRotate
-  enablePan={false}
-  enableZoom
-  rotateSpeed={0.8}
-  minPolarAngle={0.5}
-  maxPolarAngle={2.2}
-/>
+      <OrbitControls
+        ref={controls}
+        makeDefault
+        enableRotate
+        enablePan={false}
+        enableZoom
+        rotateSpeed={0.8}
+        minPolarAngle={0.5}
+        maxPolarAngle={2.2}
+      />
 
       <Environment preset="city" />
     </>
   );
 }
 
-
-
-
-
-
-
-
 export default function App() {
-  
-  
   const [started, setStarted] = useState(false);
   const [visitor, setVisitor] = useState({
     name: "",
@@ -440,26 +403,15 @@ export default function App() {
   const [spotIndex, setSpotIndex] = useState(0);
   const [selectedExhibit, setSelectedExhibit] = useState(null);
 
-  const [previousSpotIndex, setPreviousSpotIndex] = useState(0);
+  const moveToSpot = (nextIndex) => {
+    if (nextIndex === spotIndex) return;
+    setSpotIndex(nextIndex);
+  };
 
-const moveToSpot = (nextIndex) => {
-  if (nextIndex === spotIndex) return;
-
-  setPreviousSpotIndex(spotIndex);
-  setSpotIndex(nextIndex);
-};
-
-const returnToPreviousSpot = () => {
-  const currentIndex = spotIndex;
-
-  setSpotIndex(previousSpotIndex);
-  setPreviousSpotIndex(currentIndex);
-};
-
-  const [showLocationNotice, setShowLocationNotice] = useState(false);
-  useEffect(() => {
-  setShowLocationNotice(spotIndex !== 0);
-}, [spotIndex]);
+  // Nút quay về vị trí ban đầu (ID 0 - Lối vào)
+  const returnToEntrance = () => {
+    setSpotIndex(0);
+  };
 
   const submit = (e) => {
     e.preventDefault();
@@ -480,8 +432,8 @@ const returnToPreviousSpot = () => {
           <div className="welcome-badge">KHÔNG GIAN VĂN HÓA</div>
           <h1>Hồ Chí Minh</h1>
           <p className="welcome-description">
-            Chào mừng bạn đến với không gian tham quan 3D.
-            Hãy nhập thông tin để bắt đầu chuyến tham quan.
+            Chào mừng bạn đến với không gian tham quan 3D. Hãy nhập thông tin để
+            bắt đầu chuyến tham quan.
           </p>
 
           <form onSubmit={submit} className="visitor-form">
@@ -536,9 +488,10 @@ const returnToPreviousSpot = () => {
 
   return (
     <div className="app">
+      {/* Cấu hình vị trí khởi tạo camera khớp đúng với spot ID 0 [0, 1.6, 3] */}
       <Canvas
         camera={{
-          position: [0, 1.6, 6.5],
+          position: spots[0].position,
           fov: 65,
           near: 0.1,
           far: 100,
@@ -549,15 +502,15 @@ const returnToPreviousSpot = () => {
           onMove={moveToSpot}
           onExhibit={setSelectedExhibit}
         />
-       
       </Canvas>
-       <button
-  className="return-button"
-  onClick={returnToPreviousSpot}
-  disabled={spotIndex === previousSpotIndex}
->
-  ↩ Quay về vị trí cũ
-</button>
+
+      <button
+        className="return-button"
+        onClick={returnToEntrance}
+        disabled={spotIndex === 0}
+      >
+        ↩ Quay về Lối vào
+      </button>
 
       <div className="top-info">
         <strong>Không gian văn hóa Hồ Chí Minh</strong>
@@ -570,20 +523,21 @@ const returnToPreviousSpot = () => {
       </div>
 
       {selectedExhibit && (
-        <div className="exhibit-info" style={{ pointerEvents: "auto", zIndex: 1000 }}>
+        <div
+          className="exhibit-info"
+          style={{ pointerEvents: "auto", zIndex: 1000 }}
+        >
           <button
             className="close-exhibit"
             onClick={() => {
-  setSelectedExhibit(null);
-  setSpotIndex(0);
-}}
+              setSelectedExhibit(null);
+              setSpotIndex(0);
+            }}
           >
             ✕
           </button>
 
-          <div className="exhibit-title">
-            {selectedExhibit.title}
-          </div>
+          <div className="exhibit-title">{selectedExhibit.title}</div>
 
           <div className="exhibit-description">
             {selectedExhibit.description}
@@ -592,5 +546,4 @@ const returnToPreviousSpot = () => {
       )}
     </div>
   );
-    
 }
