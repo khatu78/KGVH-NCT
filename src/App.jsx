@@ -1,7 +1,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Environment, OrbitControls, Text } from "@react-three/drei";
+import { Environment, OrbitControls, Text, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import "./style.css";
 
@@ -220,6 +220,7 @@ function ArrowMarker({ position, onClick, label }) {
 
 
 function Room({ onExhibit }) {
+   const banDo = useTexture("/images/ban-do-viet-nam.jpg");
   return (
     <group>
         {/* Bản đồ Việt Nam trên tường */}
@@ -229,8 +230,8 @@ function Room({ onExhibit }) {
       >
         <planeGeometry args={[2.5, 3.5]} />
         <meshBasicMaterial
-          map={new THREE.TextureLoader().load("/ban-do-viet-nam.jpg")}
-          side={THREE.DoubleSide}
+        map={banDo}
+  side={THREE.DoubleSide}
         />
       </mesh>
      {/* Sàn */}
