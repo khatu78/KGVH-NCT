@@ -49,7 +49,7 @@ const exhibits = [
   },
 ];
  
-```jsx
+
 function CameraView({ spots, spotIndex, controls }) {
   const { camera } = useThree();
   const isMovingRef = useRef(false);
