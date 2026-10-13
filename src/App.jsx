@@ -696,52 +696,7 @@ const returnToPreviousSpot = () => {
     ↩ Quay về lối vào
 </button>
 
-{/* Chào user */}
-{!showWelcome && (
-  <div className="welcome-overlay">
-    <div className="welcome-box">
-      <h2>Chào mừng đến với Không gian văn hóa Hồ Chí Minh</h2>
 
-      <input
-        type="text"
-        placeholder="Nhập họ và tên"
-        value={userName}
-        onChange={(e) => setUserName(e.target.value)}
-      />
-
-      <input
-        type="number"
-        placeholder="Nhập tuổi"
-        min="1"
-        max="120"
-        value={userAge}
-        onChange={(e) => setUserAge(e.target.value)}
-      />
-
-      <select
-        value={userGender}
-        onChange={(e) => setUserGender(e.target.value)}
-      >
-        <option value="">-- Chọn giới tính --</option>
-        <option value="Nam">Nam</option>
-        <option value="Nữ">Nữ</option>
-      </select>
-
-      <button
-        onClick={() => {
-          if (!userName.trim() || !userAge || !userGender) {
-            alert("Vui lòng nhập đầy đủ họ tên, tuổi và giới tính!");
-            return;
-          }
-
-          setShowWelcome(true);
-        }}
-      >
-        Vào tham quan
-      </button>
-    </div>
-  </div>
-)}
 
 
       <div className="top-info">
