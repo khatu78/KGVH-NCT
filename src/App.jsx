@@ -232,6 +232,7 @@ function Room({ onExhibit }) {
         <meshBasicMaterial
         map={banDo}
   side={THREE.DoubleSide}
+           toneMapped={false}
         />
       </mesh>
      {/* Sàn */}
