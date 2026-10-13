@@ -430,7 +430,7 @@ function Room({ onExhibit }) {
      
 
       {/* Bàn */}
-     ```jsx
+     
 {/* Bàn */}
 <group position={[-5, 0, 2]}>
   {/* Mặt bàn */}
@@ -452,7 +452,7 @@ function Room({ onExhibit }) {
     </mesh>
   ))}
 </group>
-```
+
 
       {/* Cây */}
       <group position={[9, 0, 5]}>
