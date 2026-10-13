@@ -430,23 +430,29 @@ function Room({ onExhibit }) {
      
 
       {/* Bàn */}
-      <group position={[8.5, 0, 1.5]}>
-        <mesh position={[0, 1.15, 0]} castShadow>
-        <boxGeometry args={[1.25, 0.18, 2.6]} />
-          <meshStandardMaterial color="#70472d" />
-        </mesh>
-        {[
-          [-1, 0.55, -0.4],
-          [1, 0.55, -0.4],
-          [-1, 0.55, 0.4],
-          [1, 0.55, 0.4],
-        ].map((p, i) => (
-          <mesh key={i} position={p}>
-            <boxGeometry args={[0.13, 1.1, 0.13]} />
-            <meshStandardMaterial color="#553522" />
-          </mesh>
-        ))}
-      </group>
+     ```jsx
+{/* Bàn */}
+<group position={[-5, 0, 2]}>
+  {/* Mặt bàn */}
+  <mesh position={[0, 1.15, 0]} castShadow>
+    <boxGeometry args={[1.25, 0.18, 2.6]} />
+    <meshStandardMaterial color="#70472d" />
+  </mesh>
+
+  {/* 4 chân bàn */}
+  {[
+    [-0.45, 0.55, -1],
+    [0.45, 0.55, -1],
+    [-0.45, 0.55, 1],
+    [0.45, 0.55, 1],
+  ].map((p, i) => (
+    <mesh key={i} position={p}>
+      <boxGeometry args={[0.13, 1.1, 0.13]} />
+      <meshStandardMaterial color="#553522" />
+    </mesh>
+  ))}
+</group>
+```
 
       {/* Cây */}
       <group position={[9, 0, 5]}>
