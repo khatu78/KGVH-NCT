@@ -558,9 +558,8 @@ const returnToPreviousSpot = () => {
   }
 
   setError("");
-  setShowWelcome(true);
+  setStarted(true);
 };
-
   if (!started) {
     return (
       <div className="welcome-page">
