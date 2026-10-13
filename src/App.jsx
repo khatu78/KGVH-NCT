@@ -15,12 +15,13 @@ const spots = [
   { id: 3, name: "Tủ sách", position: [3.5, 1.6, 0] },
   { id: 4, name: "Khu trưng bày", position: [5, 1.6, 1.5] },
 ];
+// Bổ sung mảng tâm nhìn tương ứng cho từng spot
 const targets = [
-  [0, 1.6, -4],
-  [-8, 2.65, -8.25],
-  [0, 2.7, -8.25],
-  [8, 2.2, -8.1],
-  [11.78, 2.7, 1.5],
+  [0, 1.6, -4],        // Hướng nhìn của ID 0 (Lối vào)
+  [-8, 2.65, -8.25],   // Hướng nhìn của ID 1 (Chân dung Bác Hồ)
+  [0, 2.7, -8.25],     // Hướng nhìn của ID 2 (Video tư liệu)
+  [8, 2.2, -8.1],      // Hướng nhìn của ID 3 (Tủ sách)
+  [11.78, 2.7, 1.5],   // Hướng nhìn của ID 4 (Khu trưng bày)
 ];
 const exhibits = [
   {
@@ -50,58 +51,59 @@ const exhibits = [
 ];
  
 function CameraView({ spots, spotIndex, controls }) {
-  const { camera } = useThree();
-  const isMovingRef = useRef(false);
-  const isFirstRender = useRef(true);
+  const { camera } = useThree();
+  const isMovingRef = useRef(false);
 
-  const destination = useRef(new THREE.Vector3(...spots[0].position));
-  const lookTarget = useRef(new THREE.Vector3(...targets[0]));
+  const destination = useRef(new THREE.Vector3(...spots[0].position));
+  const lookTarget = useRef(new THREE.Vector3(...targets[0]));
 
-  useEffect(() => {
-    // Ngay khi vừa vào trang, đặt thẳng camera và target vào điểm xuất phát số 0
-    if (isFirstRender.current) {
-      camera.position.set(...spots[0].position);
-      if (controls.current) {
-        controls.current.target.set(...targets[0]);
-        controls.current.update();
-      }
-      isFirstRender.current = false;
-      return;
-    }
+  useEffect(() => {
+    const spot = spots[spotIndex];
+    if (!spot) return;
 
-    const spot = spots[spotIndex];
-    if (!spot) return;
+    destination.current.set(...spot.position);
+    if (targets[spotIndex]) {
+      lookTarget.current.set(...targets[spotIndex]);
+    }
 
-    destination.current.set(...spot.position);
-    if (targets[spotIndex]) {
-      lookTarget.current.set(...targets[spotIndex]);
-    }
-    isMovingRef.current = true;
-  }, [spotIndex, spots, camera, controls]);
+    // Ở mốc ID 0: Đặt camera đứng đúng vị trí ngay lập tức, không lerp
+    if (spotIndex === 0) {
+      camera.position.set(...spots[0].position);
+      if (controls.current) {
+        controls.current.target.set(...targets[0]);
+        controls.current.update();
+      }
+      isMovingRef.current = false;
+      return;
+    }
 
-  useFrame((_, delta) => {
-    if (!isMovingRef.current) return;
+    // Các mốc khác: Bật chuyển động mượt
+    isMovingRef.current = true;
+  }, [spotIndex, spots, camera, controls]);
 
-    const alpha = 1 - Math.exp(-6 * delta);
+  useFrame((_, delta) => {
+    if (!isMovingRef.current) return;
 
-    camera.position.lerp(destination.current, alpha);
+    const alpha = 1 - Math.exp(-6 * delta);
 
-    if (controls.current) {
-      controls.current.target.lerp(lookTarget.current, alpha);
-      controls.current.update();
-    }
+    camera.position.lerp(destination.current, alpha);
 
-    // Khi đã đến nơi, tắt cờ di chuyển để mở khóa xoay 360 độ tự do
-    if (
-      camera.position.distanceTo(destination.current) < 0.05 &&
-      controls.current &&
-      controls.current.target.distanceTo(lookTarget.current) < 0.05
-    ) {
-      isMovingRef.current = false;
-    }
-  });
+    if (controls.current) {
+      controls.current.target.lerp(lookTarget.current, alpha);
+      controls.current.update();
+    }
 
-  return null;
+    // Đã tới nơi -> nhả quyền điều khiển cho OrbitControls xoay 360 độ
+    if (
+      camera.position.distanceTo(destination.current) < 0.05 &&
+      controls.current &&
+      controls.current.target.distanceTo(lookTarget.current) < 0.05
+    ) {
+      isMovingRef.current = false;
+    }
+  });
+
+  return null;
 }
 
 
@@ -427,7 +429,9 @@ function Scene({ spotIndex, onMove, onExhibit }) {
 
 
 export default function App() {
-  
+  const returnToEntrance = () => {
+    setSpotIndex(0);
+  };
   
   const [started, setStarted] = useState(false);
   const [visitor, setVisitor] = useState({
@@ -537,25 +541,25 @@ const returnToPreviousSpot = () => {
     <div className="app">
       <Canvas
         camera={{
-          position: [0, 1.6, 6.5],
-          fov: 65,
-          near: 0.1,
-          far: 100,
+          position: spots[0].position,
+          fov: 65,
+          near: 0.1,
+          far: 100,
         }}
       >
         <Scene
-          spotIndex={spotIndex}
-          onMove={moveToSpot}
-          onExhibit={setSelectedExhibit}
+         spotIndex={spotIndex}
+          onMove={moveToSpot}
+          onExhibit={setSelectedExhibit}
         />
        
       </Canvas>
        <button
   className="return-button"
-  onClick={returnToPreviousSpot}
-  disabled={spotIndex === previousSpotIndex}
+        onClick={returnToEntrance}
+        disabled={spotIndex === 0}
 >
-  ↩ Quay về vị trí cũ
+  ↩ Quay về Lối vào
 </button>
 
       <div className="top-info">
