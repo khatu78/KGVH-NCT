@@ -432,7 +432,7 @@ function Room({ onExhibit }) {
       {/* Bàn */}
      
 {/* Bàn */}
-<group position={[10, 0, 2]}>
+<group position={[10, 0, 1.5]}>
   {/* Mặt bàn */}
   <mesh position={[0, 1.15, 0]} castShadow>
     <boxGeometry args={[1.25, 0.18, 2.6]} />
