@@ -550,16 +550,16 @@ const returnToPreviousSpot = () => {
 }, [spotIndex]);
 
   const submit = (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (!visitor.name.trim() || !String(visitor.age).trim()) {
-      setError("Vui lòng nhập đầy đủ họ tên và tuổi.");
-      return;
-    }
+  if (!visitor.name.trim() || !visitor.age || !visitor.gender) {
+    setError("Vui lòng nhập đầy đủ thông tin!");
+    return;
+  }
 
-    setError("");
-    setStarted(true);
-  };
+  setError("");
+  setShowWelcome(true);
+};
 
   if (!started) {
     return (
@@ -701,11 +701,11 @@ const returnToPreviousSpot = () => {
 
       <div className="top-info">
         <strong>Không gian văn hóa Hồ Chí Minh</strong>
-{showWelcome && (
+{visitor.name && (
   <p>
-    Xin chào {userGender === "Nam" ? "anh" : "chị"} {userName}!
+    Xin chào {visitor.gender === "Nam" ? "anh" : "chị"} {visitor.name}!
     <br />
-    Tuổi: {userAge}
+    Tuổi: {visitor.age}
   </p>
 )}
       </div>
