@@ -9,13 +9,12 @@ const ROOM = { width: 24, depth: 18, height: 5.5 };
 
 
 const spots = [
-  { id: 0, name: "Lối vào", position: [0, 1.6, -1] },
-  { id: 1, name: "Chân dung Bác Hồ", position: [-4.5, 1.6, -2.5] },
-  { id: 2, name: "Video tư liệu", position: [0, 1.6, -2.5] },
-  { id: 3, name: "Tủ sách", position: [4.5, 1.6, -2.5] },
-  { id: 4, name: "Khu trưng bày", position: [7, 1.6, 1.5] },
+  { id: 0, name: "Lối vào", position: [0, 1.6, 3] },
+  { id: 1, name: "Chân dung Bác Hồ", position: [-3.5, 1.6, 0] },
+  { id: 2, name: "Video tư liệu", position: [0, 1.6, 0] },
+  { id: 3, name: "Tủ sách", position: [3.5, 1.6, 0] },
+  { id: 4, name: "Khu trưng bày", position: [5, 1.6, 1.5] },
 ];
-
 const exhibits = [
   {
     title: "Chân dung Chủ tịch Hồ Chí Minh",
@@ -46,20 +45,23 @@ const exhibits = [
 function CameraView({ spots, spotIndex, controls }) {
   const { camera } = useThree();
   const isMovingRef = useRef(false);
-
-  const targets = [
-    [0, 1.6, -3],
-    [-6, 2.5, -7.5],
-    [0, 2.7, -7.5],
-    [6, 2.3, -7.5],
-    [10.5, 2, 1.5],
-  ];
+  const isFirstRender = useRef(true);
 
   const destination = useRef(new THREE.Vector3(...spots[0].position));
   const lookTarget = useRef(new THREE.Vector3(...targets[0]));
 
-  // Khi người dùng bấm đổi mốc (spotIndex thay đổi), bật cờ di chuyển tự động
   useEffect(() => {
+    // Ngay khi vừa vào trang, đặt thẳng camera và target vào điểm xuất phát số 0
+    if (isFirstRender.current) {
+      camera.position.set(...spots[0].position);
+      if (controls.current) {
+        controls.current.target.set(...targets[0]);
+        controls.current.update();
+      }
+      isFirstRender.current = false;
+      return;
+    }
+
     const spot = spots[spotIndex];
     if (!spot) return;
 
@@ -67,16 +69,14 @@ function CameraView({ spots, spotIndex, controls }) {
     if (targets[spotIndex]) {
       lookTarget.current.set(...targets[spotIndex]);
     }
-    isMovingRef.current = true; 
-  }, [spotIndex, spots]);
+    isMovingRef.current = true;
+  }, [spotIndex, spots, camera, controls]);
 
   useFrame((_, delta) => {
-    // Nếu không trong quá trình bay đến điểm mới thì dừng, cho phép OrbitControls hoạt động tự do
     if (!isMovingRef.current) return;
 
     const alpha = 1 - Math.exp(-6 * delta);
 
-    // Dịch chuyển vị trí camera và tâm nhìn
     camera.position.lerp(destination.current, alpha);
 
     if (controls.current) {
@@ -84,7 +84,7 @@ function CameraView({ spots, spotIndex, controls }) {
       controls.current.update();
     }
 
-    // Khi camera đã bay đến sát điểm đích, tắt cờ di chuyển để mở khóa xoay 360 độ
+    // Khi đã đến nơi, tắt cờ di chuyển để mở khóa xoay 360 độ tự do
     if (
       camera.position.distanceTo(destination.current) < 0.05 &&
       controls.current &&
@@ -356,11 +356,11 @@ function Room({ onExhibit }) {
 
 function NavigationMarkers({ current, onMove }) {
   const signs = [
-    { id: 0, position: [0, 0, 5] },
-    { id: 1, position: [-6, 0, -6.2] },
-    { id: 2, position: [0, 0, -6.2] },
-    { id: 3, position: [6, 0, -6.1] },
-    { id: 4, position: [11.7, 0, 1] },
+   { id: 0, position: [0, 0, 4.2] },
+    { id: 1, position: [-3.5, 0, 1.2] },
+    { id: 2, position: [0, 0, 1.2] },
+    { id: 3, position: [3.5, 0, 1.2] },
+    { id: 4, position: [5, 0, 2.7] },
   ];
 
   return (
