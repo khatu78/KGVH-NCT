@@ -346,26 +346,28 @@ function Room({ onExhibit }) {
 
 
 function NavigationMarkers({ current, onMove }) {
-  const signs = [
-   { id: 0, position: [0, 0, 4.2] },
-    { id: 1, position: [-3.5, 0, 1.2] },
-    { id: 2, position: [0, 0, 1.2] },
-    { id: 3, position: [3.5, 0, 1.2] },
-    { id: 4, position: [5, 0, 2.7] },
-  ];
+  const signs = [
+    { id: 0, position: [0, 0, 4.2] },
+    { id: 1, position: [-3.5, 0, 1.2] },
+    { id: 2, position: [1.2, 0, 1.2] }, // Dịch lệch sang phải một chút để không che tầm nhìn từ cửa vào
+    { id: 3, position: [3.5, 0, 1.2] },
+    { id: 4, position: [5, 0, 2.7] },
+  ];
 
-  return (
-    <group>
-      {signs.map((sign) => (
-        <ArrowMarker
-          key={sign.id}
-          position={sign.position}
-          label={spots[sign.id].name}
-          onClick={() => onMove(sign.id)}
-        />
-      ))}
-    </group>
-  );
+  return (
+    <group>
+      {signs
+        .filter((sign) => sign.id !== current) // Ẩn biển chỉ dẫn của vị trí hiện tại đang đứng
+        .map((sign) => (
+          <ArrowMarker
+            key={sign.id}
+            position={sign.position}
+            label={spots[sign.id].name}
+            onClick={() => onMove(sign.id)}
+          />
+        ))}
+    </group>
+  );
 }
 
 
