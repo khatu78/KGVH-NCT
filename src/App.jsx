@@ -10,9 +10,9 @@ const ROOM = { width: 24, depth: 18, height: 5.5 };
 
 const spots = [
   { id: 0, name: "Lối vào", position: [0, 1.6, 6.5] },
-  { id: 1, name: "Chân dung Bác Hồ", position: [-3.5, 1.6, -1.2] },
+  { id: 1, name: "Chân dung Bác Hồ", position: [-3.5, 1.6, -3] },
   { id: 2, name: "Video tư liệu", position: [0, 1.6, 0] },
-  { id: 3, name: "Tủ sách", position: [3.5, 1.6, -1.2] },
+  { id: 3, name: "Tủ sách", position: [3.5, 1.6, -3] },
   { id: 4, name: "Khu trưng bày", position: [5, 1.6, 1.5] },
 ];
 const targets = [
@@ -76,9 +76,9 @@ function CameraView({ spots, spotIndex }) {
     // id1 và id3 nhìn chính diện giống id2
 if (spotIndex === 1 || spotIndex === 3) {
   lookTarget.current.set(
-   /// destination.current.x,
-   /// destination.current.y,
-  ///  -10
+   destination.current.x,
+   destination.current.y,
+    -10
   );
 }
 
