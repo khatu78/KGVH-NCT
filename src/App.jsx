@@ -15,6 +15,14 @@ const spots = [
   { id: 3, name: "Tủ sách", position: [3.5, 1.6, 0] },
   { id: 4, name: "Khu trưng bày", position: [5, 1.6, 1.5] },
 ];
+
+const targets = [
+  [0, 1.6, -4],
+  [-8, 2.65, -8.25],
+  [0, 2.7, -8.25],
+  [8, 2.2, -8.1],
+  [11.78, 2.7, 1.5],
+];
 const exhibits = [
   {
     title: "Chân dung Chủ tịch Hồ Chí Minh",
