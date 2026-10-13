@@ -9,7 +9,7 @@ const ROOM = { width: 24, depth: 18, height: 5.5 };
 
 
 const spots = [
-  { id: 0, name: "Lối vào", position: [0, 1.6, 3] },
+  { id: 0, name: "Lối vào", position: [0, 1.6, 6.5] },
   { id: 1, name: "Chân dung Bác Hồ", position: [-3.5, 1.6, 0] },
   { id: 2, name: "Video tư liệu", position: [0, 1.6, 0] },
   { id: 3, name: "Tủ sách", position: [3.5, 1.6, 0] },
@@ -74,8 +74,9 @@ function CameraView({ spots, spotIndex }) {
     lookTarget.current.set(...target);
 
     if (isFirstRender.current) {
-      camera.position.copy(destination.current);
-      camera.lookAt(lookTarget.current);
+      camera.position.set(...spots[0].position);
+camera.lookAt(...targets[0]);
+camera.rotation.order = "YXZ";
       isFirstRender.current = false;
       isMovingRef.current = false;
       return;
@@ -113,33 +114,35 @@ function FixedLookControls() {
     let startYaw = 0;
     let startPitch = 0;
 
-    const onPointerDown = (e) => {
-      if (e.button !== 0) return;
+   const onPointerDown = (e) => {
+  if (e.button !== 0) return;
 
-      dragging = true;
-      startX = e.clientX;
-      startY = e.clientY;
-      startYaw = camera.rotation.y;
-      startPitch = camera.rotation.x;
-      element.style.cursor = "grabbing";
-    };
+  dragging = true;
+  startX = e.clientX;
+  startY = e.clientY;
 
-    const onPointerMove = (e) => {
-      if (!dragging) return;
+  camera.rotation.order = "YXZ";
+  startYaw = camera.rotation.y;
+  startPitch = camera.rotation.x;
 
-      const sensitivity = 0.004;
+  element.setPointerCapture?.(e.pointerId);
+};
 
-      camera.rotation.order = "YXZ";
-      camera.rotation.y =
-        startYaw - (e.clientX - startX) * sensitivity;
+   const onPointerMove = (e) => {
+  if (!dragging) return;
 
-      camera.rotation.x = THREE.MathUtils.clamp(
-        startPitch - (e.clientY - startY) * sensitivity,
-        -1.2,
-        1.2
-      );
-    };
+  const sensitivity = 0.004;
 
+  camera.rotation.order = "YXZ";
+  camera.rotation.y =
+    startYaw - (e.clientX - startX) * sensitivity;
+
+  camera.rotation.x = THREE.MathUtils.clamp(
+    startPitch - (e.clientY - startY) * sensitivity,
+    -1.2,
+    1.2
+  );
+};
     const onPointerUp = () => {
       dragging = false;
       element.style.cursor = "grab";
