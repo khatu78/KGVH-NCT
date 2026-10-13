@@ -76,9 +76,9 @@ function CameraView({ spots, spotIndex }) {
     // id1 và id3 nhìn chính diện giống id2
 if (spotIndex === 1 || spotIndex === 3) {
   lookTarget.current.set(
-    destination.current.x,
-    destination.current.y,
-    -10
+   /// destination.current.x,
+   /// destination.current.y,
+  ///  -10
   );
 }
 
