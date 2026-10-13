@@ -485,8 +485,9 @@ function Room({ onExhibit }) {
   </mesh>
 
   <Text
-     position={[0, 0, 0.055]}
-  rotation={[0, 0, 0]}
+     position={[11.78, 2.7, 1.5]}
+  rotation={[0, -Math.PI / 2, 0]}
+  
   fontSize={0.27}
   color="#ffd700"
   anchorX="center"
