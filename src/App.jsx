@@ -128,21 +128,26 @@ function FixedLookControls() {
   element.setPointerCapture?.(e.pointerId);
 };
 
-   const onPointerMove = (e) => {
+  const onPointerMove = (e) => {
   if (!dragging) return;
 
   const sensitivity = 0.004;
 
   camera.rotation.order = "YXZ";
-  camera.rotation.y =
-    startYaw - (e.clientX - startX) * sensitivity;
 
+  // Kéo chuột sang phải: góc nhìn sang phải
+  camera.rotation.y =
+    startYaw + (e.clientX - startX) * sensitivity;
+
+  // Kéo chuột xuống: góc nhìn xuống
   camera.rotation.x = THREE.MathUtils.clamp(
-    startPitch - (e.clientY - startY) * sensitivity,
+    startPitch + (e.clientY - startY) * sensitivity,
     -1.2,
     1.2
   );
 };
+
+
     const onPointerUp = () => {
       dragging = false;
       element.style.cursor = "grab";
@@ -219,17 +224,27 @@ function Room({ onExhibit }) {
   return (
     <group>
         {/* Bản đồ Việt Nam trên tường */}
-      <mesh
-        position={[-11.78, 2.75, -1.5]}
-        rotation={[0, Math.PI / 2, 0]}
-      >
-        <planeGeometry args={[2.5, 3.5]} />
-        <meshBasicMaterial
-        map={banDo}
-  side={THREE.DoubleSide}
-           toneMapped={false}
-        />
-      </mesh>
+     <mesh
+  position={[-11.78, 2.75, -1.5]}
+  rotation={[0, Math.PI / 2, 0]}
+  onClick={(e) => {
+    e.stopPropagation();
+    window.dispatchEvent(new Event("open-map"));
+  }}
+  onPointerOver={() => {
+    document.body.style.cursor = "pointer";
+  }}
+  onPointerOut={() => {
+    document.body.style.cursor = "auto";
+  }}
+>
+  <planeGeometry args={[2.5, 3.5]} />
+  <meshBasicMaterial
+    map={banDo}
+    side={THREE.DoubleSide}
+    toneMapped={false}
+  />
+</mesh>
      {/* Sàn */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
@@ -502,7 +517,16 @@ export default function App() {
   const [error, setError] = useState("");
   const [spotIndex, setSpotIndex] = useState(0);
   const [selectedExhibit, setSelectedExhibit] = useState(null);
+const [showMap, setShowMap] = useState(false);
+useEffect(() => {
+  const openMap = () => setShowMap(true);
 
+  window.addEventListener("open-map", openMap);
+
+  return () => {
+    window.removeEventListener("open-map", openMap);
+  };
+}, []);
   const [previousSpotIndex, setPreviousSpotIndex] = useState(0);
 
 const moveToSpot = (nextIndex) => {
@@ -612,6 +636,55 @@ const returnToPreviousSpot = () => {
         />
        
       </Canvas>
+{showMap && (
+  <div
+    onClick={() => setShowMap(false)}
+    style={{
+      position: "fixed",
+      inset: 0,
+      zIndex: 2000,
+      background: "rgba(0, 0, 0, 0.9)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "24px",
+      cursor: "zoom-out",
+    }}
+  >
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        setShowMap(false);
+      }}
+      style={{
+        position: "absolute",
+        top: "20px",
+        right: "24px",
+        fontSize: "28px",
+        color: "white",
+        background: "#333",
+        border: "none",
+        borderRadius: "8px",
+        padding: "6px 14px",
+        cursor: "pointer",
+      }}
+    >
+      ✕
+    </button>
+
+    <img
+      src={`${import.meta.env.BASE_URL}images/bandoVN.jpg`}
+      alt="Bản đồ Việt Nam"
+      onClick={(e) => e.stopPropagation()}
+      style={{
+        maxWidth: "95vw",
+        maxHeight: "90vh",
+        objectFit: "contain",
+        borderRadius: "8px",
+      }}
+    />
+  </div>
+)}
      <button
   className="return-button"
   onClick={returnToPreviousSpot}
