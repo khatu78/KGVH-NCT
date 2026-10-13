@@ -516,62 +516,54 @@ const z = -4.5 - Math.sin(t * Math.PI * 2) * 1.2;
   );
 })}
 
-{/* Khung Quần đảo Hoàng Sa - 80x80 cm */}
+{/* Khung Hoàng Sa - 50x50 cm */}
 <group
-  position={[11.78, 4.3, 5.2]}
+  position={[11.78, 2.2, -1.8]}
   rotation={[0, -Math.PI / 2, 0]}
 >
   <mesh>
-    <boxGeometry args={[0.85, 0.85, 0.06]} />
+    <boxGeometry args={[0.55, 0.55, 0.06]} />
     <meshStandardMaterial color="#70472d" />
   </mesh>
-
   <mesh position={[0, 0, 0.035]}>
-    <planeGeometry args={[0.8, 0.8]} />
+    <planeGeometry args={[0.5, 0.5]} />
     <meshStandardMaterial color="#dcebf0" />
   </mesh>
-
   <Text
-    position={[0, 0.12, 0.045]}
-    fontSize={0.09}
+    position={[0, 0, 0.045]}
+    fontSize={0.055}
     color="#173f63"
     anchorX="center"
     anchorY="middle"
-    maxWidth={0.72}
+    maxWidth={0.45}
     textAlign="center"
   >
-    QUẦN ĐẢO
-    {"\n"}
     HOÀNG SA
   </Text>
 </group>
 
-{/* Khung Quần đảo Trường Sa - 80x80 cm */}
+{/* Khung Trường Sa - 50x50 cm */}
 <group
-  position={[11.78, 3.2, 7.0]}
+  position={[11.78, 1.5, 0.8]}
   rotation={[0, -Math.PI / 2, 0]}
 >
   <mesh>
-    <boxGeometry args={[0.85, 0.85, 0.06]} />
+    <boxGeometry args={[0.55, 0.55, 0.06]} />
     <meshStandardMaterial color="#70472d" />
   </mesh>
-
   <mesh position={[0, 0, 0.035]}>
-    <planeGeometry args={[0.8, 0.8]} />
+    <planeGeometry args={[0.5, 0.5]} />
     <meshStandardMaterial color="#dcebf0" />
   </mesh>
-
   <Text
-    position={[0, 0.12, 0.045]}
-    fontSize={0.09}
+    position={[0, 0, 0.045]}
+    fontSize={0.055}
     color="#173f63"
     anchorX="center"
     anchorY="middle"
-    maxWidth={0.72}
+    maxWidth={0.45}
     textAlign="center"
   >
-    QUẦN ĐẢO
-    {"\n"}
     TRƯỜNG SA
   </Text>
 </group>
