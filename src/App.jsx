@@ -481,13 +481,13 @@ function Room({ onExhibit }) {
 {/* 10 khung ảnh treo tường theo hình chữ S */}
 {Array.from({ length: 10 }, (_, i) => {
   const t = i / 9;
-const z = -4.5 + t * 9;
-const x = Math.sin(t * Math.PI * 2) * 0.8;
+const y = 4.3 - t * 3.5;
+const z = -4.5 + Math.sin(t * Math.PI * 2) * 1.2;
 
   return (
     <group
       key={i}
-      position={[11.78, 3.7 + x, z]}
+      position={[11.78, y, z]}
       rotation={[0, -Math.PI / 2, 0]}
     >
       {/* Viền khung */}
