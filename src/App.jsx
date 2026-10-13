@@ -50,55 +50,37 @@ const exhibits = [
   },
 ];
  
-function CameraView({ spots, spotIndex, controls }) {
+function CameraView({ spots, targets, spotIndex }) {
   const { camera } = useThree();
   const isMovingRef = useRef(false);
 
   const destination = useRef(new THREE.Vector3(...spots[0].position));
-  const lookTarget = useRef(new THREE.Vector3(...targets[0]));
 
   useEffect(() => {
     const spot = spots[spotIndex];
     if (!spot) return;
 
     destination.current.set(...spot.position);
-    if (targets[spotIndex]) {
-      lookTarget.current.set(...targets[spotIndex]);
-    }
 
-    // Ở mốc ID 0: Đặt camera đứng đúng vị trí ngay lập tức, không lerp
+    // Nếu về mốc ID 0 (Lối vào), đặt camera đứng đúng vị trí ngay lập tức
     if (spotIndex === 0) {
       camera.position.set(...spots[0].position);
-      if (controls.current) {
-        controls.current.target.set(...targets[0]);
-        controls.current.update();
-      }
       isMovingRef.current = false;
       return;
     }
 
-    // Các mốc khác: Bật chuyển động mượt
+    // Các mốc khác: bật hiệu ứng di chuyển mượt
     isMovingRef.current = true;
-  }, [spotIndex, spots, camera, controls]);
+  }, [spotIndex, spots, camera]);
 
   useFrame((_, delta) => {
     if (!isMovingRef.current) return;
 
     const alpha = 1 - Math.exp(-6 * delta);
-
     camera.position.lerp(destination.current, alpha);
 
-    if (controls.current) {
-      controls.current.target.lerp(lookTarget.current, alpha);
-      controls.current.update();
-    }
-
-    // Đã tới nơi -> nhả quyền điều khiển cho OrbitControls xoay 360 độ
-    if (
-      camera.position.distanceTo(destination.current) < 0.05 &&
-      controls.current &&
-      controls.current.target.distanceTo(lookTarget.current) < 0.05
-    ) {
+    // Khi đã đến nơi, tắt cờ để mở khóa xoay 360 độ tự do
+    if (camera.position.distanceTo(destination.current) < 0.05) {
       isMovingRef.current = false;
     }
   });
@@ -388,37 +370,36 @@ function NavigationMarkers({ current, onMove }) {
 
 
 function Scene({ spotIndex, onMove, onExhibit }) {
-  const controls = useRef(null);
+  return (
+    <>
+      <color attach="background" args={["#b9d2e3"]} />
+      <ambientLight intensity={1.5} />
+      <directionalLight position={[4, 8, 5]} intensity={2} castShadow />
 
-  return (
-    <>
-      <color attach="background" args={["#b9d2e3"]} />
-      <ambientLight intensity={1.5} />
-      <directionalLight position={[4, 8, 5]} intensity={2} castShadow />
+      <Room onExhibit={onExhibit} />
+      <NavigationMarkers current={spotIndex} onMove={onMove} />
 
-      <Room onExhibit={onExhibit} />
-      <NavigationMarkers current={spotIndex} onMove={onMove} />
+      {/* Đưa OrbitControls lên trước và truyền trực tiếp target vào đây để tránh xung đột */}
+      <OrbitControls
+        makeDefault
+        enableRotate
+        enablePan={false}
+        enableZoom
+        rotateSpeed={0.8}
+        minPolarAngle={0.5}
+        maxPolarAngle={2.2}
+        target={targets[spotIndex]} 
+      />
 
-      <CameraView
-        spots={spots}
-        spotIndex={spotIndex}
-        controls={controls}
-      />
+      <CameraView
+        spots={spots}
+        targets={targets}
+        spotIndex={spotIndex}
+      />
 
-    <OrbitControls
-  ref={controls}
-  makeDefault
-  enableRotate
-  enablePan={false}
-  enableZoom
-  rotateSpeed={0.8}
-  minPolarAngle={0.5}
-  maxPolarAngle={2.2}
-/>
-
-      <Environment preset="city" />
-    </>
-  );
+      <Environment preset="city" />
+    </>
+  );
 }
 
 
