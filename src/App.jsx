@@ -279,15 +279,55 @@ function Room({ onExhibit }) {
       ))}
 
       {/* Tiêu đề */}
-      <Text
-        position={[0, 4.35, -8.3]}
-        fontSize={0.52}
-        color="#59351d"
-        anchorX="center"
-        anchorY="middle"
-      >
-        KHÔNG GIAN VĂN HÓA HỒ CHÍ MINH
-      </Text>
+     {/* Biển tiêu đề trang trọng */}
+<group position={[0, 4.8, -8.08]}>
+  {/* Nền biển tiêu đề */}
+  <mesh>
+    <boxGeometry args={[12.5, 1.05, 0.18]} />
+    <meshStandardMaterial
+      color="#681b1b"
+      metalness={0.35}
+      roughness={0.4}
+    />
+  </mesh>
+
+  {/* Viền vàng phía trước */}
+  <mesh position={[0, 0, 0.1]}>
+    <boxGeometry args={[12.25, 0.82, 0.025]} />
+    <meshStandardMaterial
+      color="#d4af37"
+      metalness={0.75}
+      roughness={0.25}
+    />
+  </mesh>
+
+  {/* Mặt nền bên trong */}
+  <mesh position={[0, 0, 0.12]}>
+    <boxGeometry args={[12.12, 0.69, 0.025]} />
+    <meshStandardMaterial
+      color="#681b1b"
+      roughness={0.5}
+    />
+  </mesh>
+
+  {/* Chữ tiêu đề */}
+  <Text
+    position={[0, 0, 0.17]}
+    fontSize={0.48}
+    color="#ffe6a0"
+    anchorX="center"
+    anchorY="middle"
+    maxWidth={11.8}
+    textAlign="center"
+    outlineWidth={0.006}
+    outlineColor="#8b6425"
+    letterSpacing={0.035}
+    material-metalness={0.35}
+    material-roughness={0.3}
+  >
+    KHÔNG GIAN VĂN HÓA HỒ CHÍ MINH
+  </Text>
+</group>
 
       {/* Chân dung */}
       <group
