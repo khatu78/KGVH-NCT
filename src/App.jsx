@@ -462,7 +462,7 @@ function Scene({ spotIndex, onMove, onExhibit }) {
   spots={spots}
   spotIndex={spotIndex}
 />
-
+<FixedLookControls />
     
       <Environment preset="city" />
     </>
