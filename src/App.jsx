@@ -473,7 +473,7 @@ function Room({ onExhibit }) {
        {/* Chữ KHU TRƯNG BÀY gắn trên vách tường bên phải */}
 <group
   position={[11.78, 2.7, 1.5]}
- rotation={[0, Math.PI, 0]}
+  rotation={[0, -Math.PI / 2, 0]}
 >
   <mesh>
     <boxGeometry args={[3.2, 0.65, 0.08]} />
@@ -485,12 +485,13 @@ function Room({ onExhibit }) {
   </mesh>
 
   <Text
-    position={[0, 0, 0.055]}
-    fontSize={0.27}
-    color="#ffd700"
-    anchorX="center"
-    anchorY="middle"
-    textAlign="center"
+     position={[0, 0, 0.055]}
+  rotation={[0, 0, 0]}
+  fontSize={0.27}
+  color="#ffd700"
+  anchorX="center"
+  anchorY="middle"
+  textAlign="center"
   >
     KHU TRƯNG BÀY
   </Text>
