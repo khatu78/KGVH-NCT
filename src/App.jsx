@@ -546,7 +546,7 @@ const z = -4.5 - Math.sin(t * Math.PI * 2) * 1.2;
 {/* Khung Trường Sa - 50x50 cm */}
 <group
 
-  position={[11.78, 1.5, 1]}
+  position={[11.78, 1, -1]}
   rotation={[0, -Math.PI / 2, 0]}
 >
   <mesh>
