@@ -213,9 +213,117 @@ function ArrowMarker({ position, onClick, label }) {
   );
 }
 
+
+function PixelVietnamMap() {
+  const tileSize = 0.14;
+
+  // Mỗi cặp số là cột bắt đầu và cột kết thúc của một hàng pixel
+  const rows = [
+    [5, 7],
+    [4, 8],
+    [3, 8],
+    [4, 8],
+    [5, 8],
+    [6, 8],
+    [5, 8],
+    [4, 7],
+    [3, 6],
+    [4, 7],
+    [5, 8],
+    [6, 9],
+    [5, 9],
+    [4, 9],
+    [3, 10],
+    [2, 10],
+    [2, 9],
+    [3, 9],
+    [4, 10],
+    [5, 11],
+  ];
+
+  const pixels = rows.flatMap(([start, end], row) =>
+    Array.from({ length: end - start + 1 }, (_, i) => {
+      const col = start + i;
+
+      return {
+        row,
+        col,
+        x: (col - 6.5) * tileSize,
+        y: ((rows.length - 1) / 2 - row) * tileSize,
+        gold: (row * 7 + col * 3) % 13 === 0,
+      };
+    })
+  );
+
+  return (
+    <group
+      position={[-11.78, 2.75, -1.5]}
+      rotation={[0, Math.PI / 2, 0]}
+    >
+      {/* Bảng nền */}
+      <mesh position={[0, 0, 0]}>
+        <boxGeometry args={[2.5, 3.8, 0.12]} />
+        <meshStandardMaterial
+          color="#4a3023"
+          roughness={0.75}
+        />
+      </mesh>
+
+      {/* Khung viền */}
+      <mesh position={[0, 0, 0.07]}>
+        <boxGeometry args={[2.35, 3.65, 0.04]} />
+        <meshStandardMaterial color="#d6b36a" />
+      </mesh>
+
+      {/* Nền bên trong */}
+      <mesh position={[0, 0, 0.095]}>
+        <boxGeometry args={[2.23, 3.53, 0.025]} />
+        <meshStandardMaterial color="#f0e2c5" />
+      </mesh>
+
+      {/* Các ô pixel tạo hình bản đồ */}
+      {pixels.map((pixel) => (
+        <mesh
+          key={`${pixel.row}-${pixel.col}`}
+          position={[pixel.x, pixel.y - 0.15, 0.14]}
+        >
+          <boxGeometry
+            args={[
+              tileSize * 0.9,
+              tileSize * 0.9,
+              0.07,
+            ]}
+          />
+          <meshStandardMaterial
+            color={pixel.gold ? "#ffd700" : "#b71c1c"}
+            emissive={pixel.gold ? "#8b6508" : "#450000"}
+            emissiveIntensity={0.12}
+            roughness={0.55}
+          />
+        </mesh>
+      ))}
+
+      {/* Tiêu đề */}
+      <Text
+        position={[0, 1.58, 0.15]}
+        fontSize={0.19}
+        color="#ffd700"
+        anchorX="center"
+        anchorY="middle"
+        maxWidth={2.2}
+        textAlign="center"
+      >
+        BẢN ĐỒ VIỆT NAM
+      </Text>
+    </group>
+  );
+}
+
+
 function Room({ onExhibit }) {
   return (
     <group>
+       <PixelVietnamMap />
       {/* Sàn */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
