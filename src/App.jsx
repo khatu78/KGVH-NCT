@@ -238,56 +238,56 @@ const spaces = [
     id: 1,
     title: "CUỘC ĐỜI VÀ SỰ NGHIỆP",
     description: "Tư liệu về cuộc đời và sự nghiệp của Chủ tịch Hồ Chí Minh.",
-    position: [-8, 0, -4.5],
+    position: [-4.2, 0, -2.2],
     color: "#7c2929",
   },
   {
     id: 2,
     title: "TƯ TƯỞNG HỒ CHÍ MINH",
     description: "Không gian tìm hiểu tư tưởng Hồ Chí Minh.",
-    position: [-2.7, 0, -4.5],
+    position: [-1.4, 0, -2.2],
     color: "#805b32",
   },
   {
     id: 3,
     title: "ĐẠO ĐỨC VÀ PHONG CÁCH",
     description: "Tư liệu về đạo đức và phong cách Hồ Chí Minh.",
-    position: [2.7, 0, -4.5],
+    position: [1.4, 0, -2.2],
     color: "#315c50",
   },
   {
     id: 4,
     title: "BÁC HỒ VỚI THIẾU NHI",
     description: "Hình ảnh và câu chuyện về tình cảm của Bác với thiếu nhi.",
-    position: [8, 0, -4.5],
+    position: [4.2, 0, -2.2],
     color: "#365d83",
   },
   {
     id: 5,
     title: "BÁC HỒ VỚI MIỀN NAM",
     description: "Tư liệu về tình cảm của Bác dành cho đồng bào miền Nam.",
-    position: [-8, 0, -0.5],
+    position: [-4.2, 0, 1.2],
     color: "#365d83",
   },
   {
     id: 6,
     title: "DI SẢN VÀ TÁC PHẨM",
     description: "Không gian giới thiệu tác phẩm và di sản của Bác.",
-    position: [-2.7, 0, -0.5],
+    position: [-1.4, 0, 1.2],
     color: "#315c50",
   },
   {
     id: 7,
     title: "HỌC TẬP VÀ LÀM THEO BÁC",
     description: "Các câu chuyện và tư liệu học tập theo gương Bác.",
-    position: [2.7, 0, -0.5],
+    position: [1.4, 0, 1.2],
     color: "#805b32",
   },
   {
     id: 8,
     title: "TƯ LIỆU LỊCH SỬ",
     description: "Không gian lưu trữ hình ảnh, video và tư liệu lịch sử.",
-    position: [8, 0, -0.5],
+    position: [4.2, 0, 1.2],
     color: "#7c2929",
   },
 ];
@@ -387,10 +387,62 @@ function InteractiveSpaces({ onSelect }) {
   );
 }
 
+///căn phòng thứ 2
+function SecondRoom({ onSpaceClick }) {
+  return (
+    <group>
+      {/* Sàn phòng 2 */}
+      <mesh position={[-18, 0, 4.5]} receiveShadow>
+        <boxGeometry args={[12, 0.2, 9]} />
+        <meshStandardMaterial color="#d8c9ad" />
+      </mesh>
+
+      {/* Trần phòng 2 */}
+      <mesh position={[-18, 5.5, 4.5]}>
+        <boxGeometry args={[12, 0.2, 9]} />
+        <meshStandardMaterial color="#f5f1e8" />
+      </mesh>
+
+      {/* Tường cuối phòng */}
+      <mesh position={[-24, 2.75, 4.5]}>
+        <boxGeometry args={[0.25, 5.5, 9]} />
+        <meshStandardMaterial color="#eee6d7" />
+      </mesh>
+
+      {/* Hai tường bên */}
+      {[0, 9].map((z) => (
+        <mesh key={z} position={[-18, 2.75, z]}>
+          <boxGeometry args={[12, 5.5, 0.25]} />
+          <meshStandardMaterial color="#eee6d7" />
+        </mesh>
+      ))}
+
+      {/* Tiêu đề phòng 2 */}
+      <Text
+        position={[-18, 4.6, 0.35]}
+        fontSize={0.4}
+        color="#7c2929"
+        anchorX="center"
+        anchorY="middle"
+        maxWidth={10}
+        textAlign="center"
+      >
+        KHÔNG GIAN TRƯNG BÀY CHUYÊN ĐỀ
+      </Text>
+
+      {/* Tám gian trưng bày */}
+      <group position={[-18, 0, 4.5]}>
+        <InteractiveSpaces onSelect={onSpaceClick} />
+      </group>
+    </group>
+  );
+}
+
 
 
 function Room({ onExhibit, onSpaceClick }) {
    const banDo = useTexture(`${import.meta.env.BASE_URL}images/bandoVN.jpg`);
+   const [doorOpen, setDoorOpen] = useState(false);
    return (
     <group>
         {/* Bản đồ Việt Nam trên tường */}
@@ -437,16 +489,89 @@ function Room({ onExhibit, onSpaceClick }) {
         <meshStandardMaterial color="#eee6d7" />
       </mesh>
 
-      {/* Tường trái và phải */}
-      {[-1, 1].map((side) => (
-        <mesh
-          key={side}
-          position={[side * ROOM.width / 2, ROOM.height / 2, 0]}
-        >
-          <boxGeometry args={[0.3, ROOM.height, ROOM.depth]} />
-          <meshStandardMaterial color="#eee6d7" />
-        </mesh>
-      ))}
+      
+      {/* Tường phải của sảnh chính */}
+<mesh position={[12, ROOM.height / 2, 0]}>
+  <boxGeometry args={[0.3, ROOM.height, ROOM.depth]} />
+  <meshStandardMaterial color="#eee6d7" />
+</mesh>
+
+{/* Tường trái: chừa lối cửa tại z = 5.75 */}
+<mesh position={[-12, ROOM.height / 2, -2.25]}>
+  <boxGeometry args={[0.3, ROOM.height, 13.5]} />
+  <meshStandardMaterial color="#eee6d7" />
+</mesh>
+
+<mesh position={[-12, ROOM.height / 2, 8]}>
+  <boxGeometry args={[0.3, ROOM.height, 2]} />
+  <meshStandardMaterial color="#eee6d7" />
+</mesh>
+
+{/* Phần tường phía trên cửa */}
+<mesh position={[-12, 4, 5.75]}>
+  <boxGeometry args={[0.3, 3, 2.5]} />
+  <meshStandardMaterial color="#eee6d7" />
+</mesh>
+
+{/* Khung cửa */}
+<group position={[-11.82, 0, 5.75]}>
+  <mesh position={[0, 1.25, -1.2]}>
+    <boxGeometry args={[0.2, 2.5, 0.15]} />
+    <meshStandardMaterial color="#70472d" />
+  </mesh>
+
+  <mesh position={[0, 1.25, 1.2]}>
+    <boxGeometry args={[0.2, 2.5, 0.15]} />
+    <meshStandardMaterial color="#70472d" />
+  </mesh>
+
+  <mesh position={[0, 2.5, 0]}>
+    <boxGeometry args={[0.2, 0.15, 2.5]} />
+    <meshStandardMaterial color="#70472d" />
+  </mesh>
+
+  {/* Cánh cửa */}
+  <group
+    position={[0, 0, -1.1]}
+    rotation={[0, doorOpen ? -Math.PI / 2 : 0, 0]}
+    onClick={(e) => {
+      e.stopPropagation();
+      setDoorOpen(true);
+      window.dispatchEvent(new Event("enter-second-room"));
+    }}
+    onPointerOver={() => {
+      document.body.style.cursor = "pointer";
+    }}
+    onPointerOut={() => {
+      document.body.style.cursor = "auto";
+    }}
+  >
+    <mesh position={[0, 1.2, 1.1]}>
+      <boxGeometry args={[0.12, 2.4, 2.2]} />
+      <meshStandardMaterial
+        color={doorOpen ? "#a87b51" : "#70472d"}
+      />
+    </mesh>
+
+    <mesh position={[0.09, 1.2, 1.85]}>
+      <sphereGeometry args={[0.07, 12, 12]} />
+      <meshStandardMaterial color="#d4af37" />
+    </mesh>
+
+    <Text
+      position={[0.08, 1.8, 1.1]}
+      rotation={[0, 0, 0]}
+      fontSize={0.2}
+      color="#ffe6a0"
+      anchorX="center"
+      anchorY="middle"
+      maxWidth={1.8}
+      textAlign="center"
+    >
+      PHÒNG TRƯNG BÀY
+    </Text>
+  </group>
+</group>
 
       {/* Tiêu đề */}
      {/* Biển tiêu đề trang trọng */}
@@ -586,6 +711,42 @@ function Room({ onExhibit, onSpaceClick }) {
       {/* Tủ trưng bày */}
      
 
+      {/* Bàn */}
+     
+{/* Bàn */}
+<group position={[10, 0, 1.5]}>
+  {/* Mặt bàn */}
+  <mesh position={[0, 1.15, 0]} castShadow>
+    <boxGeometry args={[1.25, 0.18, 2.6]} />
+    <meshStandardMaterial color="#70472d" />
+  </mesh>
+
+  {/* 4 chân bàn */}
+  {[
+    [-0.45, 0.55, -1],
+    [0.45, 0.55, -1],
+    [-0.45, 0.55, 1],
+    [0.45, 0.55, 1],
+  ].map((p, i) => (
+    <mesh key={i} position={p}>
+      <boxGeometry args={[0.13, 1.1, 0.13]} />
+      <meshStandardMaterial color="#553522" />
+    </mesh>
+  ))}
+</group>
+
+
+      {/* Cây */}
+      <group position={[9, 0, 5]}>
+        <mesh position={[0, 1, 0]}>
+          <cylinderGeometry args={[0.28, 0.38, 2, 16]} />
+          <meshStandardMaterial color="#9b633b" />
+        </mesh>
+        <mesh position={[0, 2.5, 0]}>
+          <sphereGeometry args={[1.1, 16, 12]} />
+          <meshStandardMaterial color="#4e7750" />
+        </mesh>
+      </group>
 
       {/* Ánh sáng */}
       {[-7, 0, 7].map((x) => (
@@ -599,7 +760,6 @@ function Room({ onExhibit, onSpaceClick }) {
       ))}
        {/* Chữ KHU TRƯNG BÀY gắn trên vách tường bên phải */}
 
-
 {/* 10 khung ảnh treo tường theo hình chữ S */}
 {Array.from({ length: 10 }, (_, i) => {
   const t = i / 9;
@@ -612,7 +772,7 @@ const z = -4.5 - Math.sin(t * Math.PI * 2) * 1.2;
       position={[11.78, y, z]}
       rotation={[0, -Math.PI / 2, 0]}
     >
-    <InteractiveSpaces onSelect={onSpaceClick} />
+   
       {/* Viền khung */}
       <mesh>
         <boxGeometry args={[1.05, 1.05, 0.06]} />
@@ -752,7 +912,7 @@ function NavigationMarkers({ current, onMove }) {
 }
 
 
-function Scene({ spotIndex, onMove, onExhibit, onSpaceClick }) {
+function Scene({ spotIndex, onMove, onExhibit, onSpaceClick, room2Active }) {
  
 
   return (
@@ -765,6 +925,9 @@ function Scene({ spotIndex, onMove, onExhibit, onSpaceClick }) {
   onExhibit={onExhibit}
   onSpaceClick={onSpaceClick}
 />
+      {room2Active && (
+  <SecondRoom onSpaceClick={onSpaceClick} />
+)}
       <NavigationMarkers current={spotIndex} onMove={onMove} />
 
      <CameraView
@@ -786,6 +949,7 @@ function Scene({ spotIndex, onMove, onExhibit, onSpaceClick }) {
 
 
 export default function App() {
+  const [room2Active, setRoom2Active] = useState(false);
   const [selectedSpace, setSelectedSpace] = useState(null);
   const [userName, setUserName] = useState("");
 const [userAge, setUserAge] = useState("");
@@ -801,6 +965,19 @@ const [showWelcome, setShowWelcome] = useState(false);
   const [spotIndex, setSpotIndex] = useState(0);
   const [selectedExhibit, setSelectedExhibit] = useState(null);
 const [showMap, setShowMap] = useState(false);
+useEffect(() => {
+  const enter = () => setRoom2Active(true);
+  const leave = () => setRoom2Active(false);
+
+  window.addEventListener("enter-second-room", enter);
+  window.addEventListener("leave-second-room", leave);
+
+  return () => {
+    window.removeEventListener("enter-second-room", enter);
+    window.removeEventListener("leave-second-room", leave);
+  };
+}, []);
+
 useEffect(() => {
   const openMap = () => setShowMap(true);
 
@@ -916,6 +1093,7 @@ const returnToPreviousSpot = () => {
           onMove={moveToSpot}
           onExhibit={setSelectedExhibit}
           onSpaceClick={setSelectedSpace}
+            room2Active={room2Active}
         />
        
       </Canvas>
