@@ -49,59 +49,73 @@ const exhibits = [
   },
 ];
  
+```jsx
 function CameraView({ spots, spotIndex, controls }) {
-  const { camera } = useThree();
-  const isMovingRef = useRef(false);
-  const isFirstRender = useRef(true);
+  const { camera } = useThree();
+  const isMovingRef = useRef(false);
+  const isFirstRender = useRef(true);
 
-  const destination = useRef(new THREE.Vector3(...spots[0].position));
-  const lookTarget = useRef(new THREE.Vector3(...targets[0]));
+  const destination = useRef(
+    new THREE.Vector3(...spots[0].position)
+  );
 
-  useEffect(() => {
-    // Ngay khi vừa vào trang, đặt thẳng camera và target vào điểm xuất phát số 0
-    if (isFirstRender.current) {
-      camera.position.set(...spots[0].position);
-      if (controls.current) {
-        controls.current.target.set(...targets[0]);
-        controls.current.update();
-      }
-      isFirstRender.current = false;
-      return;
-    }
+  const lookTarget = useRef(
+    new THREE.Vector3(...targets[0])
+  );
 
-    const spot = spots[spotIndex];
-    if (!spot) return;
+  useEffect(() => {
+    const spot = spots[spotIndex];
+    const target = targets[spotIndex];
 
-    destination.current.set(...spot.position);
-    if (targets[spotIndex]) {
-      lookTarget.current.set(...targets[spotIndex]);
-    }
-    isMovingRef.current = true;
-  }, [spotIndex, spots, camera, controls]);
+    if (!spot || !target) return;
 
-  useFrame((_, delta) => {
-    if (!isMovingRef.current) return;
+    destination.current.set(...spot.position);
+    lookTarget.current.set(...target);
 
-    const alpha = 1 - Math.exp(-6 * delta);
+    if (isFirstRender.current) {
+      camera.position.set(...spot.position);
 
-    camera.position.lerp(destination.current, alpha);
+      if (controls.current) {
+        controls.current.target.set(...target);
+        controls.current.update();
+      }
 
-    if (controls.current) {
-      controls.current.target.lerp(lookTarget.current, alpha);
-      controls.current.update();
-    }
+      isFirstRender.current = false;
+      isMovingRef.current = false;
+      return;
+    }
 
-    // Khi đã đến nơi, tắt cờ di chuyển để mở khóa xoay 360 độ tự do
-    if (
-      camera.position.distanceTo(destination.current) < 0.05 &&
-      controls.current &&
-      controls.current.target.distanceTo(lookTarget.current) < 0.05
-    ) {
-      isMovingRef.current = false;
-    }
-  });
+    isMovingRef.current = true;
+  }, [spotIndex, spots, camera, controls]);
 
-  return null;
+  useFrame((_, delta) => {
+    if (!isMovingRef.current) return;
+
+    const alpha = 1 - Math.exp(-5 * delta);
+
+    camera.position.lerp(destination.current, alpha);
+
+    if (controls.current) {
+      controls.current.target.lerp(
+        lookTarget.current,
+        alpha
+      );
+      controls.current.update();
+    }
+
+    if (
+      camera.position.distanceTo(destination.current) < 0.03 &&
+      controls.current &&
+      controls.current.target.distanceTo(lookTarget.current) < 0.03
+    ) {
+      camera.position.copy(destination.current);
+      controls.current.target.copy(lookTarget.current);
+      controls.current.update();
+      isMovingRef.current = false;
+    }
+  });
+
+  return null;
 }
 
 
@@ -372,7 +386,9 @@ function NavigationMarkers({ current, onMove }) {
 
   return (
     <group>
-      {signs.map((sign) => (
+      {signs
+  .filter((sign) => sign.id !== current)
+  .map((sign) => (
         <ArrowMarker
           key={sign.id}
           position={sign.position}
