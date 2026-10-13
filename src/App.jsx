@@ -231,10 +231,167 @@ function ArrowMarker({ position, onClick, label }) {
   );
 }
 
+///new
 
-function Room({ onExhibit }) {
+const spaces = [
+  {
+    id: 1,
+    title: "CUỘC ĐỜI VÀ SỰ NGHIỆP",
+    description: "Tư liệu về cuộc đời và sự nghiệp của Chủ tịch Hồ Chí Minh.",
+    position: [-8, 0, -4.5],
+    color: "#7c2929",
+  },
+  {
+    id: 2,
+    title: "TƯ TƯỞNG HỒ CHÍ MINH",
+    description: "Không gian tìm hiểu tư tưởng Hồ Chí Minh.",
+    position: [-2.7, 0, -4.5],
+    color: "#805b32",
+  },
+  {
+    id: 3,
+    title: "ĐẠO ĐỨC VÀ PHONG CÁCH",
+    description: "Tư liệu về đạo đức và phong cách Hồ Chí Minh.",
+    position: [2.7, 0, -4.5],
+    color: "#315c50",
+  },
+  {
+    id: 4,
+    title: "BÁC HỒ VỚI THIẾU NHI",
+    description: "Hình ảnh và câu chuyện về tình cảm của Bác với thiếu nhi.",
+    position: [8, 0, -4.5],
+    color: "#365d83",
+  },
+  {
+    id: 5,
+    title: "BÁC HỒ VỚI MIỀN NAM",
+    description: "Tư liệu về tình cảm của Bác dành cho đồng bào miền Nam.",
+    position: [-8, 0, -0.5],
+    color: "#365d83",
+  },
+  {
+    id: 6,
+    title: "DI SẢN VÀ TÁC PHẨM",
+    description: "Không gian giới thiệu tác phẩm và di sản của Bác.",
+    position: [-2.7, 0, -0.5],
+    color: "#315c50",
+  },
+  {
+    id: 7,
+    title: "HỌC TẬP VÀ LÀM THEO BÁC",
+    description: "Các câu chuyện và tư liệu học tập theo gương Bác.",
+    position: [2.7, 0, -0.5],
+    color: "#805b32",
+  },
+  {
+    id: 8,
+    title: "TƯ LIỆU LỊCH SỬ",
+    description: "Không gian lưu trữ hình ảnh, video và tư liệu lịch sử.",
+    position: [8, 0, -0.5],
+    color: "#7c2929",
+  },
+];
+
+function InteractiveSpaces({ onSelect }) {
+  return (
+    <group>
+      {spaces.map((space) => (
+        <group
+          key={space.id}
+          position={space.position}
+          onClick={(e) => {
+            e.stopPropagation();
+            onSelect(space);
+          }}
+          onPointerOver={() => {
+            document.body.style.cursor = "pointer";
+          }}
+          onPointerOut={() => {
+            document.body.style.cursor = "auto";
+          }}
+        >
+          {/* Sàn gian trưng bày */}
+          <mesh position={[0, 0.08, 0]}>
+            <boxGeometry args={[2.25, 0.16, 1.9]} />
+            <meshStandardMaterial color="#d8c9ad" />
+          </mesh>
+
+          {/* Vách sau */}
+          <mesh position={[0, 1.1, -0.9]}>
+            <boxGeometry args={[2.25, 2.2, 0.12]} />
+            <meshStandardMaterial color="#eee6d7" />
+          </mesh>
+
+          {/* Vách trái */}
+          <mesh position={[-1.06, 1.1, 0]}>
+            <boxGeometry args={[0.12, 2.2, 1.9]} />
+            <meshStandardMaterial color="#eee6d7" />
+          </mesh>
+
+          {/* Vách phải */}
+          <mesh position={[1.06, 1.1, 0]}>
+            <boxGeometry args={[0.12, 2.2, 1.9]} />
+            <meshStandardMaterial color="#eee6d7" />
+          </mesh>
+
+          {/* Bảng tên */}
+          <mesh position={[0, 2.05, 0.83]}>
+            <boxGeometry args={[2.05, 0.42, 0.12]} />
+            <meshStandardMaterial
+              color={space.color}
+              metalness={0.2}
+              roughness={0.5}
+            />
+          </mesh>
+
+          <Text
+            position={[0, 2.05, 0.9]}
+            fontSize={0.135}
+            color="#ffe6a0"
+            anchorX="center"
+            anchorY="middle"
+            maxWidth={1.9}
+            textAlign="center"
+          >
+            {space.title}
+          </Text>
+
+          {/* Biểu tượng tương tác tạm thời */}
+          <mesh position={[0, 1.05, 0.84]}>
+            <planeGeometry args={[1.35, 1.15]} />
+            <meshBasicMaterial color="#d8c9ad" />
+          </mesh>
+
+          <Text
+            position={[0, 1.15, 0.87]}
+            fontSize={0.19}
+            color="#7c2929"
+            anchorX="center"
+            anchorY="middle"
+          >
+            {`KHU ${space.id}`}
+          </Text>
+
+          <Text
+            position={[0, 0.85, 0.87]}
+            fontSize={0.12}
+            color="#5c1717"
+            anchorX="center"
+            anchorY="middle"
+          >
+            NHẤN ĐỂ KHÁM PHÁ
+          </Text>
+        </group>
+      ))}
+    </group>
+  );
+}
+
+
+
+function Room({ onExhibit, onSpaceClick }) {
    const banDo = useTexture(`${import.meta.env.BASE_URL}images/bandoVN.jpg`);
-  return (
+   return (
     <group>
         {/* Bản đồ Việt Nam trên tường */}
      <mesh
@@ -490,6 +647,7 @@ const z = -4.5 - Math.sin(t * Math.PI * 2) * 1.2;
       position={[11.78, y, z]}
       rotation={[0, -Math.PI / 2, 0]}
     >
+    <InteractiveSpaces onSelect={onSpaceClick} />
       {/* Viền khung */}
       <mesh>
         <boxGeometry args={[1.05, 1.05, 0.06]} />
@@ -629,7 +787,7 @@ function NavigationMarkers({ current, onMove }) {
 }
 
 
-function Scene({ spotIndex, onMove, onExhibit }) {
+function Scene({ spotIndex, onMove, onExhibit, onSpaceClick }) {
  
 
   return (
@@ -638,7 +796,10 @@ function Scene({ spotIndex, onMove, onExhibit }) {
       <ambientLight intensity={1.5} />
       <directionalLight position={[4, 8, 5]} intensity={2} castShadow />
 
-      <Room onExhibit={onExhibit} />
+    <Room
+  onExhibit={onExhibit}
+  onSpaceClick={onSpaceClick}
+/>
       <NavigationMarkers current={spotIndex} onMove={onMove} />
 
      <CameraView
@@ -660,7 +821,7 @@ function Scene({ spotIndex, onMove, onExhibit }) {
 
 
 export default function App() {
-  
+  const [selectedSpace, setSelectedSpace] = useState(null);
   const [userName, setUserName] = useState("");
 const [userAge, setUserAge] = useState("");
 const [userGender, setUserGender] = useState("");
@@ -789,9 +950,85 @@ const returnToPreviousSpot = () => {
           spotIndex={spotIndex}
           onMove={moveToSpot}
           onExhibit={setSelectedExhibit}
+          onSpaceClick={setSelectedSpace}
         />
        
       </Canvas>
+
+
+
+{selectedSpace && (
+  <div
+    onClick={() => setSelectedSpace(null)}
+    style={{
+      position: "fixed",
+      inset: 0,
+      zIndex: 3000,
+      background: "rgba(0,0,0,0.75)",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: 20,
+    }}
+  >
+    <div
+      onClick={(e) => e.stopPropagation()}
+      style={{
+        width: "min(850px, 95vw)",
+        minHeight: 400,
+        background: "#f5f0e5",
+        border: "5px solid #80552f",
+        borderRadius: 12,
+        padding: 28,
+        color: "#38271c",
+        position: "relative",
+      }}
+    >
+      <button
+        onClick={() => setSelectedSpace(null)}
+        style={{
+          position: "absolute",
+          right: 12,
+          top: 12,
+          fontSize: 22,
+          cursor: "pointer",
+        }}
+      >
+        ✕
+      </button>
+
+      <h2 style={{ color: "#7c2929", paddingRight: 35 }}>
+        {selectedSpace.title}
+      </h2>
+
+      <p>{selectedSpace.description}</p>
+
+      <div
+        style={{
+          minHeight: 230,
+          border: "2px dashed #b49a78",
+          borderRadius: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          padding: 20,
+          background: "#e9e0d0",
+        }}
+      >
+        <div style={{ fontSize: 42 }}>▶</div>
+        <h3>KHU VỰC TƯ LIỆU</h3>
+        <p>
+          Video, hình ảnh và tài liệu sẽ được bổ sung tại đây.
+        </p>
+      </div>
+    </div>
+  </div>
+)}
+
+
+
 {showMap && (
   <div
     onClick={() => setShowMap(false)}
