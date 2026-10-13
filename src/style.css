@@ -489,3 +489,52 @@ select {
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.welcome-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+}
+
+.welcome-box {
+  width: 100%;
+  max-width: 420px;
+  padding: 28px;
+  border-radius: 16px;
+  background: white;
+  color: #333;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+.welcome-box h2 {
+  font-size: 22px;
+  margin-bottom: 22px;
+}
+
+.welcome-box input,
+.welcome-box select {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+}
+
+.welcome-box button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #8b1e1e;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
