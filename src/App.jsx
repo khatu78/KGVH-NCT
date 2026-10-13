@@ -482,7 +482,7 @@ function Room({ onExhibit }) {
 {Array.from({ length: 10 }, (_, i) => {
   const t = i / 9;
 const y = 4.3 - t * 3.5;
-const z = -4.5 + Math.sin(t * Math.PI * 2) * 1.2;
+const z = -4.5 - Math.sin(t * Math.PI * 2) * 1.2;
 
   return (
     <group
@@ -492,13 +492,13 @@ const z = -4.5 + Math.sin(t * Math.PI * 2) * 1.2;
     >
       {/* Viền khung */}
       <mesh>
-        <boxGeometry args={[0.24, 0.24, 0.06]} />
+        <boxGeometry args={[1.05, 1.05, 0.06]} />
         <meshStandardMaterial color="#70472d" />
       </mesh>
 
       {/* Mặt ảnh */}
       <mesh position={[0, 0, 0.035]}>
-        <planeGeometry args={[0.2, 0.2]} />
+        <planeGeometry args={[1, 1]} />
         <meshStandardMaterial color="#d8c9ad" />
       </mesh>
 
@@ -515,6 +515,67 @@ const z = -4.5 + Math.sin(t * Math.PI * 2) * 1.2;
     </group>
   );
 })}
+
+{/* Khung Quần đảo Hoàng Sa - 80x80 cm */}
+<group
+  position={[11.78, 4.3, 5.2]}
+  rotation={[0, -Math.PI / 2, 0]}
+>
+  <mesh>
+    <boxGeometry args={[0.85, 0.85, 0.06]} />
+    <meshStandardMaterial color="#70472d" />
+  </mesh>
+
+  <mesh position={[0, 0, 0.035]}>
+    <planeGeometry args={[0.8, 0.8]} />
+    <meshStandardMaterial color="#dcebf0" />
+  </mesh>
+
+  <Text
+    position={[0, 0.12, 0.045]}
+    fontSize={0.09}
+    color="#173f63"
+    anchorX="center"
+    anchorY="middle"
+    maxWidth={0.72}
+    textAlign="center"
+  >
+    QUẦN ĐẢO
+    {"\n"}
+    HOÀNG SA
+  </Text>
+</group>
+
+{/* Khung Quần đảo Trường Sa - 80x80 cm */}
+<group
+  position={[11.78, 3.2, 7.0]}
+  rotation={[0, -Math.PI / 2, 0]}
+>
+  <mesh>
+    <boxGeometry args={[0.85, 0.85, 0.06]} />
+    <meshStandardMaterial color="#70472d" />
+  </mesh>
+
+  <mesh position={[0, 0, 0.035]}>
+    <planeGeometry args={[0.8, 0.8]} />
+    <meshStandardMaterial color="#dcebf0" />
+  </mesh>
+
+  <Text
+    position={[0, 0.12, 0.045]}
+    fontSize={0.09}
+    color="#173f63"
+    anchorX="center"
+    anchorY="middle"
+    maxWidth={0.72}
+    textAlign="center"
+  >
+    QUẦN ĐẢO
+    {"\n"}
+    TRƯỜNG SA
+  </Text>
+</group>
+
 
 <group
   position={[11.78, 2.7, 1.5]}
