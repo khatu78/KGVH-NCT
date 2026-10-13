@@ -15,6 +15,13 @@ const spots = [
   { id: 3, name: "Tủ sách", position: [3.5, 1.6, 0] },
   { id: 4, name: "Khu trưng bày", position: [5, 1.6, 1.5] },
 ];
+const targets = [
+  [0, 1.6, -8],       // id 0: nhìn về vách sau
+  [-8, 2.65, -8.25],  // id 1: chân dung Bác Hồ
+  [0, 2.7, -8.25],    // id 2: màn hình video
+  [8, 2.2, -8.1],     // id 3: tủ sách
+  [11.5, 2.7, 1.5],   // id 4: khu trưng bày bên phải
+];
 const exhibits = [
   {
     title: "Chân dung Chủ tịch Hồ Chí Minh",
