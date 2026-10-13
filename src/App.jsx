@@ -214,32 +214,7 @@ function ArrowMarker({ position, onClick, label }) {
 }
 
 
-function PixelVietnamMap() {
-  const tileSize = 0.14;
 
-  // Mỗi cặp số là cột bắt đầu và cột kết thúc của một hàng pixel
-  const rows = [
-    [5, 7],
-    [4, 8],
-    [3, 8],
-    [4, 8],
-    [5, 8],
-    [6, 8],
-    [5, 8],
-    [4, 7],
-    [3, 6],
-    [4, 7],
-    [5, 8],
-    [6, 9],
-    [5, 9],
-    [4, 9],
-    [3, 10],
-    [2, 10],
-    [2, 9],
-    [3, 9],
-    [4, 10],
-    [5, 11],
-  ];
 
   const pixels = rows.flatMap(([start, end], row) =>
     Array.from({ length: end - start + 1 }, (_, i) => {
@@ -323,8 +298,18 @@ function PixelVietnamMap() {
 function Room({ onExhibit }) {
   return (
     <group>
-       <PixelVietnamMap />
-      {/* Sàn */}
+        {/* Bản đồ Việt Nam trên tường */}
+      <mesh
+        position={[-11.78, 2.75, -1.5]}
+        rotation={[0, Math.PI / 2, 0]}
+      >
+        <planeGeometry args={[2.5, 3.5]} />
+        <meshBasicMaterial
+          map={new THREE.TextureLoader().load("/ban-do-viet-nam.jpg")}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+     {/* Sàn */}
       <mesh
         rotation={[-Math.PI / 2, 0, 0]}
         position={[0, 0, 0]}
