@@ -10,7 +10,7 @@ const ROOM = { width: 24, depth: 18, height: 5.5 };
 
 const spots = [
   { id: 0, name: "Lối vào", position: [0, 1.6, 6.5] },
-  { id: 1, name: "Chân dung Bác Hồ", position: [-4.5, 1.6, 0] },
+  { id: 1, name: "Chân dung Bác Hồ", position: [-4.5, 1.6, -2] },
   { id: 2, name: "Video tư liệu", position: [0, 1.6, 0] },
   { id: 3, name: "Tủ sách", position: [4.5, 1.6, 0] },
   { id: 4, name: "Khu trưng bày", position: [5, 1.6, 1.5] },
