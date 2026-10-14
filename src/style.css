@@ -544,7 +544,7 @@ select {
 .navigation-panel {
   position: fixed;
   top: 50%;
-  left: 16px;
+  right: 16px;
   transform: translateY(-50%);
   width: 290px;
   max-height: 78vh;
