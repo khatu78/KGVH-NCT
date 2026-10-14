@@ -7,6 +7,25 @@ import "./style.css";
 
 const ROOM = { width: 24, depth: 18, height: 5.5 };
 
+export const CONTENT_LIST = [
+    // 5 vị trí tham quan
+  { id: 1, name: "Lối vào", type: "spot" },
+  { id: 2, name: "Chân dung Bác Hồ", type: "spot" },
+  { id: 3, name: "Video tư liệu", type: "spot" },
+  { id: 4, name: "Tủ sách", type: "spot" },
+  { id: 5, name: "Khu trưng bày", type: "spot" },
+
+    // 8 thẻ nội dung trưng bày
+  { id: 6, name: "Cuộc đời và sự nghiệp", type: "space" },
+  { id: 7, name: "Tư tưởng Hồ Chí Minh", type: "space" },
+  { id: 8, name: "Đạo đức và phong cách", type: "space" },
+  { id: 9, name: "Bác Hồ với thiếu nhi", type: "space" },
+  { id: 10, name: "Bác Hồ với miền Nam", type: "space" },
+  { id: 11, name: "Di sản và tác phẩm", type: "space" },
+  { id: 12, name: "Học tập và làm theo Bác", type: "space" },
+  { id: 13, name: "Tư liệu lịch sử", type: "space" },
+];
+
 
 const spots = [
   { id: 0, name: "Lối vào", position: [0, 1.6, 6.5] },
@@ -51,7 +70,7 @@ const exhibits = [
  
 
 
-function CameraView({ spots, spotIndex,room2Active }) {
+function CameraView({ spots, spotIndex,room2Active, activeSpace, onSpaceArrive,}) {
   const { camera } = useThree();
   const isFirstRender = useRef(true);
   const isMovingRef = useRef(false);
@@ -66,7 +85,23 @@ function CameraView({ spots, spotIndex,room2Active }) {
 
   useEffect(() => {
     
-    if (room2Active) {
+    if (room2Active && activeSpace) {
+  // Camera tiến đến gian được chọn
+  const [x, , z] = activeSpace.position;
+
+  destination.current.set(
+    -18 + x,
+    1.6,
+    4.5 + z + 2.5
+  );
+
+  // Nhìn về phía gian trưng bày
+  lookTarget.current.set(
+    -18 + x,
+    1.5,
+    4.5 + z - 0.5
+  );
+} else if (room2Active) {
   // Di chuyển xuyên cửa vào phòng 2
   destination.current.set(-18, 1.6, 7.2);
   lookTarget.current.set(-18, 1.6, 2);
@@ -99,7 +134,7 @@ camera.rotation.order = "YXZ";
     }
   }
     isMovingRef.current = true;
-  }, [spotIndex, spots, camera, room2Active]);
+  }, [spotIndex, spots, camera, room2Active, activeSpace]);
 
   useFrame((_, delta) => {
     if (!isMovingRef.current) return;
@@ -110,10 +145,14 @@ camera.rotation.order = "YXZ";
     camera.lookAt(lookTarget.current);
 
     if (camera.position.distanceTo(destination.current) < 0.03) {
-      camera.position.copy(destination.current);
-      camera.lookAt(lookTarget.current);
-      isMovingRef.current = false;
-    }
+  camera.position.copy(destination.current);
+  camera.lookAt(lookTarget.current);
+  isMovingRef.current = false;
+
+  if (room2Active && activeSpace) {
+    onSpaceArrive?.(activeSpace);
+  }
+}
   });
 
   return null;
@@ -566,15 +605,15 @@ function Room({ onExhibit, onSpaceClick }) {
     </mesh>
 
     <Text
-      position={[0.08, 1.8, 1.1]}
-      rotation={[0, 0, 0]}
-      fontSize={0.2}
-      color="#ffe6a0"
-      anchorX="center"
-      anchorY="middle"
-      maxWidth={1.8}
-      textAlign="center"
-    >
+  position={[0.08, 1.8, 1.1]}
+  rotation={[0, Math.PI / 2, 0]}
+  fontSize={0.2}
+  color="#ffe6a0"
+  anchorX="center"
+  anchorY="middle"
+  maxWidth={1.8}
+  textAlign="center"
+>
       PHÒNG TRƯNG BÀY
     </Text>
   </group>
@@ -919,7 +958,7 @@ function NavigationMarkers({ current, onMove }) {
 }
 
 
-function Scene({ spotIndex, onMove, onExhibit, onSpaceClick, room2Active }) {
+function Scene({ spotIndex, onMove, onExhibit, onSpaceClick, room2Active, activeSpace, onSpaceArrive, }) {
  
 
   return (
@@ -940,7 +979,9 @@ function Scene({ spotIndex, onMove, onExhibit, onSpaceClick, room2Active }) {
      <CameraView
   spots={spots}
   spotIndex={spotIndex}
-   room2Active={room2Active}
+  room2Active={room2Active}
+  activeSpace={activeSpace}
+  onSpaceArrive={onSpaceArrive}
 />
 <FixedLookControls />
     
@@ -958,6 +999,8 @@ function Scene({ spotIndex, onMove, onExhibit, onSpaceClick, room2Active }) {
 
 export default function App() {
   const [room2Active, setRoom2Active] = useState(false);
+  const [activeSpace, setActiveSpace] = useState(null);
+const [navCollapsed, setNavCollapsed] = useState(false);
   const [selectedSpace, setSelectedSpace] = useState(null);
   const [userName, setUserName] = useState("");
 const [userAge, setUserAge] = useState("");
@@ -1002,6 +1045,26 @@ const moveToSpot = (nextIndex) => {
 
   setPreviousSpotIndex(spotIndex);
   setSpotIndex(nextIndex);
+};
+
+// Chọn một gian trưng bày
+const handleSelectSpace = (space) => {
+  if (room2Active && activeSpace?.id === space.id) {
+    setSelectedSpace(space);
+    return;
+  }
+
+  setSelectedSpace(null);
+  setActiveSpace(space);
+  setRoom2Active(true);
+};
+
+// Chọn một vị trí trong phòng đầu
+const handleNavigateSpot = (index) => {
+  setSelectedSpace(null);
+  setActiveSpace(null);
+  setRoom2Active(false);
+  moveToSpot(index);
 };
 
 const returnToPreviousSpot = () => {
@@ -1099,14 +1162,67 @@ const returnToPreviousSpot = () => {
         }}
       >
         <Scene
-          spotIndex={spotIndex}
-          onMove={moveToSpot}
-          onExhibit={setSelectedExhibit}
-          onSpaceClick={setSelectedSpace}
-            room2Active={room2Active}
-        />
+  spotIndex={spotIndex}
+  onMove={moveToSpot}
+  onExhibit={setSelectedExhibit}
+  onSpaceClick={handleSelectSpace}
+  room2Active={room2Active}
+  activeSpace={activeSpace}
+  onSpaceArrive={setSelectedSpace}
+/>
        
       </Canvas>
+
+{/* DANH SÁCH ĐIỀU HƯỚNG 13 MỤC */}
+<div className={`navigation-panel ${navCollapsed ? "collapsed" : ""}`}>
+  <button
+    className="navigation-toggle"
+    onClick={() => setNavCollapsed(!navCollapsed)}
+    title={navCollapsed ? "Mở danh mục" : "Thu gọn danh mục"}
+  >
+    <span>☰</span>
+    {!navCollapsed && <span>Danh mục tham quan</span>}
+    <span>{navCollapsed ? "›" : "‹"}</span>
+  </button>
+
+  {!navCollapsed && (
+    <div className="navigation-content">
+      <div className="navigation-heading">
+        PHÒNG 1 · SẢNH CHÍNH
+      </div>
+
+      {spots.map((spot) => (
+        <button
+          key={`spot-${spot.id}`}
+          className={`navigation-item ${
+            !room2Active && spotIndex === spot.id ? "active" : ""
+          }`}
+          onClick={() => handleNavigateSpot(spot.id)}
+        >
+          <span className="navigation-number">{spot.id + 1}</span>
+          <span>{spot.name}</span>
+        </button>
+      ))}
+
+      <div className="navigation-heading">
+        PHÒNG 2 · TRƯNG BÀY CHUYÊN ĐỀ
+      </div>
+
+      {spaces.map((space) => (
+        <button
+          key={`space-${space.id}`}
+          className={`navigation-item ${
+            activeSpace?.id === space.id ? "active" : ""
+          }`}
+          onClick={() => handleSelectSpace(space)}
+        >
+          <span className="navigation-number">{space.id + 5}</span>
+          <span>{space.title}</span>
+        </button>
+      ))}
+    </div>
+  )}
+</div>
 
 
 

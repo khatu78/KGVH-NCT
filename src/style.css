@@ -538,3 +538,127 @@ select {
   font-size: 16px;
   cursor: pointer;
 }
+
+```css
+/* Thanh điều hướng 13 mục */
+.navigation-panel {
+  position: fixed;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  width: 290px;
+  max-height: 78vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 100;
+  color: #f8e9bd;
+  background: rgba(55, 24, 20, 0.96);
+  border: 1px solid #b99551;
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.3);
+  transition: width 0.2s ease;
+}
+
+.navigation-panel.collapsed {
+  width: 48px;
+}
+
+.navigation-toggle {
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  color: #ffe6a0;
+  background: #681b1b;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.navigation-panel.collapsed .navigation-toggle {
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 0;
+}
+
+.navigation-content {
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.navigation-heading {
+  padding: 12px 8px 7px;
+  color: #d8bd83;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(216, 189, 131, 0.3);
+}
+
+.navigation-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 7px;
+  margin-top: 3px;
+  text-align: left;
+  color: #f7f0e4;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.navigation-item:hover {
+  background: rgba(255, 230, 160, 0.12);
+  border-color: rgba(255, 230, 160, 0.3);
+}
+
+.navigation-item.active {
+  color: #ffe6a0;
+  background: rgba(185, 149, 81, 0.22);
+  border-color: #b99551;
+}
+
+.navigation-number {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #80552f;
+  color: #fff4d6;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.navigation-item.active .navigation-number {
+  background: #b99551;
+  color: #381b16;
+}
+
+@media (max-width: 600px) {
+  .navigation-panel {
+    left: 8px;
+    width: min(260px, 78vw);
+    max-height: 65vh;
+  }
+
+  .navigation-panel.collapsed {
+    width: 44px;
+  }
+
+  .navigation-item {
+    font-size: 11px;
+  }
+}
+```
