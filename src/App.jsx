@@ -97,7 +97,7 @@ camera.rotation.order = "YXZ";
       isMovingRef.current = false;
       return;
     }
-
+  }
     isMovingRef.current = true;
   }, [spotIndex, spots, camera, room2Active]);
 
