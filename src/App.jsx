@@ -85,54 +85,55 @@ function CameraView({ spots, spotIndex,room2Active, activeSpace, onSpaceArrive,}
 
   useEffect(() => {
     
-    if (room2Active && activeSpace) {
-  // Camera tiến đến gian được chọn
+    
+if (room2Active && activeSpace) {
   const [x, , z] = activeSpace.position;
 
+  // Camera đứng trong lối đi chính giữa,
+  // đối diện gian được chọn
   destination.current.set(
-    -18 + x,
+    -22 + (x < 0 ? -2.5 : 2.5),
     1.6,
-    4.5 + z + 2.5
+    5.75 + z
   );
 
-  // Nhìn về phía gian trưng bày
   lookTarget.current.set(
-    -18 + x,
+    -22 + x,
     1.5,
-    4.5 + z - 0.5
+    5.75 + z
   );
 } else if (room2Active) {
-  // Di chuyển xuyên cửa vào phòng 2
-  destination.current.set(-18, 1.6, 7.2);
-  lookTarget.current.set(-18, 1.6, 2);
+  // Đi từ cửa vào phòng 2
+  destination.current.set(-14, 1.6, 5.75);
+  lookTarget.current.set(-22, 1.6, 5.75);
 } else {
+  // Giữ nguyên phần điều hướng phòng 1
   const spot = spots[spotIndex];
   const target = targets[spotIndex];
 
   if (!spot || !target) return;
 
+  destination.current.set(...spot.position);
+  lookTarget.current.set(...target);
 
-    destination.current.set(...spot.position);
-    lookTarget.current.set(...target);
-    
-    // id1 và id3 nhìn chính diện giống id2
-if (spotIndex === 1 || spotIndex === 3) {
-  lookTarget.current.set(
-   destination.current.x,
-   destination.current.y,
-    -10
-  );
+  if (spotIndex === 1 || spotIndex === 3) {
+    lookTarget.current.set(
+      destination.current.x,
+      destination.current.y,
+      -10
+    );
+  }
+
+  if (isFirstRender.current) {
+    camera.position.set(...spots[0].position);
+    camera.lookAt(...targets[0]);
+    camera.rotation.order = "YXZ";
+    isFirstRender.current = false;
+    isMovingRef.current = false;
+    return;
+  }
 }
 
-    if (isFirstRender.current) {
-      camera.position.set(...spots[0].position);
-camera.lookAt(...targets[0]);
-camera.rotation.order = "YXZ";
-      isFirstRender.current = false;
-      isMovingRef.current = false;
-      return;
-    }
-  }
     isMovingRef.current = true;
   }, [spotIndex, spots, camera, room2Active, activeSpace]);
 
@@ -279,64 +280,74 @@ function ArrowMarker({ position, onClick, label }) {
 
 ///new
 
+
 const spaces = [
   {
     id: 1,
     title: "CUỘC ĐỜI VÀ SỰ NGHIỆP",
     description: "Tư liệu về cuộc đời và sự nghiệp của Chủ tịch Hồ Chí Minh.",
-    position: [-4.2, 0, -2.2],
+    position: [-5.2, 0, -4.8],
+    rotation: Math.PI / 2,
     color: "#7c2929",
   },
   {
     id: 2,
     title: "TƯ TƯỞNG HỒ CHÍ MINH",
     description: "Không gian tìm hiểu tư tưởng Hồ Chí Minh.",
-    position: [-1.4, 0, -2.2],
+    position: [-5.2, 0, -1.6],
+    rotation: Math.PI / 2,
     color: "#805b32",
   },
   {
     id: 3,
     title: "ĐẠO ĐỨC VÀ PHONG CÁCH",
     description: "Tư liệu về đạo đức và phong cách Hồ Chí Minh.",
-    position: [1.4, 0, -2.2],
+    position: [-5.2, 0, 1.6],
+    rotation: Math.PI / 2,
     color: "#315c50",
   },
   {
     id: 4,
     title: "BÁC HỒ VỚI THIẾU NHI",
     description: "Hình ảnh và câu chuyện về tình cảm của Bác với thiếu nhi.",
-    position: [4.2, 0, -2.2],
+    position: [-5.2, 0, 4.8],
+    rotation: Math.PI / 2,
     color: "#365d83",
   },
   {
     id: 5,
     title: "BÁC HỒ VỚI MIỀN NAM",
     description: "Tư liệu về tình cảm của Bác dành cho đồng bào miền Nam.",
-    position: [-4.2, 0, 1.2],
+    position: [5.2, 0, -4.8],
+    rotation: -Math.PI / 2,
     color: "#365d83",
   },
   {
     id: 6,
     title: "DI SẢN VÀ TÁC PHẨM",
     description: "Không gian giới thiệu tác phẩm và di sản của Bác.",
-    position: [-1.4, 0, 1.2],
+    position: [5.2, 0, -1.6],
+    rotation: -Math.PI / 2,
     color: "#315c50",
   },
   {
     id: 7,
     title: "HỌC TẬP VÀ LÀM THEO BÁC",
     description: "Các câu chuyện và tư liệu học tập theo gương Bác.",
-    position: [1.4, 0, 1.2],
+    position: [5.2, 0, 1.6],
+    rotation: -Math.PI / 2,
     color: "#805b32",
   },
   {
     id: 8,
     title: "TƯ LIỆU LỊCH SỬ",
     description: "Không gian lưu trữ hình ảnh, video và tư liệu lịch sử.",
-    position: [4.2, 0, 1.2],
+    position: [5.2, 0, 4.8],
+    rotation: -Math.PI / 2,
     color: "#7c2929",
   },
 ];
+
 
 function InteractiveSpaces({ onSelect }) {
   return (
@@ -345,6 +356,7 @@ function InteractiveSpaces({ onSelect }) {
         <group
           key={space.id}
           position={space.position}
+          rotation={[0, space.rotation, 0]}
           onClick={(e) => {
             e.stopPropagation();
             onSelect(space);
@@ -434,55 +446,57 @@ function InteractiveSpaces({ onSelect }) {
 }
 
 ///căn phòng thứ 2
+
 function SecondRoom({ onSpaceClick }) {
   return (
     <group>
-      {/* Sàn phòng 2 */}
-      <mesh position={[-18, 0, 4.5]} receiveShadow>
-        <boxGeometry args={[12, 0.2, 9]} />
+      {/* Sàn phòng 2: rộng 20, sâu 14 */}
+      <mesh position={[-22, 0, 5.75]} receiveShadow>
+        <boxGeometry args={[20, 0.2, 14]} />
         <meshStandardMaterial color="#d8c9ad" />
       </mesh>
 
-      {/* Trần phòng 2 */}
-      <mesh position={[-18, 5.5, 4.5]}>
-        <boxGeometry args={[12, 0.2, 9]} />
+      {/* Trần */}
+      <mesh position={[-22, 5.5, 5.75]}>
+        <boxGeometry args={[20, 0.2, 14]} />
         <meshStandardMaterial color="#f5f1e8" />
       </mesh>
 
       {/* Tường cuối phòng */}
-      <mesh position={[-24, 2.75, 4.5]}>
-        <boxGeometry args={[0.25, 5.5, 9]} />
+      <mesh position={[-32, 2.75, 5.75]}>
+        <boxGeometry args={[0.25, 5.5, 14]} />
         <meshStandardMaterial color="#eee6d7" />
       </mesh>
 
       {/* Hai tường bên */}
-      {[0, 9].map((z) => (
-        <mesh key={z} position={[-18, 2.75, z]}>
-          <boxGeometry args={[12, 5.5, 0.25]} />
+      {[-1.25, 12.75].map((z) => (
+        <mesh key={z} position={[-22, 2.75, z]}>
+          <boxGeometry args={[20, 5.5, 0.25]} />
           <meshStandardMaterial color="#eee6d7" />
         </mesh>
       ))}
 
-      {/* Tiêu đề phòng 2 */}
+      {/* Tiêu đề phòng */}
       <Text
-        position={[-18, 4.6, 0.35]}
+        position={[-22, 4.6, -0.9]}
         fontSize={0.4}
         color="#7c2929"
         anchorX="center"
         anchorY="middle"
-        maxWidth={10}
+        maxWidth={16}
         textAlign="center"
       >
         KHÔNG GIAN TRƯNG BÀY CHUYÊN ĐỀ
       </Text>
 
       {/* Tám gian trưng bày */}
-      <group position={[-18, 0, 4.5]}>
+      <group position={[-22, 0, 5.75]}>
         <InteractiveSpaces onSelect={onSpaceClick} />
       </group>
     </group>
   );
 }
+
 
 
 
@@ -1350,7 +1364,7 @@ const returnToPreviousSpot = () => {
      <button
   className="return-button"
   onClick={returnToPreviousSpot}
-  disabled={spotIndex === 0}
+  disabled={spotIndex === 0 && !room2Active}
 >
     ↩ Quay về lối vào
 </button>
