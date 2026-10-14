@@ -51,7 +51,7 @@ const exhibits = [
  
 
 
-function CameraView({ spots, spotIndex }) {
+function CameraView({ spots, spotIndex,room2Active }) {
   const { camera } = useThree();
   const isFirstRender = useRef(true);
   const isMovingRef = useRef(false);
@@ -65,10 +65,17 @@ function CameraView({ spots, spotIndex }) {
   );
 
   useEffect(() => {
-    const spot = spots[spotIndex];
-    const target = targets[spotIndex];
+    
+    if (room2Active) {
+  // Di chuyển xuyên cửa vào phòng 2
+  destination.current.set(-18, 1.6, 7.2);
+  lookTarget.current.set(-18, 1.6, 2);
+} else {
+  const spot = spots[spotIndex];
+  const target = targets[spotIndex];
 
-    if (!spot || !target) return;
+  if (!spot || !target) return;
+
 
     destination.current.set(...spot.position);
     lookTarget.current.set(...target);
@@ -92,7 +99,7 @@ camera.rotation.order = "YXZ";
     }
 
     isMovingRef.current = true;
-  }, [spotIndex, spots, camera]);
+  }, [spotIndex, spots, camera, room2Active]);
 
   useFrame((_, delta) => {
     if (!isMovingRef.current) return;
@@ -933,6 +940,7 @@ function Scene({ spotIndex, onMove, onExhibit, onSpaceClick, room2Active }) {
      <CameraView
   spots={spots}
   spotIndex={spotIndex}
+   room2Active={room2Active}
 />
 <FixedLookControls />
     
@@ -997,6 +1005,8 @@ const moveToSpot = (nextIndex) => {
 };
 
 const returnToPreviousSpot = () => {
+  setRoom2Active(false);
+  setSelectedSpace(null);
   setSpotIndex(0);
   setPreviousSpotIndex(0);
 };
