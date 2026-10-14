@@ -543,18 +543,21 @@ select {
 /* Thanh điều hướng 13 mục */
 .navigation-panel {
   position: fixed;
-  top: 100px;
-  right: 20px;
-  left: auto;
-  z-index: 9999;
-  width: 270px;
-  max-height: 75vh;
-  overflow-y: auto;
-  background: rgba(40, 25, 18, 0.95);
-  color: #ffe6a0;
-  border: 1px solid #d4af37;
-  border-radius: 10px;
-  padding: 12px;
+  top: 50%;
+  right: 16px;
+  transform: translateY(-50%);
+  width: 290px;
+  max-height: 78vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 100;
+  color: #f8e9bd;
+  background: rgba(55, 24, 20, 0.96);
+  border: 1px solid #b99551;
+  border-radius: 12px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.3);
+  transition: width 0.2s ease;
 }
 
 .navigation-panel.collapsed {
