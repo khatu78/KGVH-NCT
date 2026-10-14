@@ -1050,7 +1050,7 @@ const moveToSpot = (nextIndex) => {
 // Chọn một gian trưng bày
 const handleSelectSpace = (space) => {
   if (room2Active && activeSpace?.id === space.id) {
-    setSelectedSpace(space);
+   setSelectedSpace(space);
     return;
   }
 

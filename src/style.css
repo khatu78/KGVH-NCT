@@ -539,7 +539,7 @@ select {
   cursor: pointer;
 }
 
-```css
+
 /* Thanh điều hướng 13 mục */
 .navigation-panel {
   position: fixed;
@@ -661,4 +661,3 @@ select {
     font-size: 11px;
   }
 }
-```
