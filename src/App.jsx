@@ -103,9 +103,12 @@ if (room2Active && activeSpace) {
     5.75 + z
   );
 } else if (room2Active) {
-  // Đi từ cửa vào phòng 2
-  destination.current.set(-14, 1.6, 5.75);
-  lookTarget.current.set(-22, 1.6, 5.75);
+  // Lối vào phòng 2: chính giữa 8 gian trưng bày
+  destination.current.set(-22, 1.6, 5.75);
+
+  // Nhìn dọc lối đi chính về phía tiêu đề phòng
+  lookTarget.current.set(-22, 1.6, -1);
+
 } else {
   // Giữ nguyên phần điều hướng phòng 1
   const spot = spots[spotIndex];
@@ -502,7 +505,7 @@ function SecondRoom({ onSpaceClick }) {
 
 function Room({ onExhibit, onSpaceClick }) {
    const banDo = useTexture(`${import.meta.env.BASE_URL}images/bandoVN.jpg`);
-   const [doorOpen, setDoorOpen] = useState(false);
+   const [doorOpen, setDoorOpen] = useState(true);
    return (
     <group>
         {/* Bản đồ Việt Nam trên tường */}
@@ -591,46 +594,49 @@ function Room({ onExhibit, onSpaceClick }) {
   </mesh>
 
   {/* Cánh cửa */}
-  <group
-    position={[0, 0, -1.1]}
-    rotation={[0, doorOpen ? -Math.PI / 2 : 0, 0]}
-    onClick={(e) => {
-      e.stopPropagation();
-      setDoorOpen(true);
-      window.dispatchEvent(new Event("enter-second-room"));
-    }}
-    onPointerOver={() => {
-      document.body.style.cursor = "pointer";
-    }}
-    onPointerOut={() => {
-      document.body.style.cursor = "auto";
-    }}
-  >
-    <mesh position={[0, 1.2, 1.1]}>
-      <boxGeometry args={[0.12, 2.4, 2.2]} />
-      <meshStandardMaterial
-        color={doorOpen ? "#a87b51" : "#70472d"}
-      />
-    </mesh>
-
-    <mesh position={[0.09, 1.2, 1.85]}>
-      <sphereGeometry args={[0.07, 12, 12]} />
-      <meshStandardMaterial color="#d4af37" />
-    </mesh>
-
-    <Text
-  position={[0.08, 1.8, 1.1]}
-  rotation={[0, Math.PI / 2, 0]}
-  fontSize={0.2}
-  color="#ffe6a0"
-  anchorX="center"
-  anchorY="middle"
-  maxWidth={1.8}
-  textAlign="center"
+  {/* Cánh cửa luôn mở, toàn bộ cánh cửa đều có thể nhấn */}
+<group
+  position={[0, 0, -1.1]}
+  rotation={[0, -Math.PI / 2, 0]}
+  onClick={(e) => {
+    e.stopPropagation();
+    window.dispatchEvent(new Event("enter-second-room"));
+  }}
+  onPointerOver={() => {
+    document.body.style.cursor = "pointer";
+  }}
+  onPointerOut={() => {
+    document.body.style.cursor = "auto";
+  }}
 >
-      PHÒNG TRƯNG BÀY
-    </Text>
-  </group>
+  {/* Mặt cánh cửa */}
+  <mesh position={[0, 1.2, 1.1]}>
+    <boxGeometry args={[0.12, 2.4, 2.2]} />
+    <meshStandardMaterial
+      color="#a87b51"
+      side={THREE.DoubleSide}
+    />
+  </mesh>
+
+  {/* Tay nắm cửa */}
+  <mesh position={[0.09, 1.2, 1.85]}>
+    <sphereGeometry args={[0.07, 12, 12]} />
+    <meshStandardMaterial color="#d4af37" />
+  </mesh>
+
+  <Text
+    position={[0.08, 1.8, 1.1]}
+    rotation={[0, Math.PI / 2, 0]}
+    fontSize={0.2}
+    color="#ffe6a0"
+    anchorX="center"
+    anchorY="middle"
+    maxWidth={1.8}
+    textAlign="center"
+  >
+    PHÒNG TRƯNG BÀY
+  </Text>
+</group>
 </group>
 
       {/* Tiêu đề */}
