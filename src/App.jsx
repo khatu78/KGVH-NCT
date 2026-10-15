@@ -102,13 +102,15 @@ if (room2Active && activeSpace) {
     1.5,
     5.75 + z
   );
+
 } else if (room2Active) {
-  // Vị trí đứng ở giữa 8 gian trưng bày
+  // Đứng chính giữa phòng 2
   destination.current.set(-22, 1.6, 5.75);
 
-  // Nhìn về phía cửa nối hai phòng
-  lookTarget.current.set(-12, 1.6, 5.75);
-} else {
+  // Nhìn về bức tường đối diện cửa
+  lookTarget.current.set(-31.5, 2.2, 5.75);
+}
+ else {
   // Giữ nguyên phần điều hướng phòng 1
   const spot = spots[spotIndex];
   const target = targets[spotIndex];
@@ -478,18 +480,24 @@ function SecondRoom({ onSpaceClick }) {
         </mesh>
       ))}
 
-      {/* Tiêu đề phòng */}
-      <Text
-        position={[-22, 4.6, -0.9]}
-        fontSize={0.4}
-        color="#7c2929"
-        anchorX="center"
-        anchorY="middle"
-        maxWidth={16}
-        textAlign="center"
-      >
-        KHÔNG GIAN TRƯNG BÀY CHUYÊN ĐỀ
-      </Text>
+      
+      
+
+{/* Tiêu đề trên tường đối diện cửa */}
+<Text
+  position={[-31.75, 4.6, 5.75]}
+  rotation={[0, Math.PI / 2, 0]}
+  fontSize={0.4}
+  color="#7c2929"
+  anchorX="center"
+  anchorY="middle"
+  maxWidth={16}
+  textAlign="center"
+>
+  KHÔNG GIAN TRƯNG BÀY CHUYÊN ĐỀ
+</Text>
+
+
 
       {/* Tám gian trưng bày */}
       <group position={[-22, 0, 5.75]}>
@@ -614,43 +622,44 @@ function Room({ onExhibit, onSpaceClick }) {
     <meshStandardMaterial color="#d4af37" />
   </mesh>
 
-  <Text
-  position={[0.08, 1.2, 1.1]}
-  rotation={[0, Math.PI / 2, 0]}
-  fontSize={0.2}
-  color="#ffe6a0"
-  anchorX="center"
-  anchorY="middle"
-  maxWidth={1.8}
-  textAlign="center"
->
-  PHÒNG TRƯNG BÀY
-</Text>
+  
 </group>
 
-{/* Vùng nhấn vô hình ở chính giữa khung cửa */}
 
-<mesh
-  position={[0, 1.25, 0]}
-  onClick={(e) => {
-    e.stopPropagation();
-    window.dispatchEvent(new Event("enter-second-room"));
-  }}
-  onPointerOver={() => {
-    document.body.style.cursor = "pointer";
-  }}
-  onPointerOut={() => {
-    document.body.style.cursor = "auto";
-  }}
->
-  <boxGeometry args={[0.3, 2.4, 2.3]} />
-  <meshBasicMaterial
-    transparent
-    opacity={0}
-    side={THREE.DoubleSide}
-    depthWrite={false}
-  />
-</mesh>
+{/* Biển nhấn để vào phòng trưng bày */}
+<group position={[0, 1.5, 0]}>
+  <mesh
+    onClick={(e) => {
+      e.stopPropagation();
+      window.dispatchEvent(
+        new Event("enter-second-room")
+      );
+    }}
+    onPointerOver={() => {
+      document.body.style.cursor = "pointer";
+    }}
+    onPointerOut={() => {
+      document.body.style.cursor = "auto";
+    }}
+  >
+    <boxGeometry args={[0.16, 0.6, 2.0]} />
+    <meshStandardMaterial color="#681b1b" />
+  </mesh>
+
+  <Text
+    position={[0.09, 0, 0]}
+    rotation={[0, Math.PI / 2, 0]}
+    fontSize={0.2}
+    color="#ffe6a0"
+    anchorX="center"
+    anchorY="middle"
+    maxWidth={1.8}
+    textAlign="center"
+  >
+    PHÒNG TRƯNG BÀY
+  </Text>
+</group>
+
 
 </group>
 
@@ -1053,9 +1062,24 @@ const [showWelcome, setShowWelcome] = useState(false);
   const [spotIndex, setSpotIndex] = useState(0);
   const [selectedExhibit, setSelectedExhibit] = useState(null);
 const [showMap, setShowMap] = useState(false);
+
+
 useEffect(() => {
-  const enter = () => setRoom2Active(true);
-  const leave = () => setRoom2Active(false);
+  const enter = () => {
+    setRoom2Active(true);
+    setActiveSpace(null);
+    setSelectedSpace(null);
+    setSelectedExhibit(null);
+    setShowMap(false);
+  };
+
+  const leave = () => {
+    setRoom2Active(false);
+    setActiveSpace(null);
+    setSelectedSpace(null);
+    setSpotIndex(0);
+    setPreviousSpotIndex(0);
+  };
 
   window.addEventListener("enter-second-room", enter);
   window.addEventListener("leave-second-room", leave);
@@ -1065,6 +1089,7 @@ useEffect(() => {
     window.removeEventListener("leave-second-room", leave);
   };
 }, []);
+
 
 useEffect(() => {
   const openMap = () => setShowMap(true);
@@ -1106,7 +1131,9 @@ const handleNavigateSpot = (index) => {
 
 const returnToPreviousSpot = () => {
   setRoom2Active(false);
+  setActiveSpace(null);
   setSelectedSpace(null);
+  setSelectedExhibit(null);
   setSpotIndex(0);
   setPreviousSpotIndex(0);
 };
