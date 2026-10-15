@@ -655,7 +655,6 @@ function Room({ onExhibit, onSpaceClick }) {
 </group>
 
 
-</group>
 
       {/* Tiêu đề */}
      {/* Biển tiêu đề trang trọng */}
