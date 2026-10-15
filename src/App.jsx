@@ -103,12 +103,11 @@ if (room2Active && activeSpace) {
     5.75 + z
   );
 } else if (room2Active) {
-  // Lối vào phòng 2: chính giữa 8 gian trưng bày
+  // Vị trí đứng ở giữa 8 gian trưng bày
   destination.current.set(-22, 1.6, 5.75);
 
-  // Nhìn dọc lối đi chính về phía tiêu đề phòng
-  lookTarget.current.set(-22, 1.6, -1);
-
+  // Nhìn về phía cửa nối hai phòng
+  lookTarget.current.set(-12, 1.6, 5.75);
 } else {
   // Giữ nguyên phần điều hướng phòng 1
   const spot = spots[spotIndex];
@@ -594,10 +593,45 @@ function Room({ onExhibit, onSpaceClick }) {
   </mesh>
 
   {/* Cánh cửa */}
-  {/* Cánh cửa luôn mở, toàn bộ cánh cửa đều có thể nhấn */}
+  
+{/* Cánh cửa luôn mở */}
 <group
   position={[0, 0, -1.1]}
   rotation={[0, -Math.PI / 2, 0]}
+>
+  {/* Cánh cửa */}
+  <mesh position={[0, 1.2, 1.1]}>
+    <boxGeometry args={[0.12, 2.4, 2.2]} />
+    <meshStandardMaterial
+      color="#a87b51"
+      side={THREE.DoubleSide}
+    />
+  </mesh>
+
+  {/* Tay nắm */}
+  <mesh position={[0.09, 1.2, 1.85]}>
+    <sphereGeometry args={[0.07, 12, 12]} />
+    <meshStandardMaterial color="#d4af37" />
+  </mesh>
+
+  <Text
+  position={[0.08, 1.2, 1.1]}
+  rotation={[0, Math.PI / 2, 0]}
+  fontSize={0.2}
+  color="#ffe6a0"
+  anchorX="center"
+  anchorY="middle"
+  maxWidth={1.8}
+  textAlign="center"
+>
+  PHÒNG TRƯNG BÀY
+</Text>
+</group>
+
+{/* Vùng nhấn vô hình ở chính giữa khung cửa */}
+
+<mesh
+  position={[0, 1.25, 0]}
   onClick={(e) => {
     e.stopPropagation();
     window.dispatchEvent(new Event("enter-second-room"));
@@ -609,34 +643,18 @@ function Room({ onExhibit, onSpaceClick }) {
     document.body.style.cursor = "auto";
   }}
 >
-  {/* Mặt cánh cửa */}
-  <mesh position={[0, 1.2, 1.1]}>
-    <boxGeometry args={[0.12, 2.4, 2.2]} />
-    <meshStandardMaterial
-      color="#a87b51"
-      side={THREE.DoubleSide}
-    />
-  </mesh>
+  <boxGeometry args={[0.3, 2.4, 2.3]} />
+  <meshBasicMaterial
+    transparent
+    opacity={0}
+    side={THREE.DoubleSide}
+    depthWrite={false}
+  />
+</mesh>
 
-  {/* Tay nắm cửa */}
-  <mesh position={[0.09, 1.2, 1.85]}>
-    <sphereGeometry args={[0.07, 12, 12]} />
-    <meshStandardMaterial color="#d4af37" />
-  </mesh>
-
-  <Text
-    position={[0.08, 1.8, 1.1]}
-    rotation={[0, Math.PI / 2, 0]}
-    fontSize={0.2}
-    color="#ffe6a0"
-    anchorX="center"
-    anchorY="middle"
-    maxWidth={1.8}
-    textAlign="center"
-  >
-    PHÒNG TRƯNG BÀY
-  </Text>
 </group>
+
+
 </group>
 
       {/* Tiêu đề */}
