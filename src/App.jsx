@@ -1285,7 +1285,7 @@ audio.addEventListener("ended", () => {
   <div
   style={{
   position: "fixed",
-  top: 70,
+  top: 170,
   left: 16,
   zIndex: 1000,
   background: "rgba(20, 30, 45, 0.92)",
