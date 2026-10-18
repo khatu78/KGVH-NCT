@@ -1159,7 +1159,7 @@ const returnToPreviousSpot = () => {
 
   // Phát nhạc theo nhóm tuổi ngay sau khi người tham quan bấm bắt đầu.
   const musicByAge = {
-    under15: `${import.meta.env.BASE_URL}images/audio/dưới15.mp3`,
+    under15: `${import.meta.env.BASE_URL}images/audio/under15.mp3`,
     age15to34: `${import.meta.env.BASE_URL}images/audio/15-35.mp3`,
     age35plus: `${import.meta.env.BASE_URL}images/audio/35.mp3`,
   };
@@ -1285,7 +1285,7 @@ audio.addEventListener("ended", () => {
   <div
   style={{
   position: "fixed",
-  top: 170,
+  top: 150,
   left: 16,
   zIndex: 1000,
   background: "rgba(20, 30, 45, 0.92)",
