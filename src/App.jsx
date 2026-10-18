@@ -1159,9 +1159,9 @@ const returnToPreviousSpot = () => {
 
   // Phát nhạc theo nhóm tuổi ngay sau khi người tham quan bấm bắt đầu.
   const musicByAge = {
-    under15: `${import.meta.env.BASE_URL}audio/dưới 15.mp3`,
-    age15to34: `${import.meta.env.BASE_URL}audio/15-35.mp3`,
-    age35plus: `${import.meta.env.BASE_URL}audio/35.mp3`,
+    under15: `${import.meta.env.BASE_URL}images/audio/dưới 15.mp3`,
+    age15to34: `${import.meta.env.BASE_URL}images/audio/15-35.mp3`,
+    age35plus: `${import.meta.env.BASE_URL}images/audio/35.mp3`,
   };
   console.log("Đường dẫn nhạc:", musicByAge);
   if (audioRef.current) {
