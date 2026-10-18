@@ -1157,21 +1157,45 @@ const returnToPreviousSpot = () => {
 
   // Phát nhạc theo nhóm tuổi ngay sau khi người tham quan bấm bắt đầu.
   const musicByAge = {
-    under15: `${import.meta.env.BASE_URL}audio/duoi-15.mp3`,
-    age15to34: `${import.meta.env.BASE_URL}audio/tu-15-den-34.mp3`,
-    age35plus: `${import.meta.env.BASE_URL}audio/tu-35-tro-len.mp3`,
+    under15: `${import.meta.env.BASE_URL}audio/dưới 15.mp3`,
+    age15to34: `${import.meta.env.BASE_URL}audio/15-35.mp3`,
+    age35plus: `${import.meta.env.BASE_URL}audio/35.mp3`,
   };
   if (audioRef.current) {
     audioRef.current.pause();
     audioRef.current = null;
   }
   const audio = new Audio(musicByAge[visitor.ageGroup]);
-  audio.loop = true;
-  audio.volume = 0.45;
-  audioRef.current = audio;
+
+const startTime = {
+  under15: 17,
+  age15to34: 17,
+  age35plus: 30,
+};
+
+const start = startTime[visitor.ageGroup] ?? 0;
+
+audio.volume = 0.45;
+audioRef.current = audio;
+
+audio.addEventListener(
+  "loadedmetadata",
+  () => {
+    audio.currentTime = start;
+    audio.play().catch((err) => {
+      console.warn("Không thể tự phát nhạc:", err);
+    });
+  },
+  { once: true }
+);
+
+// Hết nhạc thì phát lại từ đúng mốc thời gian
+audio.addEventListener("ended", () => {
+  audio.currentTime = start;
   audio.play().catch((err) => {
-    console.warn("Không thể tự phát nhạc:", err);
+    console.warn("Không thể phát lại nhạc:", err);
   });
+});
 };
   if (!started) {
     return (
