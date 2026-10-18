@@ -1283,17 +1283,17 @@ audio.addEventListener("ended", () => {
     <div className="app">
   <div
   style={{
-    position: "fixed",
-    top: 16,
-    left: 16,
-    zIndex: 1000,
-    background: "rgba(20, 30, 45, 0.92)",
-    color: "white",
-    padding: "12px 16px",
-    borderRadius: 12,
-    minWidth: 240,
-    boxShadow: "0 4px 16px rgba(0,0,0,0.3)",
-  }}
+  position: "fixed",
+  top: 70,
+  left: 16,
+  zIndex: 1000,
+  background: "rgba(20, 30, 45, 0.92)",
+  color: "white",
+  padding: "8px 10px",
+  borderRadius: 10,
+  minWidth: 190,
+  boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
+}}
 >
   <div style={{ fontWeight: "bold", marginBottom: 8 }}>
     🎵 Nhạc nền tham quan
@@ -1326,12 +1326,13 @@ audio.addEventListener("ended", () => {
       }
     }}
     style={{
-      padding: "8px 14px",
-      border: "none",
-      borderRadius: 8,
-      cursor: "pointer",
-      fontWeight: "bold",
-    }}
+  padding: "5px 10px",
+  fontSize: 12,
+  border: "none",
+  borderRadius: 6,
+  cursor: "pointer",
+  fontWeight: "bold",
+}}
   >
     {musicPlaying ? "⏸ Tạm dừng" : "▶ Phát nhạc"}
   </button>
