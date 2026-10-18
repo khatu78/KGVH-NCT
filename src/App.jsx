@@ -1162,6 +1162,7 @@ const returnToPreviousSpot = () => {
     under15: `${import.meta.env.BASE_URL}audio/dưới 15.mp3`,
     age15to34: `${import.meta.env.BASE_URL}audio/15-35.mp3`,
     age35plus: `${import.meta.env.BASE_URL}audio/35.mp3`,
+    console.log("Đường dẫn nhạc:", musicByAge);
   };
   if (audioRef.current) {
     audioRef.current.pause();
