@@ -1055,9 +1055,10 @@ const [showWelcome, setShowWelcome] = useState(false);
   const [started, setStarted] = useState(false);
   const [visitor, setVisitor] = useState({
     name: "",
-    age: "",
+    ageGroup: "",
     gender: "Nam",
   });
+  const audioRef = useRef(null);
   const [error, setError] = useState("");
   const [spotIndex, setSpotIndex] = useState(0);
   const [selectedExhibit, setSelectedExhibit] = useState(null);
@@ -1146,13 +1147,31 @@ const returnToPreviousSpot = () => {
   const submit = (e) => {
   e.preventDefault();
 
-  if (!visitor.name.trim() || !visitor.age || !visitor.gender) {
+  if (!visitor.name.trim() || !visitor.ageGroup || !visitor.gender) {
     setError("Vui lòng nhập đầy đủ thông tin!");
     return;
   }
 
   setError("");
   setStarted(true);
+
+  // Phát nhạc theo nhóm tuổi ngay sau khi người tham quan bấm bắt đầu.
+  const musicByAge = {
+    under15: `${import.meta.env.BASE_URL}audio/duoi-15.mp3`,
+    age15to34: `${import.meta.env.BASE_URL}audio/tu-15-den-34.mp3`,
+    age35plus: `${import.meta.env.BASE_URL}audio/tu-35-tro-len.mp3`,
+  };
+  if (audioRef.current) {
+    audioRef.current.pause();
+    audioRef.current = null;
+  }
+  const audio = new Audio(musicByAge[visitor.ageGroup]);
+  audio.loop = true;
+  audio.volume = 0.45;
+  audioRef.current = audio;
+  audio.play().catch((err) => {
+    console.warn("Không thể tự phát nhạc:", err);
+  });
 };
   if (!started) {
     return (
@@ -1178,18 +1197,19 @@ const returnToPreviousSpot = () => {
             </label>
 
             <label>
-              Tuổi
-              <input
-                type="number"
-                min="1"
-                max="100"
-                value={visitor.age}
-                onChange={(e) =>
-                  setVisitor({ ...visitor, age: e.target.value })
-                }
-                placeholder="Nhập tuổi"
-              />
-            </label>
+              Nhóm độ tuổi
+              <select
+                value={visitor.ageGroup}
+                onChange={(e) =>
+                  setVisitor({ ...visitor, ageGroup: e.target.value })
+                }
+              >
+                <option value="">-- Chọn nhóm độ tuổi --</option>
+                <option value="under15">Dưới 15 tuổi</option>
+                <option value="age15to34">Từ 15 đến dưới 35 tuổi</option>
+                <option value="age35plus">Từ 35 tuổi trở lên</option>
+              </select>
+            </label>
 
             <label>
               Giới tính
@@ -1426,9 +1446,17 @@ const returnToPreviousSpot = () => {
         <strong>Không gian văn hóa Hồ Chí Minh</strong>
 {visitor.name && (
   <p>
-    Xin chào {visitor.gender === "Nam" ? "anh" : "chị"} {visitor.name}!
+    Xin chào {visitor.ageGroup === "under15"
+      ? "em"
+      : visitor.ageGroup === "age15to34"
+        ? "bạn"
+        : "anh/chị"} {visitor.name}!
     <br />
-    Tuổi: {visitor.age}
+    Nhóm độ tuổi: {visitor.ageGroup === "under15"
+      ? "Dưới 15 tuổi"
+      : visitor.ageGroup === "age15to34"
+        ? "Từ 15 đến dưới 35 tuổi"
+        : "Từ 35 tuổi trở lên"}
   </p>
 )}
       </div>
