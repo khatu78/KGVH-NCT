@@ -1059,6 +1059,8 @@ const [showWelcome, setShowWelcome] = useState(false);
     gender: "Nam",
   });
   const audioRef = useRef(null);
+    const [musicPlaying, setMusicPlaying] = useState(false);
+const [musicTitle, setMusicTitle] = useState("");
   const [error, setError] = useState("");
   const [spotIndex, setSpotIndex] = useState(0);
   const [selectedExhibit, setSelectedExhibit] = useState(null);
@@ -1173,21 +1175,40 @@ const startTime = {
   age35plus: 30,
 };
 
+const titles = {
+  under15: "Nhạc dành cho người dưới 15 tuổi",
+  age15to34: "Nhạc dành cho người từ 15 đến dưới 35 tuổi",
+  age35plus: "Nhạc dành cho người từ 35 tuổi trở lên",
+};
+
+if (audioRef.current) {
+  audioRef.current.pause();
+}
+
+const audio = new Audio(musicByAge[visitor.ageGroup]);
 const start = startTime[visitor.ageGroup] ?? 0;
 
 audio.volume = 0.45;
+audio.preload = "auto";
 audioRef.current = audio;
 
-audio.addEventListener(
-  "loadedmetadata",
-  () => {
-    audio.currentTime = start;
-    audio.play().catch((err) => {
-      console.warn("Không thể tự phát nhạc:", err);
-    });
-  },
-  { once: true }
-);
+setMusicTitle(titles[visitor.ageGroup] ?? "Nhạc nền");
+
+audio.addEventListener("loadedmetadata", () => {
+  audio.currentTime = Math.min(start, audio.duration);
+});
+
+audio.addEventListener("ended", () => {
+  audio.currentTime = start;
+  audio.play().catch(console.warn);
+});
+
+audio.addEventListener("playing", () => setMusicPlaying(true));
+audio.addEventListener("pause", () => setMusicPlaying(false));
+
+audio.play().catch((err) => {
+  console.warn("Không thể tự phát nhạc:", err);
+});
 
 // Hết nhạc thì phát lại từ đúng mốc thời gian
 audio.addEventListener("ended", () => {
