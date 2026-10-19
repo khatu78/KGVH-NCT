@@ -1733,7 +1733,38 @@ audio.addEventListener("ended", () => {
     <h2>THƯ VIỆN SÁCH VỀ BÁC HỒ</h2>
 
     
-
+<div style={{ width: 200, cursor: "pointer", textAlign: "center", padding: 12, borderRadius: 14, background: "#fffaf0", boxShadow: "0 5px 18px #0002" }}>
+  <img
+    src={`${import.meta.env.BASE_URL}pic room3/1.png`}
+    alt="Bìa sách số 1"
+    style={{
+      width: "100%",
+      height: 250,
+      objectFit: "contain",
+      borderRadius: 8
+    }}
+  />
+  <p style={{ fontWeight: 600, color: "#6b351f" }}>Cuốn sách 1</p>
+  <button
+    onClick={() => window.location.href =
+  "https://stbook.vn/read_book/926a2cd110ef4786b319a5aa341f4459/1131"
+}
+    style={{
+      width: "100%",
+      padding: "11px 14px",
+      border: "none",
+      borderRadius: 24,
+      background: "linear-gradient(135deg, #8b1e1e, #c0392b)",
+      color: "#fff",
+      fontSize: 14,
+      fontWeight: 600,
+      cursor: "pointer",
+      boxShadow: "0 4px 10px #0003"
+    }}
+  >
+    📖 Đọc sách online !→
+  </button>
+</div>
 
   </div>
 )}
