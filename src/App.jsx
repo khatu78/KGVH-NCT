@@ -456,6 +456,37 @@ function InteractiveSpaces({ onSelect }) {
 function SecondRoom({ onSpaceClick }) {
   return (
     <group>
+      {/* Biển nhấn quay về sảnh chính */}
+<group position={[-11.8, 1.5, 5.75]}>
+  <mesh
+    rotation={[0, Math.PI / 2, 0]}
+    onClick={(e) => {
+      e.stopPropagation();
+      window.dispatchEvent(new Event("leave-second-room"));
+    }}
+    onPointerOver={() => {
+      document.body.style.cursor = "pointer";
+    }}
+    onPointerOut={() => {
+      document.body.style.cursor = "auto";
+    }}
+  >
+    <boxGeometry args={[2, 0.6, 0.16]} />
+    <meshStandardMaterial color="#681b1b" />
+  </mesh>
+
+  <Text
+    position={[0.09, 0, 0]}
+    rotation={[0, Math.PI / 2, 0]}
+    fontSize={0.2}
+    color="#ffe6a0"
+    anchorX="center"
+    anchorY="middle"
+  >
+    SẢNH CHÍNH
+  </Text>
+</group>
+
       {/* Sàn phòng 2: rộng 20, sâu 14 */}
       <mesh position={[-22, 0, 5.75]} receiveShadow>
         <boxGeometry args={[20, 0.2, 14]} />
