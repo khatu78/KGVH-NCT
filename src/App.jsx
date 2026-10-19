@@ -586,10 +586,17 @@ function Room({ onExhibit, onSpaceClick }) {
         <meshStandardMaterial color="#eee6d7" />
       </mesh>
 
+
       
       {/* Tường phải của sảnh chính */}
 <mesh position={[12, ROOM.height / 2, 0]}>
   <boxGeometry args={[0.3, ROOM.height, ROOM.depth]} />
+  <meshStandardMaterial color="#eee6d7" />
+</mesh>
+
+{/* Vách trước Room 1 */}
+<mesh position={[0, ROOM.height / 2, ROOM.depth / 2]}>
+  <boxGeometry args={[ROOM.width, ROOM.height, 0.3]} />
   <meshStandardMaterial color="#eee6d7" />
 </mesh>
 
