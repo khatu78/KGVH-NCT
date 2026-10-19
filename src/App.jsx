@@ -1150,6 +1150,7 @@ const [musicTitle, setMusicTitle] = useState("");
 const [showMap, setShowMap] = useState(false);
 const [showPDF, setShowPDF] = useState(false);
 const [showPadlet, setShowPadlet] = useState(false);
+const [showBook1, setShowBook1] = useState(false);
 
 
 useEffect(() => {
@@ -1613,7 +1614,7 @@ audio.addEventListener("ended", () => {
 )}
 
 
-{selectedSpace && (
+{selectedSpace && selectedSpace.id !== 8 && (
   <div
     onClick={() => setSelectedSpace(null)}
     style={{
@@ -1701,6 +1702,49 @@ audio.addEventListener("ended", () => {
     </div>
   </div>
 )}
+
+{selectedSpace?.id === 8 && (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      zIndex: 4000,
+      background: "#f5f0e6",
+      overflowY: "auto",
+      padding: 30,
+      color: "#38271c",
+    }}
+  >
+    <button onClick={() => setSelectedSpace(null)}>
+      ← Quay lại không gian
+    </button>
+
+    <h2>THƯ VIỆN SÁCH VỀ BÁC HỒ</h2>
+
+    <div
+      onClick={() => setShowBook1(true)}
+      style={{
+        width: 180,
+        cursor: "pointer",
+        textAlign: "center",
+      }}
+    >
+      <img
+        src={`${import.meta.env.BASE_URL}pic%20room3/1.jpg`}
+        alt="Bìa sách số 1"
+        style={{
+          width: "100%",
+          height: 250,
+          objectFit: "contain",
+          boxShadow: "0 4px 12px #0003",
+        }}
+      />
+      <p>Cuốn sách 1</p>
+      <button>Đọc sách →</button>
+    </div>
+  </div>
+)}
+
 
 
 
