@@ -103,7 +103,7 @@ if (room2Active && activeSpace) {
     1.3,
     5.75 + z
   );
-}
+
 
 } else if (room2Active) {
   // Đứng chính giữa phòng 2
