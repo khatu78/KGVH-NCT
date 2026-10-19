@@ -456,12 +456,12 @@ function InteractiveSpaces({ onSelect }) {
 function SecondRoom({ onSpaceClick }) {
   return (
     <group>
-      {/* Biển nhấn quay về sảnh chính */}
-<group position={[-11.8, 1.5, 5.75]}>
+     {/* Biển nhấn quay về sảnh chính */}
+<group position={[-12.35, 1.5, 5.75]}>
   <mesh
-    rotation={[0, Math.PI / 2, 0]}
     onClick={(e) => {
       e.stopPropagation();
+      console.log("Đã nhấn biển SẢNH CHÍNH");
       window.dispatchEvent(new Event("leave-second-room"));
     }}
     onPointerOver={() => {
@@ -471,8 +471,11 @@ function SecondRoom({ onSpaceClick }) {
       document.body.style.cursor = "auto";
     }}
   >
-    <boxGeometry args={[2, 0.6, 0.16]} />
-    <meshStandardMaterial color="#681b1b" />
+    <boxGeometry args={[0.16, 0.6, 2]} />
+    <meshStandardMaterial
+      color="#681b1b"
+      side={THREE.DoubleSide}
+    />
   </mesh>
 
   <Text
@@ -1154,13 +1157,15 @@ useEffect(() => {
     setShowMap(false);
   };
 
-  const leave = () => {
-    setRoom2Active(false);
-    setActiveSpace(null);
-    setSelectedSpace(null);
-    setSpotIndex(0);
-    setPreviousSpotIndex(0);
-  };
+const leave = () => {
+  setRoom2Active(false);
+  setActiveSpace(null);
+  setSelectedSpace(null);
+  setSelectedExhibit(null);
+  setShowMap(false);
+  setSpotIndex(0);
+  setPreviousSpotIndex(0);
+};
 
   window.addEventListener("enter-second-room", enter);
   window.addEventListener("leave-second-room", leave);
