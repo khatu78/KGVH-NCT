@@ -1745,27 +1745,43 @@ audio.addEventListener("ended", () => {
     }}
   />
   <p style={{ fontWeight: 600, color: "#6b351f" }}>Cuốn sách 1</p>
-  <button
-    onClick={() => window.open(
-  "https://stbook.vn/read_book/926a2cd110ef4786b319a5aa341f4459/1131",
-  "_blank",
-  "noopener,noreferrer"
-)}
-    style={{
-      width: "100%",
-      padding: "11px 14px",
-      border: "none",
-      borderRadius: 24,
-      background: "linear-gradient(135deg, #8b1e1e, #c0392b)",
-      color: "#fff",
-      fontSize: 14,
-      fontWeight: 600,
-      cursor: "pointer",
-      boxShadow: "0 4px 10px #0003"
-    }}
-  >
-    📖 Đọc sách online →
-  </button>
+  
+<button
+  onClick={() => window.open(
+    "https://stbook.vn/read_book/926a2cd110ef4786b319a5aa341f4459/1131",
+    "_blank",
+    "noopener,noreferrer"
+  )}
+  onMouseEnter={(e) => {
+    e.currentTarget.style.transform = "scale(1.04)";
+    e.currentTarget.style.boxShadow = "0 8px 20px #0005";
+    e.currentTarget.style.background =
+      "linear-gradient(135deg, #a52a2a, #e74c3c)";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.transform = "scale(1)";
+    e.currentTarget.style.boxShadow = "0 4px 10px #0003";
+    e.currentTarget.style.background =
+      "linear-gradient(135deg, #8b1e1e, #c0392b)";
+  }}
+  style={{
+    width: "100%",
+    padding: "11px 14px",
+    border: "none",
+    borderRadius: 24,
+    background: "linear-gradient(135deg, #8b1e1e, #c0392b)",
+    color: "#fff",
+    fontSize: 14,
+    fontWeight: 600,
+    cursor: "pointer",
+    boxShadow: "0 4px 10px #0003",
+    transition: "all 0.25s ease",
+    transform: "scale(1)",
+  }}
+>
+  📖 Đọc sách online →
+</button>
+
 </div>
 
   </div>
