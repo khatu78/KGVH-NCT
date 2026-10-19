@@ -457,7 +457,7 @@ function SecondRoom({ onSpaceClick }) {
   return (
     <group>
      {/* Biển nhấn quay về sảnh chính */}
-<group position={[-12.15, 1.5, 5.75]}>
+<group position={[-12.3, 1.5, 5.75]}>
   <mesh
     onClick={(e) => {
       e.stopPropagation();
@@ -479,14 +479,13 @@ function SecondRoom({ onSpaceClick }) {
   </mesh>
 
   <Text
-  position={[0.11, 0, 0]}
-  rotation={[0, Math.PI / 2, 0]}
-  fontSize={0.2}
+  position={[-0.09, 0, 0]}
+  rotation={[0, -Math.PI / 2, 0]}
+  fontSize={0.3}
   color="#ffe6a0"
   anchorX="center"
   anchorY="middle"
-  maxWidth={1.8}
-  textAlign="center"
+  renderOrder={10}
   material-side={THREE.DoubleSide}
 >
   SẢNH CHÍNH
