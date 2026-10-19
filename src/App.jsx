@@ -1745,7 +1745,23 @@ audio.addEventListener("ended", () => {
     }}
   />
   <p style={{ fontWeight: 600, color: "#6b351f" }}>Cuốn sách 1</p>
-  
+  <button
+    onClick={() => window.location.href =
+  "https://stbook.vn/read_book/926a2cd110ef4786b319a5aa341f4459/1131"
+}
+    style={{
+      width: "100%",
+      padding: "11px 14px",
+      border: "none",
+      borderRadius: 24,
+      background: "linear-gradient(135deg, #8b1e1e, #c0392b)",
+      color: "#fff",
+      fontSize: 14,
+      fontWeight: 600,
+      cursor: "pointer",
+      boxShadow: "0 4px 10px #0003"
+    }}
+  >
     📖 Đọc sách online !→
   </button>
 </div>
