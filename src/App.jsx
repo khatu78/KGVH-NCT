@@ -1223,11 +1223,12 @@ const moveToSpot = (nextIndex) => {
  // }
 //};
 
+
 const handleSelectSpace = (space) => {
   if (space.id === 2) {
-    setShowPadlet(true);
-    setShowPDF(false);
     setSelectedSpace(null);
+    setShowPDF(false);
+    setShowPadlet(true);
     return;
   }
 
@@ -1240,12 +1241,13 @@ const handleSelectSpace = (space) => {
     return;
   }
 
+  setSelectedSpace(null);
   setShowPDF(false);
   setShowPadlet(false);
-  setSelectedSpace(null);
   setActiveSpace(space);
   setRoom2Active(true);
 };
+
 
 
 // Chọn một vị trí trong phòng đầu
