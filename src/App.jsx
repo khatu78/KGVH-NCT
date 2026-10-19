@@ -16,7 +16,7 @@ export const CONTENT_LIST = [
   { id: 5, name: "Khu trưng bày", type: "spot" },
 
     // 8 thẻ nội dung trưng bày
-  { id: 6, name: "Cuộc đời và sự nghiệp", type: "space" },
+  { id: 6, name: "Tiểu sử và cuộc đời Chủ tịch Hồ Chí Minh", type: "space" },
   { id: 7, name: "Tư tưởng Hồ Chí Minh", type: "space" },
   { id: 8, name: "Đạo đức và phong cách", type: "space" },
   { id: 9, name: "Bác Hồ với thiếu nhi", type: "space" },
@@ -290,7 +290,7 @@ function ArrowMarker({ position, onClick, label }) {
 const spaces = [
   {
     id: 1,
-    title: "CUỘC ĐỜI VÀ SỰ NGHIỆP",
+    title: "TIỂU SỬ VÀ CUỘC ĐỜI CHỦ TỊCH HỒ CHÍ MINH",
     description: "Tư liệu về cuộc đời và sự nghiệp của Chủ tịch Hồ Chí Minh.",
    position: [-4.8, 0, -5.2],
     rotation: 0,
