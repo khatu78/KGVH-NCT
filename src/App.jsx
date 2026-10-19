@@ -88,15 +88,16 @@ function CameraView({ spots, spotIndex,room2Active, activeSpace, onSpaceArrive,}
     
 if (room2Active && activeSpace) {
   const [x, , z] = activeSpace.position;
+  const side = z < 0 ? -1 : 1;
 
-  // Camera đứng trong lối đi chính giữa,
-  // đối diện gian được chọn
+  // Camera đứng phía trước mặt gian được chọn
   destination.current.set(
-    -22 + (x < 0 ? -2.5 : 2.5),
+    -22 + x,
     1.6,
-    5.75 + z
+    5.75 + z + side * 2.5
   );
 
+  // Nhìn vào chính giữa gian
   lookTarget.current.set(
     -22 + x,
     1.5,
@@ -323,7 +324,7 @@ const spaces = [
     title: "BÁC HỒ VỚI MIỀN NAM",
     description: "Tư liệu về tình cảm của Bác dành cho đồng bào miền Nam.",
    position: [-4.8, 0, 5.2],
-   rotation: 0,
+   rotation: Math.PI,
     color: "#365d83",
   },
   {
@@ -331,7 +332,7 @@ const spaces = [
     title: "DI SẢN VÀ TÁC PHẨM",
     description: "Không gian giới thiệu tác phẩm và di sản của Bác.",
    position: [-1.6, 0, 5.2],
-    rotation: 0,
+   rotation: Math.PI,
     color: "#315c50",
   },
   {
@@ -339,7 +340,7 @@ const spaces = [
     title: "HỌC TẬP VÀ LÀM THEO BÁC",
     description: "Các câu chuyện và tư liệu học tập theo gương Bác.",
   position: [1.6, 0, 5.2],
-rotation: 0,
+rotation: Math.PI,
     color: "#805b32",
   },
   {
@@ -347,7 +348,7 @@ rotation: 0,
     title: "TƯ LIỆU LỊCH SỬ",
     description: "Không gian lưu trữ hình ảnh, video và tư liệu lịch sử.",
    position: [4.8, 0, 5.2],
-  rotation: 0,
+    rotation: Math.PI,
     color: "#7c2929",
   },
 ];
