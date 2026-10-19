@@ -1226,23 +1226,6 @@ const moveToSpot = (nextIndex) => {
 
 
 const handleSelectSpace = (space) => {
-  // Phòng 1 và phòng 2: nhấn lần 2 mới mở nội dung
-  if (room2Active && activeSpace?.id === space.id) {
-    if (space.id === 1) {
-      setShowPDF(true);
-      setShowPadlet(false);
-      setSelectedSpace(null);
-    } else if (space.id === 2) {
-      setShowPadlet(true);
-      setShowPDF(false);
-      setSelectedSpace(null);
-    } else {
-      setSelectedSpace(space);
-    }
-    return;
-  }
-
-  // Nhấn lần đầu: di chuyển đến phòng và hiện giới thiệu
   setShowPDF(false);
   setShowPadlet(false);
   setSelectedSpace(space);
@@ -1690,8 +1673,29 @@ audio.addEventListener("ended", () => {
           background: "#e9e0d0",
         }}
       >
-        <div style={{ fontSize: 42 }}>▶</div>
-        <h3>KHU VỰC TƯ LIỆU</h3>
+       
+<button
+  onClick={() => {
+    if (selectedSpace.id === 1) {
+      setShowPDF(true);
+      setSelectedSpace(null);
+    } else if (selectedSpace.id === 2) {
+      setShowPadlet(true);
+      setSelectedSpace(null);
+    }
+  }}
+  style={{
+    fontSize: 42,
+    color: "#7c2929",
+    background: "transparent",
+    border: "none",
+    cursor: "pointer",
+  }}
+>
+  ➜
+</button>
+<h3>KHU VỰC TƯ LIỆU</h3>
+
         
       </div>
     </div>
