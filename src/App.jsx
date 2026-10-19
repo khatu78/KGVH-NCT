@@ -1730,7 +1730,7 @@ audio.addEventListener("ended", () => {
       }}
     >
       <img
-        src={`${import.meta.env.BASE_URL}pic%20room3/1.jpg`}
+        src={`${import.meta.env.BASE_URL}pic room3/1.png`}
         alt="Bìa sách số 1"
         style={{
           width: "100%",
