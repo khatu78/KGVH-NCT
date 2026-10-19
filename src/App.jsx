@@ -1127,7 +1127,6 @@ function Scene({ spotIndex, onMove, onExhibit, onSpaceClick, room2Active, active
 
 
 export default function App() {
-  const [showPDF, setShowPDF] = useState(false);
   const [room2Active, setRoom2Active] = useState(false);
   const [activeSpace, setActiveSpace] = useState(null);
 const [navCollapsed, setNavCollapsed] = useState(false);
@@ -1149,6 +1148,7 @@ const [musicTitle, setMusicTitle] = useState("");
   const [spotIndex, setSpotIndex] = useState(0);
   const [selectedExhibit, setSelectedExhibit] = useState(null);
 const [showMap, setShowMap] = useState(false);
+const [showPDF, setShowPDF] = useState(false);
 
 
 useEffect(() => {
@@ -1199,16 +1199,29 @@ const moveToSpot = (nextIndex) => {
 };
 
 // Chọn một gian trưng bày
-const handleSelectSpace = (space) => {
-  if (room2Active && activeSpace?.id === space.id) {
-   setSelectedSpace(space);
-    return;
-  }
+//const handleSelectSpace = (space) => {
+ //if (room2Active && activeSpace?.id === space.id) {
+ //  setSelectedSpace(space);
+ //   return;
+  //}
 
+  //setSelectedSpace(null);
+ /// setActiveSpace(space);
+ // setRoom2Active(true);
+//};
+
+const handleSelectSpace = (space) => {
   setSelectedSpace(null);
   setActiveSpace(space);
   setRoom2Active(true);
+
+  if (space.id === 1) {
+    setShowPDF(true);
+  } else {
+    setShowPDF(false);
+  }
 };
+
 
 // Chọn một vị trí trong phòng đầu
 const handleNavigateSpot = (index) => {
@@ -1436,14 +1449,7 @@ audio.addEventListener("ended", () => {
         <Scene
   spotIndex={spotIndex}
   onMove={moveToSpot}
-  onExhibit={(exhibit) => {
-  if (exhibit.title === "Chân dung Chủ tịch Hồ Chí Minh") {
-    setShowPDF(true);
-    setSelectedExhibit(null);
-  } else {
-    setSelectedExhibit(exhibit);
-  }
-}}
+  onExhibit={setSelectedExhibit}
   onSpaceClick={handleSelectSpace}
   room2Active={room2Active}
   activeSpace={activeSpace}
@@ -1451,26 +1457,6 @@ audio.addEventListener("ended", () => {
 />
        
       </Canvas>
-
-{showPDF && (
-  <div className="pdf-overlay">
-    <div className="pdf-window">
-      <button
-        className="pdf-close"
-        onClick={() => setShowPDF(false)}
-      >
-        ✕ Đóng tài liệu
-      </button>
-
-      <iframe
-        src={`${import.meta.env.BASE_URL}doc/Phòng 1_Tóm tắt tiểu sử và sự nghiệp của Chủ tịch Hồ Chí Minh.pdf`}
-        title="Tài liệu phòng 1"
-      />
-    </div>
-  </div>
-)}
-
-
 
 {/* DANH SÁCH ĐIỀU HƯỚNG 13 MỤC */}
 <div className={`navigation-panel ${navCollapsed ? "collapsed" : ""}`}>
@@ -1522,6 +1508,45 @@ audio.addEventListener("ended", () => {
     </div>
   )}
 </div>
+
+
+{showPDF && (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      zIndex: 5000,
+      background: "rgba(0,0,0,0.8)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 20,
+    }}
+  >
+    <div
+      style={{
+        width: "95vw",
+        height: "90vh",
+        background: "white",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <button
+        onClick={() => setShowPDF(false)}
+        style={{ padding: 12, cursor: "pointer" }}
+      >
+        ✕ Đóng tài liệu
+      </button>
+
+      <iframe
+        src={`${import.meta.env.BASE_URL}doc/Phòng 1_Tóm tắt tiểu sử và sự nghiệp của Chủ tịch Hồ Chí Minh.pdf`}
+        title="Tiểu sử và cuộc đời Chủ tịch Hồ Chí Minh"
+        style={{ width: "100%", flex: 1, border: 0 }}
+      />
+    </div>
+  </div>
+)}
 
 
 
