@@ -498,9 +498,8 @@ function SecondRoom({ onSpaceClick }) {
 </Text>
 
 
-
-      {/* Cửa ở đầu lối đi giữa 8 gian */}
-<group position={[-22, 0, 5.75]}>
+{/* Cửa chính giữa tường đầu phòng 2 */}
+<group position={[-22, 0, -1.25]}>
   {/* Khung cửa */}
   <mesh position={[-0.1, 1.25, -1.2]}>
     <boxGeometry args={[2.5, 2.5, 0.15]} />
