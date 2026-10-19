@@ -482,6 +482,12 @@ function SecondRoom({ onSpaceClick }) {
         </mesh>
       ))}
 
+      {/* Vách nối bên phải cửa vào Room 2 */}
+<mesh position={[-12, 2.75, 10.8]}>
+  <boxGeometry args={[0.25, 5.5, 3.6]} />
+  <meshStandardMaterial color="#eee6d7" />
+</mesh>
+
       
       
 
@@ -595,11 +601,6 @@ function Room({ onExhibit, onSpaceClick }) {
 
 <mesh position={[-12, ROOM.height / 2, 8]}>
   <boxGeometry args={[0.3, ROOM.height, 2]} />
-  <meshStandardMaterial color="#eee6d7" />
-</mesh>
-{/* Nối dài tường Room 1 để khớp với Room 2 */}
-<mesh position={[-12, ROOM.height / 2, 10.8]}>
-  <boxGeometry args={[0.3, ROOM.height, 3.6]} />
   <meshStandardMaterial color="#eee6d7" />
 </mesh>
 
