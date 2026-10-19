@@ -1149,6 +1149,7 @@ const [musicTitle, setMusicTitle] = useState("");
   const [selectedExhibit, setSelectedExhibit] = useState(null);
 const [showMap, setShowMap] = useState(false);
 const [showPDF, setShowPDF] = useState(false);
+const [showPadlet, setShowPadlet] = useState(false);
 
 
 useEffect(() => {
@@ -1210,16 +1211,35 @@ const moveToSpot = (nextIndex) => {
  // setRoom2Active(true);
 //};
 
+//const handleSelectSpace = (space) => {
+  //setSelectedSpace(null);
+  //setActiveSpace(space);
+  //setRoom2Active(true);
+
+ // if (space.id === 1) {
+   // setShowPDF(true);
+ // } else {
+ //   setShowPDF(false);
+ // }
+//};
+
 const handleSelectSpace = (space) => {
+  if (room2Active && activeSpace?.id === space.id) {
+    if (space.id === 1) {
+      setShowPDF(true);
+    } else if (space.id === 2) {
+      setShowPadlet(true);
+    } else {
+      setSelectedSpace(space);
+    }
+    return;
+  }
+
   setSelectedSpace(null);
+  setShowPDF(false);
+  setShowPadlet(false);
   setActiveSpace(space);
   setRoom2Active(true);
-
-  if (space.id === 1) {
-    setShowPDF(true);
-  } else {
-    setShowPDF(false);
-  }
 };
 
 
@@ -1548,6 +1568,57 @@ audio.addEventListener("ended", () => {
   </div>
 )}
 
+
+{showPadlet && (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      zIndex: 6000,
+      background: "rgba(0,0,0,0.8)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 16,
+    }}
+  >
+    <div
+      style={{
+        width: "95vw",
+        height: "92vh",
+        background: "#fff",
+        borderRadius: 12,
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <button
+        onClick={() => setShowPadlet(false)}
+        style={{
+          padding: "12px 18px",
+          border: "none",
+          cursor: "pointer",
+          textAlign: "right",
+          fontSize: 16,
+        }}
+      >
+        ✕ Đóng Padlet
+      </button>
+
+      <iframe
+        src="https://padlet.com/embed/ij4p9ovbesqr7jzp"
+        title="Hành trình theo dấu chân Bác"
+        allow="camera; microphone; geolocation; display-capture; clipboard-write"
+        style={{
+          width: "100%",
+          flex: 1,
+          border: 0,
+        }}
+      />
+    </div>
+  </div>
+)}
 
 
 {selectedSpace && (
