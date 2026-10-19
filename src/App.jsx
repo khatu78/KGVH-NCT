@@ -1733,76 +1733,88 @@ audio.addEventListener("ended", () => {
     <h2>THƯ VIỆN SÁCH VỀ BÁC HỒ</h2>
 
     
-<div
-  onMouseEnter={(e) => {
-    e.currentTarget.style.transform = "translateY(-6px) scale(1.02)";
-    e.currentTarget.style.boxShadow = "0 12px 28px #0004";
-  }}
-  onMouseLeave={(e) => {
-    e.currentTarget.style.transform = "translateY(0) scale(1)";
-    e.currentTarget.style.boxShadow = "0 5px 18px #0002";
-  }}
-  style={{
-    width: 200,
-    cursor: "pointer",
-    textAlign: "center",
-    padding: 12,
-    borderRadius: 14,
-    background: "#fffaf0",
-    boxShadow: "0 5px 18px #0002",
-    transition: "all 0.25s ease",
-    transform: "translateY(0) scale(1)",
-  }}
->
- <img
-    src={`${import.meta.env.BASE_URL}pic room3/1.png`}
-    alt="Bìa sách số 1"
-    style={{
-      width: "100%",
-      height: 250,
-      objectFit: "contain",
-      borderRadius: 8
-    }}
-  />
-  <p style={{ fontWeight: 600, color: "#6b351f" }}>Cuốn sách 1</p>
-  
-<button
-  onClick={() => window.open(
-    "https://stbook.vn/read_book/926a2cd110ef4786b319a5aa341f4459/1131",
-    "_blank",
-    "noopener,noreferrer"
-  )}
-  onMouseEnter={(e) => {
-    e.currentTarget.style.transform = "scale(1.04)";
-    e.currentTarget.style.boxShadow = "0 8px 20px #0005";
-    e.currentTarget.style.background =
-      "linear-gradient(135deg, #a52a2a, #e74c3c)";
-  }}
-  onMouseLeave={(e) => {
-    e.currentTarget.style.transform = "scale(1)";
-    e.currentTarget.style.boxShadow = "0 4px 10px #0003";
-    e.currentTarget.style.background =
-      "linear-gradient(135deg, #8b1e1e, #c0392b)";
-  }}
-  style={{
-    width: "100%",
-    padding: "11px 14px",
-    border: "none",
-    borderRadius: 24,
-    background: "linear-gradient(135deg, #8b1e1e, #c0392b)",
-    color: "#fff",
-    fontSize: 14,
-    fontWeight: 600,
-    cursor: "pointer",
-    boxShadow: "0 4px 10px #0003",
-    transition: "all 0.25s ease",
-    transform: "scale(1)",
-  }}
->
-  📖 Đọc sách online →
-</button>
 
+<div
+  style={{
+    display: "grid",
+    gridTemplateColumns: "repeat(4, 200px)",
+    justifyContent: "center",
+    gap: 24,
+  }}
+>
+  {Array.from({ length: 16 }, (_, i) => {
+    const so = i + 1;
+
+    return (
+      <div
+        key={so}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform =
+            "translateY(-6px) scale(1.02)";
+          e.currentTarget.style.boxShadow = "0 12px 28px #0004";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "translateY(0) scale(1)";
+          e.currentTarget.style.boxShadow = "0 5px 18px #0002";
+        }}
+        style={{
+          width: 200,
+          cursor: "pointer",
+          textAlign: "center",
+          padding: 12,
+          borderRadius: 14,
+          background: "#fffaf0",
+          boxShadow: "0 5px 18px #0002",
+          transition: "all 0.25s ease",
+          transform: "translateY(0) scale(1)",
+        }}
+      >
+        <img
+          src={`${import.meta.env.BASE_URL}pic room3/${so}.png`}
+          alt={`Bìa sách số ${so}`}
+          style={{
+            width: "100%",
+            height: 250,
+            objectFit: "contain",
+            borderRadius: 8,
+          }}
+        />
+
+        <p style={{ fontWeight: 600, color: "#6b351f" }}>
+          Cuốn sách {so}
+        </p>
+
+        <button
+          onClick={() =>
+            window.open(
+              so === 1
+                ? "https://stbook.vn/read_book/926a2cd110ef4786b319a5aa341f4459/1131"
+                : "https://",
+              "_blank",
+              "noopener,noreferrer"
+            )
+          }
+          style={{
+            width: "100%",
+            padding: "11px 14px",
+            border: "none",
+            borderRadius: 24,
+            background: "linear-gradient(135deg, #8b1e1e, #c0392b)",
+            color: "#fff",
+            fontSize: 14,
+            fontWeight: 600,
+            cursor: "pointer",
+            boxShadow: "0 4px 10px #0003",
+            transition: "all 0.25s ease",
+          }}
+        >
+          📖 Đọc sách online →
+        </button>
+      </div>
+    );
+  })}
 </div>
+
 
   </div>
 )}
