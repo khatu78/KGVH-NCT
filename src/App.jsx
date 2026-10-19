@@ -1733,8 +1733,28 @@ audio.addEventListener("ended", () => {
     <h2>THƯ VIỆN SÁCH VỀ BÁC HỒ</h2>
 
     
-<div style={{ width: 200, cursor: "pointer", textAlign: "center", padding: 12, borderRadius: 14, background: "#fffaf0", boxShadow: "0 5px 18px #0002" }}>
-  <img
+<div
+  onMouseEnter={(e) => {
+    e.currentTarget.style.transform = "translateY(-6px) scale(1.02)";
+    e.currentTarget.style.boxShadow = "0 12px 28px #0004";
+  }}
+  onMouseLeave={(e) => {
+    e.currentTarget.style.transform = "translateY(0) scale(1)";
+    e.currentTarget.style.boxShadow = "0 5px 18px #0002";
+  }}
+  style={{
+    width: 200,
+    cursor: "pointer",
+    textAlign: "center",
+    padding: 12,
+    borderRadius: 14,
+    background: "#fffaf0",
+    boxShadow: "0 5px 18px #0002",
+    transition: "all 0.25s ease",
+    transform: "translateY(0) scale(1)",
+  }}
+>
+ <img
     src={`${import.meta.env.BASE_URL}pic room3/1.png`}
     alt="Bìa sách số 1"
     style={{
