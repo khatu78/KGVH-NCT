@@ -1127,6 +1127,7 @@ function Scene({ spotIndex, onMove, onExhibit, onSpaceClick, room2Active, active
 
 
 export default function App() {
+  const [showPDF, setShowPDF] = useState(false);
   const [room2Active, setRoom2Active] = useState(false);
   const [activeSpace, setActiveSpace] = useState(null);
 const [navCollapsed, setNavCollapsed] = useState(false);
@@ -1435,7 +1436,14 @@ audio.addEventListener("ended", () => {
         <Scene
   spotIndex={spotIndex}
   onMove={moveToSpot}
-  onExhibit={setSelectedExhibit}
+  onExhibit={(exhibit) => {
+  if (exhibit.title === "Chân dung Chủ tịch Hồ Chí Minh") {
+    setShowPDF(true);
+    setSelectedExhibit(null);
+  } else {
+    setSelectedExhibit(exhibit);
+  }
+}}
   onSpaceClick={handleSelectSpace}
   room2Active={room2Active}
   activeSpace={activeSpace}
@@ -1443,6 +1451,26 @@ audio.addEventListener("ended", () => {
 />
        
       </Canvas>
+
+{showPDF && (
+  <div className="pdf-overlay">
+    <div className="pdf-window">
+      <button
+        className="pdf-close"
+        onClick={() => setShowPDF(false)}
+      >
+        ✕ Đóng tài liệu
+      </button>
+
+      <iframe
+        src={`${import.meta.env.BASE_URL}doc/Phòng 1_Tóm tắt tiểu sử và sự nghiệp của Chủ tịch Hồ Chí Minh.pdf`}
+        title="Tài liệu phòng 1"
+      />
+    </div>
+  </div>
+)}
+
+
 
 {/* DANH SÁCH ĐIỀU HƯỚNG 13 MỤC */}
 <div className={`navigation-panel ${navCollapsed ? "collapsed" : ""}`}>
