@@ -472,22 +472,13 @@ function SecondRoom({ onSpaceClick }) {
         <meshStandardMaterial color="#eee6d7" />
       </mesh>
 
-      {/* Tường đầu phòng: chừa cửa chính giữa */}
-<mesh position={[-27.5, 2.75, -1.25]}>
-  <boxGeometry args={[9, 5.5, 0.25]} />
-  <meshStandardMaterial color="#eee6d7" />
-</mesh>
-
-<mesh position={[-16.5, 2.75, -1.25]}>
-  <boxGeometry args={[9, 5.5, 0.25]} />
-  <meshStandardMaterial color="#eee6d7" />
-</mesh>
-
-{/* Tường cuối phòng */}
-<mesh position={[-22, 2.75, 12.75]}>
-  <boxGeometry args={[20, 5.5, 0.25]} />
-  <meshStandardMaterial color="#eee6d7" />
-</mesh>
+      {/* Hai tường bên */}
+      {[-1.25, 12.75].map((z) => (
+        <mesh key={z} position={[-22, 2.75, z]}>
+          <boxGeometry args={[20, 5.5, 0.25]} />
+          <meshStandardMaterial color="#eee6d7" />
+        </mesh>
+      ))}
 
       
       
@@ -507,8 +498,9 @@ function SecondRoom({ onSpaceClick }) {
 </Text>
 
 
-{/* Cửa chính giữa tường đầu phòng 2 */}
-<group position={[-22, 0, -1.25]}>
+
+      {/* Cửa ở đầu lối đi giữa 8 gian */}
+<group position={[-22, 0, 5.75]}>
   {/* Khung cửa */}
   <mesh position={[-0.1, 1.25, -1.2]}>
     <boxGeometry args={[2.5, 2.5, 0.15]} />
