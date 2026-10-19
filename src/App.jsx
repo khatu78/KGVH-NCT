@@ -17,13 +17,13 @@ export const CONTENT_LIST = [
 
     // 8 thẻ nội dung trưng bày
   { id: 6, name: "Tiểu sử và cuộc đời Chủ tịch Hồ Chí Minh", type: "space" },
-  { id: 7, name: "Tư tưởng Hồ Chí Minh", type: "space" },
-  { id: 8, name: "Đạo đức và phong cách", type: "space" },
-  { id: 9, name: "Bác Hồ với thiếu nhi", type: "space" },
-  { id: 10, name: "Bác Hồ với miền Nam", type: "space" },
-  { id: 11, name: "Di sản và tác phẩm", type: "space" },
-  { id: 12, name: "Học tập và làm theo Bác", type: "space" },
-  { id: 13, name: "Tư liệu lịch sử", type: "space" },
+  { id: 7, name: "Hành trình theo dấu chân Bác", type: "space" },
+  { id: 8, name: "Hiện vật và dấu ấn về Chủ tịch Hồ Chí Minh", type: "space" },
+  { id: 9, name: "Những câu chuyện về Bác Hồ", type: "space" },
+  { id: 10, name: "Tư tưởng, đạo đức, phong cách Hồ Chí Minh", type: "space" },
+  { id: 11, name: "Bác Hồ với thiếu niên, nhi đồng và giáo dục", type: "space" },
+  { id: 12, name: "Di sản Hồ Chí Minh", type: "space" },
+  { id: 13, name: "Bác Hồ trong trái tim thầy và trò nhà trường", type: "space" },
 ];
 
 
@@ -291,14 +291,14 @@ const spaces = [
   {
     id: 1,
     title: "TIỂU SỬ VÀ CUỘC ĐỜI CHỦ TỊCH HỒ CHÍ MINH",
-    description: "Tư liệu về cuộc đời và sự nghiệp của Chủ tịch Hồ Chí Minh.",
+    description: "Trình bày quê hương, gia đình, thời niên thiếu, quá trình trưởng thành và những dấu mốc quan trọng trong cuộc đời, sự nghiệp cách mạng của Chủ tịch Hồ Chí Minh. Nội dung có thể thiết kế dưới dạng dòng thời gian, kết hợp hình ảnh, tư liệu và thuyết minh ngắn để người tham quan dễ theo dõi.",
    position: [-4.8, 0, -5.2],
     rotation: 0,
     color: "#7c2929",
   },
   {
     id: 2,
-    title: "TƯ TƯỞNG HỒ CHÍ MINH",
+    title: "HÀNH TRÌNH THEO DẤU CHÂN BÁC",
     description: "Không gian tìm hiểu tư tưởng Hồ Chí Minh.",
    position: [-1.6, 0, -5.2],
    rotation: 0,
@@ -306,7 +306,7 @@ const spaces = [
   },
   {
     id: 3,
-    title: "ĐẠO ĐỨC VÀ PHONG CÁCH",
+    title: "HIỆN VẬT VÀ DẤU ẤN VỀ CHỦ TỊCH HỒ CHÍ MINH",
     description: "Tư liệu về đạo đức và phong cách Hồ Chí Minh.",
     position: [1.6, 0, -5.2],
     rotation: 0,
@@ -314,7 +314,7 @@ const spaces = [
   },
   {
     id: 4,
-    title: "BÁC HỒ VỚI THIẾU NHI",
+    title: "NHỮNG CÂU CHUYỆN VỀ BÁC HỒ",
     description: "Hình ảnh và câu chuyện về tình cảm của Bác với thiếu nhi.",
    position: [4.8, 0, -5.2],
    rotation: 0,
@@ -322,7 +322,7 @@ const spaces = [
   },
   {
     id: 5,
-    title: "BÁC HỒ VỚI MIỀN NAM",
+    title: "TƯ TƯỞNG, ĐẠO ĐỨC, PHONG CÁCH HỒ CHÍ MINH",
     description: "Tư liệu về tình cảm của Bác dành cho đồng bào miền Nam.",
    position: [-4.8, 0, 5.2],
    rotation: Math.PI,
@@ -330,7 +330,7 @@ const spaces = [
   },
   {
     id: 6,
-    title: "DI SẢN VÀ TÁC PHẨM",
+    title: "BÁC HỒ VỚI THIẾU NIÊN, NHI ĐỒNG VÀ GIÁO DỤC",
     description: "Không gian giới thiệu tác phẩm và di sản của Bác.",
    position: [-1.6, 0, 5.2],
    rotation: Math.PI,
@@ -338,7 +338,7 @@ const spaces = [
   },
   {
     id: 7,
-    title: "HỌC TẬP VÀ LÀM THEO BÁC",
+    title: "DI SẢN HỒ CHÍ MINH",
     description: "Các câu chuyện và tư liệu học tập theo gương Bác.",
   position: [1.6, 0, 5.2],
 rotation: Math.PI,
@@ -346,7 +346,7 @@ rotation: Math.PI,
   },
   {
     id: 8,
-    title: "TƯ LIỆU LỊCH SỬ",
+    title: "BÁC HỒ TRONG TRÁI TIM THẦY VÀ TRÒ NHÀ TRƯỜNG",
     description: "Không gian lưu trữ hình ảnh, video và tư liệu lịch sử.",
    position: [4.8, 0, 5.2],
     rotation: Math.PI,
