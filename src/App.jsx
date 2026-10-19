@@ -1747,7 +1747,7 @@ audio.addEventListener("ended", () => {
   <p style={{ fontWeight: 600, color: "#6b351f" }}>Cuốn sách 1</p>
   <button
     onClick={() => window.location.href =
-  "https://stbook.vn/read_book/926a2cd110ef4786b319a5aa341f4459/1131"
+  "https://"
 }
     style={{
       width: "100%",
