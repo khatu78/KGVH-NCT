@@ -1737,7 +1737,7 @@ audio.addEventListener("ended", () => {
 <div
   style={{
     display: "grid",
-    gridTemplateColumns: "repeat(4, 200px)",
+    gridTemplateColumns: "repeat(4, 250px)",
     justifyContent: "center",
     gap: 24,
   }}
@@ -1758,7 +1758,7 @@ audio.addEventListener("ended", () => {
           e.currentTarget.style.boxShadow = "0 5px 18px #0002";
         }}
         style={{
-          width: 200,
+          width: 250,
           cursor: "pointer",
           textAlign: "center",
           padding: 12,
@@ -1774,7 +1774,7 @@ audio.addEventListener("ended", () => {
           alt={`Bìa sách số ${so}`}
           style={{
             width: "100%",
-            height: 250,
+            height: 320,
             objectFit: "contain",
             borderRadius: 8,
           }}
