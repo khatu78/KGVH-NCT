@@ -499,23 +499,7 @@ function SecondRoom({ onSpaceClick }) {
 
 
 
-      {/* Cửa ở đầu lối đi giữa 8 gian */}
-<group position={[-22, 0, -1.1]}>
-  {/* Khung cửa */}
-  <mesh position={[-0.1, 1.25, -1.2]}>
-    <boxGeometry args={[2.5, 2.5, 0.15]} />
-    <meshStandardMaterial color="#70472d" />
-  </mesh>
-
-  <mesh position={[-0.1, 1.25, 1.2]}>
-    <boxGeometry args={[2.5, 2.5, 0.15]} />
-    <meshStandardMaterial color="#70472d" />
-  </mesh>
-
-  <mesh position={[-0.1, 2.5, 0]}>
-    <boxGeometry args={[2.5, 0.15, 2.5]} />
-    <meshStandardMaterial color="#70472d" />
-  </mesh>
+      
 </group>
 
 {/* Cửa nối phòng 2 với phòng 1 */}
@@ -669,7 +653,7 @@ mới xoá
   >
     PHÒNG TRƯNG BÀY
   </Text>
-</group>
+
 
 
 </group>
