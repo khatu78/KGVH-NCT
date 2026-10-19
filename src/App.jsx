@@ -1224,20 +1224,25 @@ const moveToSpot = (nextIndex) => {
 //};
 
 const handleSelectSpace = (space) => {
+  if (space.id === 2) {
+    setShowPadlet(true);
+    setShowPDF(false);
+    setSelectedSpace(null);
+    return;
+  }
+
   if (room2Active && activeSpace?.id === space.id) {
     if (space.id === 1) {
       setShowPDF(true);
-    } else if (space.id === 2) {
-      setShowPadlet(true);
     } else {
       setSelectedSpace(space);
     }
     return;
   }
 
-  setSelectedSpace(null);
   setShowPDF(false);
   setShowPadlet(false);
+  setSelectedSpace(null);
   setActiveSpace(space);
   setRoom2Active(true);
 };
