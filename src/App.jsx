@@ -1224,26 +1224,28 @@ const moveToSpot = (nextIndex) => {
 //};
 
 
-const handleSelectSpace = (space) => {
-  if (space.id === 2) {
-    setSelectedSpace(null);
-    setShowPDF(false);
-    setShowPadlet(true);
-    return;
-  }
 
+const handleSelectSpace = (space) => {
+  // Phòng 1 và phòng 2: nhấn lần 2 mới mở nội dung
   if (room2Active && activeSpace?.id === space.id) {
     if (space.id === 1) {
       setShowPDF(true);
+      setShowPadlet(false);
+      setSelectedSpace(null);
+    } else if (space.id === 2) {
+      setShowPadlet(true);
+      setShowPDF(false);
+      setSelectedSpace(null);
     } else {
       setSelectedSpace(space);
     }
     return;
   }
 
-  setSelectedSpace(null);
+  // Nhấn lần đầu: di chuyển đến phòng và hiện giới thiệu
   setShowPDF(false);
   setShowPadlet(false);
+  setSelectedSpace(space);
   setActiveSpace(space);
   setRoom2Active(true);
 };
@@ -1690,9 +1692,7 @@ audio.addEventListener("ended", () => {
       >
         <div style={{ fontSize: 42 }}>▶</div>
         <h3>KHU VỰC TƯ LIỆU</h3>
-        <p>
-          Video, hình ảnh và tài liệu sẽ được bổ sung tại đây.
-        </p>
+        
       </div>
     </div>
   </div>
