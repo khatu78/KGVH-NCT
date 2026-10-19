@@ -498,33 +498,23 @@ function SecondRoom({ onSpaceClick }) {
 </Text>
 
 
-{/* Cửa nối phòng 2 với phòng 1 */}
-<group position={[-22, 0, -1.1]}>
-  {/* Khung cửa trái */}
-  <mesh position={[-1.2, 1.25, 0]}>
-    <boxGeometry args={[0.15, 2.5, 0.2]} />
+
+      {/* Cửa ở đầu lối đi giữa 8 gian */}
+<group position={[-22, 0, 5.75]}>
+  {/* Khung cửa */}
+  <mesh position={[-0.1, 1.25, -1.2]}>
+    <boxGeometry args={[2.5, 2.5, 0.15]} />
     <meshStandardMaterial color="#70472d" />
   </mesh>
 
-  {/* Khung cửa phải */}
-  <mesh position={[1.2, 1.25, 0]}>
-    <boxGeometry args={[0.15, 2.5, 0.2]} />
+  <mesh position={[-0.1, 1.25, 1.2]}>
+    <boxGeometry args={[2.5, 2.5, 0.15]} />
     <meshStandardMaterial color="#70472d" />
   </mesh>
 
-  {/* Thanh ngang trên cửa */}
-  <mesh position={[0, 2.5, 0]}>
-    <boxGeometry args={[2.5, 0.15, 0.2]} />
+  <mesh position={[-0.1, 2.5, 0]}>
+    <boxGeometry args={[2.5, 0.15, 2.5]} />
     <meshStandardMaterial color="#70472d" />
-  </mesh>
-
-  {/* Cánh cửa mở sang bên */}
-  <mesh position={[-1.05, 1.2, 0.08]}>
-    <boxGeometry args={[0.12, 2.4, 2.1]} />
-    <meshStandardMaterial
-      color="#a87b51"
-      side={THREE.DoubleSide}
-    />
   </mesh>
 </group>
 
@@ -612,9 +602,47 @@ function Room({ onExhibit, onSpaceClick }) {
   <meshStandardMaterial color="#eee6d7" />
 </mesh>
 
-{/*
-mới xoá
-*/}
+{/* Khung cửa */}
+<group position={[-11.82, 0, 5.75]}>
+  <mesh position={[0, 1.25, -1.2]}>
+    <boxGeometry args={[0.2, 2.5, 0.15]} />
+    <meshStandardMaterial color="#70472d" />
+  </mesh>
+
+  <mesh position={[0, 1.25, 1.2]}>
+    <boxGeometry args={[0.2, 2.5, 0.15]} />
+    <meshStandardMaterial color="#70472d" />
+  </mesh>
+
+  <mesh position={[0, 2.5, 0]}>
+    <boxGeometry args={[0.2, 0.15, 2.5]} />
+    <meshStandardMaterial color="#70472d" />
+  </mesh>
+
+  {/* Cánh cửa */}
+  
+{/* Cánh cửa luôn mở */}
+<group
+  position={[0, 0, -1.1]}
+  rotation={[0, -Math.PI / 2, 0]}
+>
+  {/* Cánh cửa */}
+  <mesh position={[0, 1.2, 1.1]}>
+    <boxGeometry args={[0.12, 2.4, 2.2]} />
+    <meshStandardMaterial
+      color="#a87b51"
+      side={THREE.DoubleSide}
+    />
+  </mesh>
+
+  {/* Tay nắm */}
+  <mesh position={[0.09, 1.2, 1.85]}>
+    <sphereGeometry args={[0.07, 12, 12]} />
+    <meshStandardMaterial color="#d4af37" />
+  </mesh>
+
+  
+</group>
 
 
 {/* Biển nhấn để vào phòng trưng bày */}
@@ -649,7 +677,7 @@ mới xoá
   >
     PHÒNG TRƯNG BÀY
   </Text>
-
+</group>
 
 
 </group>
