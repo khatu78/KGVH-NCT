@@ -291,7 +291,7 @@ const spaces = [
     title: "CUỘC ĐỜI VÀ SỰ NGHIỆP",
     description: "Tư liệu về cuộc đời và sự nghiệp của Chủ tịch Hồ Chí Minh.",
    position: [-4.8, 0, -5.2],
-    rotation: Math.PI / 2,
+    rotation: 0,
     color: "#7c2929",
   },
   {
@@ -299,7 +299,7 @@ const spaces = [
     title: "TƯ TƯỞNG HỒ CHÍ MINH",
     description: "Không gian tìm hiểu tư tưởng Hồ Chí Minh.",
    position: [-1.6, 0, -5.2],
-    rotation: Math.PI / 2,
+   rotation: 0,
     color: "#805b32",
   },
   {
@@ -307,7 +307,7 @@ const spaces = [
     title: "ĐẠO ĐỨC VÀ PHONG CÁCH",
     description: "Tư liệu về đạo đức và phong cách Hồ Chí Minh.",
     position: [1.6, 0, -5.2],
-    rotation: Math.PI / 2,
+    rotation: 0,
     color: "#315c50",
   },
   {
@@ -315,7 +315,7 @@ const spaces = [
     title: "BÁC HỒ VỚI THIẾU NHI",
     description: "Hình ảnh và câu chuyện về tình cảm của Bác với thiếu nhi.",
    position: [4.8, 0, -5.2],
-    rotation: Math.PI / 2,
+   rotation: 0,
     color: "#365d83",
   },
   {
@@ -323,7 +323,7 @@ const spaces = [
     title: "BÁC HỒ VỚI MIỀN NAM",
     description: "Tư liệu về tình cảm của Bác dành cho đồng bào miền Nam.",
    position: [-4.8, 0, 5.2],
-    rotation: -Math.PI / 2,
+   rotation: 0,
     color: "#365d83",
   },
   {
@@ -331,7 +331,7 @@ const spaces = [
     title: "DI SẢN VÀ TÁC PHẨM",
     description: "Không gian giới thiệu tác phẩm và di sản của Bác.",
    position: [-1.6, 0, 5.2],
-    rotation: -Math.PI / 2,
+    rotation: 0,
     color: "#315c50",
   },
   {
@@ -339,7 +339,7 @@ const spaces = [
     title: "HỌC TẬP VÀ LÀM THEO BÁC",
     description: "Các câu chuyện và tư liệu học tập theo gương Bác.",
   position: [1.6, 0, 5.2],
-    rotation: -Math.PI / 2,
+rotation: 0,
     color: "#805b32",
   },
   {
@@ -347,7 +347,7 @@ const spaces = [
     title: "TƯ LIỆU LỊCH SỬ",
     description: "Không gian lưu trữ hình ảnh, video và tư liệu lịch sử.",
    position: [4.8, 0, 5.2],
-    rotation: -Math.PI / 2,
+  rotation: 0,
     color: "#7c2929",
   },
 ];
