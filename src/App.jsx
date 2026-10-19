@@ -498,10 +498,6 @@ function SecondRoom({ onSpaceClick }) {
 </Text>
 
 
-
-      
-</group>
-
 {/* Cửa nối phòng 2 với phòng 1 */}
 <group position={[-22, 0, -1.1]}>
   {/* Khung cửa trái */}
