@@ -1614,7 +1614,7 @@ audio.addEventListener("ended", () => {
 )}
 
 
-{selectedSpace && selectedSpace.id !== 8 && (
+{selectedSpace && selectedSpace.id !== 3 && (
   <div
     onClick={() => setSelectedSpace(null)}
     style={{
@@ -1703,7 +1703,7 @@ audio.addEventListener("ended", () => {
   </div>
 )}
 
-{selectedSpace?.id === 8 && (
+{selectedSpace?.id === 3 && (
   <div
     style={{
       position: "fixed",
