@@ -469,10 +469,13 @@ function SecondRoom({ onSpaceClick }) {
       </mesh>
 
       {/* Tường cuối phòng */}
-      <mesh position={[-32, 2.75, 5.75]}>
-        <boxGeometry args={[0.25, 5.5, 14]} />
-        <meshStandardMaterial color="#eee6d7" />
-      </mesh>
+<mesh position={[-32, 2.75, 5.75]}>
+  <boxGeometry args={[0.25, 5.5, 14]} />
+  <meshStandardMaterial
+    color="#eee6d7"
+    side={THREE.DoubleSide}
+  />
+</mesh>
 
       {/* Hai tường bên */}
       {[-1.25, 12.75].map((z) => (
