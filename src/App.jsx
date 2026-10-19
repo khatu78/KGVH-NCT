@@ -88,21 +88,22 @@ function CameraView({ spots, spotIndex,room2Active, activeSpace, onSpaceArrive,}
     
 if (room2Active && activeSpace) {
   const [x, , z] = activeSpace.position;
-  const side = z < 0 ? -1 : 1;
+  const isTopRow = z < 0;
 
-  // Camera đứng phía trước mặt gian được chọn
+  // Camera đứng ngoài mặt mở của gian
   destination.current.set(
     -22 + x,
     1.6,
-    5.75 + z + side * 2.5
+    5.75 + z + (isTopRow ? 2.8 : -2.8)
   );
 
-  // Nhìn vào chính giữa gian
+  // Nhìn vào giữa gian
   lookTarget.current.set(
     -22 + x,
-    1.5,
+    1.3,
     5.75 + z
   );
+}
 
 } else if (room2Active) {
   // Đứng chính giữa phòng 2
