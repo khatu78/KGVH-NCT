@@ -453,7 +453,7 @@ function InteractiveSpaces({ onSelect }) {
 
 ///căn phòng thứ 2
 
-function SecondRoom({ onSpaceClick }) {
+function SecondRoom({ onSpaceClick,onBackToMain }) {
   return (
     <group>
       {/* Sàn phòng 2: rộng 20, sâu 14 */}
@@ -537,7 +537,7 @@ function SecondRoom({ onSpaceClick }) {
 
 
 
-function Room({ onExhibit, onSpaceClick }) {
+function Room({ onExhibit, onSpaceClick, onBackToMain }) {
    const banDo = useTexture(`${import.meta.env.BASE_URL}images/bandoVN.jpg`);
    const [doorOpen, setDoorOpen] = useState(true);
    return (
@@ -642,13 +642,29 @@ function Room({ onExhibit, onSpaceClick }) {
   rotation={[0, -Math.PI / 2, 0]}
 >
   {/* Cánh cửa */}
-  <mesh position={[0, 1.2, 1.1]}>
+  <mesh position={[0, 1.2, 1.1]}
+  onClick={(e) => {
+  e.stopPropagation();
+  onBackToMain();
+}}
+  >
     <boxGeometry args={[0.12, 2.4, 2.2]} />
     <meshStandardMaterial
       color="#a87b51"
       side={THREE.DoubleSide}
     />
   </mesh>
+  <group position={[0, 1.2, 0.98]}>
+  <Text
+    position={[0, 0, 0.08]}
+    fontSize={0.28}
+    color="#fff4d6"
+    anchorX="center"
+    anchorY="middle"
+  >
+    SẢNH CHÍNH
+  </Text>
+</group>
 
   {/* Tay nắm */}
   <mesh position={[0.09, 1.2, 1.85]}>
@@ -1050,9 +1066,15 @@ function Scene({ spotIndex, onMove, onExhibit, onSpaceClick, room2Active, active
     <Room
   onExhibit={onExhibit}
   onSpaceClick={onSpaceClick}
+   onBackToMain={() => {
+    window.dispatchEvent(new Event("leave-second-room"));
+  }}
 />
       {room2Active && (
-  <SecondRoom onSpaceClick={onSpaceClick} />
+  <SecondRoom onSpaceClick={onSpaceClick} 
+  onBackToMain={() => {
+    window.dispatchEvent(new Event("leave-second-room"));
+  }} />
 )}
       <NavigationMarkers current={spotIndex} onMove={onMove} />
 
