@@ -1715,16 +1715,27 @@ audio.addEventListener("ended", () => {
       color: "#38271c",
     }}
   >
-    <button onClick={() => setSelectedSpace(null)}>
-      ← Quay lại không gian
-    </button>
-
+    <button
+  onClick={() => setSelectedSpace(null)}
+  style={{
+    padding: "10px 18px",
+    border: "1px solid #c8b99f",
+    borderRadius: 10,
+    background: "#315c50",
+    color: "#fff",
+    fontSize: 15,
+    cursor: "pointer",
+    boxShadow: "0 3px 8px rgba(0,0,0,0.15)",
+  }}
+>
+  ← Quay lại không gian
+</button>
     <h2>THƯ VIỆN SÁCH VỀ BÁC HỒ</h2>
 
     
 <div style={{ width: 200, cursor: "pointer", textAlign: "center", padding: 12, borderRadius: 14, background: "#fffaf0", boxShadow: "0 5px 18px #0002" }}>
   <img
-    src={`${import.meta.env.BASE_URL}pic%20room3/1.png`}
+    src={`${import.meta.env.BASE_URL}pic room3/1.png`}
     alt="Bìa sách số 1"
     style={{
       width: "100%",
@@ -1735,11 +1746,9 @@ audio.addEventListener("ended", () => {
   />
   <p style={{ fontWeight: 600, color: "#6b351f" }}>Cuốn sách 1</p>
   <button
-    onClick={() => window.open(
-      "https://stbook.vn/read_book/926a2cd110ef4786b319a5aa341f4459/1131",
-      "_blank",
-      "noopener,noreferrer"
-    )}
+    onClick={() => window.location.href =
+  "https://stbook.vn/read_book/926a2cd110ef4786b319a5aa341f4459/1131"
+}
     style={{
       width: "100%",
       padding: "11px 14px",
