@@ -1728,7 +1728,7 @@ audio.addEventListener("ended", () => {
     boxShadow: "0 3px 8px rgba(0,0,0,0.15)",
   }}
 >
-  ← Quay lại không gian
+  ← Quay lại không gian văn hoá
 </button>
     <h2>THƯ VIỆN SÁCH VỀ BÁC HỒ</h2>
 
