@@ -2068,7 +2068,7 @@ audio.addEventListener("ended", () => {
             }}
           >
             <img
-              src={`${import.meta.env.BASE_URL}hinh-bac/${n}.${n === 1 ? "jpg" : "jpge"}`}
+              src={`${import.meta.env.BASE_URL}hinh-bac/${n}.${n === 1 ? "jpg" : "jpeg"}`}
               alt={`Hình ${n}`}
               loading="lazy"
               style={{
