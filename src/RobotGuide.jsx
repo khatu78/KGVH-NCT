@@ -1,7 +1,20 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useState } from "react";
 import "./RobotGuide.css";
 
 export default function RobotGuide({ active, visitor, audioRef }) {
+  const [room2Text, setRoom2Text] = useState(false);
+  useEffect(() => {
+  const enterRoom2 = () => setRoom2Text(true);
+  const leaveRoom2 = () => setRoom2Text(false);
+
+  window.addEventListener("enter-second-room", enterRoom2);
+  window.addEventListener("leave-second-room", leaveRoom2);
+
+  return () => {
+    window.removeEventListener("enter-second-room", enterRoom2);
+    window.removeEventListener("leave-second-room", leaveRoom2);
+  };
+}, []);
   
 
 const speak = useCallback(() => {
@@ -78,17 +91,17 @@ const speak = useCallback(() => {
       <div className="robot-dialog">
         <strong>Robot hướng dẫn viên</strong>
        <p>
-  {visitor?.ageGroup === "under15" &&
-    `Xin chào em ${visitor?.name || ""}! Chào mừng em đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Chúc em có một chuyến tham quan thật vui và bổ ích nhé!`}
-
-  {visitor?.ageGroup === "age15to34" &&
-    `Xin chào bạn ${visitor?.name || ""}! Chào mừng bạn đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Chúc bạn có những trải nghiệm thật thú vị!`}
-
-  {visitor?.ageGroup === "age35plus" && visitor?.gender === "Nam" &&
-    `Xin chào anh ${visitor?.name || ""}! Chào mừng anh đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Kính chúc anh có một chuyến tham quan thật ý nghĩa!`}
-
-  {visitor?.ageGroup === "age35plus" && visitor?.gender === "Nữ" &&
-    `Xin chào chị ${visitor?.name || ""}! Chào mừng chị đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Kính chúc chị có một chuyến tham quan thật ý nghĩa!`}
+  {room2Text
+    ? "Đây là phòng trưng bày các chuyên đề."
+    : visitor?.ageGroup === "under15"
+    ? `Xin chào em ${visitor?.name || ""}! Chào mừng em đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Chúc em có một chuyến tham quan thật vui và bổ ích nhé!`
+    : visitor?.ageGroup === "age15to34"
+    ? `Xin chào bạn ${visitor?.name || ""}! Chào mừng bạn đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Chúc bạn có những trải nghiệm thật thú vị!`
+    : visitor?.ageGroup === "age35plus" && visitor?.gender === "Nam"
+    ? `Xin chào anh ${visitor?.name || ""}! Chào mừng anh đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Kính chúc anh có một chuyến tham quan thật ý nghĩa!`
+    : visitor?.ageGroup === "age35plus" && visitor?.gender === "Nữ"
+    ? `Xin chào chị ${visitor?.name || ""}! Chào mừng chị đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Kính chúc chị có một chuyến tham quan thật ý nghĩa!`
+    : ""}
 </p>
         <button type="button" onClick={speak}>🔊 Nghe lại lời chào</button>
       </div>

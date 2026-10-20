@@ -1138,12 +1138,20 @@ useEffect(() => {
 
 useEffect(() => {
   const enter = () => {
+  // Dừng âm thanh phòng 1
+  if (audioRef.current) {
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+  }
+  setMusicPlaying(false);
+
   setRoom2Active(true);
   setActiveSpace(null);
   setSelectedSpace(null);
   setSelectedExhibit(null);
   setShowMap(false);
 
+  // Phát lời giới thiệu phòng 2
   const voice = new Audio(
     `${import.meta.env.BASE_URL}voice/room2voice.mp3`
   );
