@@ -574,6 +574,13 @@ function SecondRoom({ onSpaceClick }) {
 
 
 function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
+
+const chuSTextures = useTexture(
+  Array.from({ length: 10 }, (_, i) =>
+    `${import.meta.env.BASE_URL}hinh-chu-s/${i + 1}.${i === 0 ? "jpg" : "jpeg"}`
+  )
+);
+
   const portraitTexture = useTexture(
   `${import.meta.env.BASE_URL}hinh-bac/1.jpg`
 );
@@ -952,35 +959,18 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
        {/* Chữ KHU TRƯNG BÀY gắn trên vách tường bên phải */}
 
 {/* 10 khung ảnh treo tường theo hình chữ S */}
-{/* 12 khung ảnh treo tường theo hình chữ S */}
-{Array.from({ length: 12 }, (_, i) => {
-  const t = i / 11;
-  const y = 4.3 - t * 3.5;
-  const z = -4.5 - Math.sin(t * Math.PI * 2) * 1.2;
-
-  const isHoangSa = i === 10;
-  const isTruongSa = i === 11;
+{Array.from({ length: 10 }, (_, i) => {
+  const t = i / 9;
+const y = 4.3 - t * 3.5;
+const z = -4.5 - Math.sin(t * Math.PI * 2) * 1.2;
 
   return (
     <group
       key={i}
       position={[11.78, y, z]}
       rotation={[0, -Math.PI / 2, 0]}
-      onClick={(e) => {
-        e.stopPropagation();
-        if (isHoangSa) {
-          window.dispatchEvent(new Event("open-hoangsa"));
-        } else if (isTruongSa) {
-          window.dispatchEvent(new Event("open-truongsa"));
-        } else {
-          window.dispatchEvent(
-            new CustomEvent("open-chu-s-slideshow", {
-              detail: { image: i + 1 },
-            })
-          );
-        }
-      }}
     >
+   
       {/* Viền khung */}
       <mesh>
         <boxGeometry args={[1.05, 1.05, 0.06]} />
@@ -988,26 +978,81 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
       </mesh>
 
       {/* Mặt ảnh */}
-      <mesh position={[0, 0, 0.035]}>
-        <planeGeometry args={[1, 1]} />
-        <meshStandardMaterial color="#d8c9ad" />
-      </mesh>
+      <mesh position={[0, 0, 0.04]}>
+  <planeGeometry args={[1, 1]} />
+  <meshBasicMaterial
+    map={chuSTextures[i]}
+    toneMapped={false}
+  />
+</mesh>
 
-      {/* Nhãn Hoàng Sa, Trường Sa hoặc số thứ tự */}
+      {/* Số thứ tự tạm thời */}
       <Text
-        position={[0, 0, 0.045]}
-        fontSize={isHoangSa || isTruongSa ? 0.12 : 0.2}
-        color={isHoangSa || isTruongSa ? "#173f63" : "#5c1717"}
+        position={[0, 0, 0.04]}
+        fontSize={0.07}
+        color="#5c1717"
         anchorX="center"
         anchorY="middle"
-        maxWidth={0.95}
-        textAlign="center"
       >
-        {isHoangSa ? "HOÀNG SA" : isTruongSa ? "TRƯỜNG SA" : i + 1}
+        {i + 1}
       </Text>
     </group>
   );
 })}
+
+{/* Khung Hoàng Sa - 50x50 cm */}
+<group
+
+  position={[11.78, 3.2, -2.5]}
+  rotation={[0, -Math.PI / 2, 0]}
+>
+  <mesh>
+    <boxGeometry args={[0.55, 0.55, 0.06]} />
+    <meshStandardMaterial color="#70472d" />
+  </mesh>
+  <mesh position={[0, 0, 0.035]}>
+    <planeGeometry args={[0.5, 0.5]} />
+    <meshStandardMaterial color="#dcebf0" />
+  </mesh>
+  <Text
+    position={[0, 0, 0.045]}
+    fontSize={0.055}
+    color="#173f63"
+    anchorX="center"
+    anchorY="middle"
+    maxWidth={0.45}
+    textAlign="center"
+  >
+    HOÀNG SA
+  </Text>
+</group>
+
+{/* Khung Trường Sa - 50x50 cm */}
+<group
+
+  position={[11.78, 1, -2]}
+  rotation={[0, -Math.PI / 2, 0]}
+>
+  <mesh>
+    <boxGeometry args={[0.55, 0.55, 0.06]} />
+    <meshStandardMaterial color="#70472d" />
+  </mesh>
+  <mesh position={[0, 0, 0.035]}>
+    <planeGeometry args={[0.5, 0.5]} />
+    <meshStandardMaterial color="#dcebf0" />
+  </mesh>
+  <Text
+    position={[0, 0, 0.045]}
+    fontSize={0.055}
+    color="#173f63"
+    anchorX="center"
+    anchorY="middle"
+    maxWidth={0.45}
+    textAlign="center"
+  >
+    TRƯỜNG SA
+  </Text>
+</group>
 
 
 <group
