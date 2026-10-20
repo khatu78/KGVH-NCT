@@ -4,6 +4,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, OrbitControls, Text, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import "./style.css";
+import RobotGuide from "./RobotGuide";
 
 const ROOM = { width: 24, depth: 18, height: 5.5 };
 
@@ -1112,6 +1113,7 @@ const [showLibrary, setShowLibrary] = useState(false);
 const [showPortraitSlideshow, setShowPortraitSlideshow] = useState(false);
 const [activePortrait, setActivePortrait] = useState(1);
 const [activeChuS, setActiveChuS] = useState(0);
+const [gender, setGender] = useState("male");
 
 useEffect(() => {
   const openPortrait = () => {
@@ -1360,18 +1362,20 @@ audio.addEventListener("ended", () => {
               </select>
             </label>
 
-            <label>
-              Giới tính
-              <select
-                value={visitor.gender}
-                onChange={(e) =>
-                  setVisitor({ ...visitor, gender: e.target.value })
-                }
-              >
-                <option value="Nam">Nam</option>
-                <option value="Nữ">Nữ</option>
-              </select>
-            </label>
+           {visitor.ageGroup === "age35plus" && (
+  <label>
+    Giới tính
+    <select
+      value={visitor.gender}
+      onChange={(e) =>
+        setVisitor({ ...visitor, gender: e.target.value })
+      }
+    >
+      <option value="Nam">Nam</option>
+      <option value="Nữ">Nữ</option>
+    </select>
+  </label>
+)}
 
             {error && <div className="form-error">{error}</div>}
 
@@ -1443,6 +1447,14 @@ audio.addEventListener("ended", () => {
     {musicPlaying ? "⏸ Tạm dừng" : "▶ Phát nhạc"}
   </button>
 </div>
+
+<RobotGuide
+  active={started}
+  ageGroup={ageGroup}
+  gender={gender}
+  triggerKey={roomEntryCount}
+/>
+
       <Canvas
         camera={{
           position: [0, 1.6, 6.5],
