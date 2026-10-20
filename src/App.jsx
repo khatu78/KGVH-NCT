@@ -1138,12 +1138,19 @@ useEffect(() => {
 
 useEffect(() => {
   const enter = () => {
-    setRoom2Active(true);
-    setActiveSpace(null);
-    setSelectedSpace(null);
-    setSelectedExhibit(null);
-    setShowMap(false);
-  };
+  setRoom2Active(true);
+  setActiveSpace(null);
+  setSelectedSpace(null);
+  setSelectedExhibit(null);
+  setShowMap(false);
+
+  const voice = new Audio(
+    `${import.meta.env.BASE_URL}voice/room2voice.mp3`
+  );
+  voice.play().catch((err) => {
+    console.log("Không phát được âm thanh phòng 2:", err);
+  });
+};
 
 const leave = () => {
   setRoom2Active(false);
