@@ -62,7 +62,7 @@ const speak = useCallback(() => {
   useEffect(() => {
     if (active) speak();
 
-    return () => window.speechSynthesis?.cancel();
+   return () => {};
   }, [active, speak]);
 
   if (!active) return null;
@@ -82,7 +82,7 @@ const speak = useCallback(() => {
 
       <div className="robot-dialog">
         <strong>Robot hướng dẫn viên</strong>
-        <p>{getGreeting()}</p>
+        <p>Chào mừng bạn đến với Không gian văn hóa Hồ Chí Minh!</p>
         <button type="button" onClick={speak}>🔊 Nghe lại lời chào</button>
       </div>
     </div>
