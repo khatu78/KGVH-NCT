@@ -984,11 +984,13 @@ const z = -4.5 - Math.sin(t * Math.PI * 2) * 1.2;
       </mesh>
 
       {/* Mặt ảnh */}
-      <mesh position={[0, 0, 0.04]}>
+     <mesh position={[0, 0, 0.036]}>
   <planeGeometry args={[1, 1]} />
   <meshBasicMaterial
     map={chuSTextures[i]}
     toneMapped={false}
+    polygonOffset
+    polygonOffsetFactor={-1}
   />
 </mesh>
 
