@@ -1,13 +1,8 @@
-
 import { useEffect, useCallback } from "react";
 import "./RobotGuide.css";
 
 export default function RobotGuide({ active, visitor, audioRef }) {
   
-
-
- 
-
 
 const speak = useCallback(() => {
   const ageGroup = visitor?.ageGroup;
@@ -82,7 +77,19 @@ const speak = useCallback(() => {
 
       <div className="robot-dialog">
         <strong>Robot hướng dẫn viên</strong>
-        <p>Chào mừng bạn đến với Không gian văn hóa Hồ Chí Minh!</p>
+       <p>
+  {visitor?.ageGroup === "under15" &&
+    `Xin chào em ${visitor?.name || ""}! Chào mừng em đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Chúc em có một chuyến tham quan thật vui và bổ ích nhé!`}
+
+  {visitor?.ageGroup === "age15to34" &&
+    `Xin chào bạn ${visitor?.name || ""}! Chào mừng bạn đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Chúc bạn có những trải nghiệm thật thú vị!`}
+
+  {visitor?.ageGroup === "age35plus" && visitor?.gender === "Nam" &&
+    `Xin chào anh ${visitor?.name || ""}! Chào mừng anh đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Kính chúc anh có một chuyến tham quan thật ý nghĩa!`}
+
+  {visitor?.ageGroup === "age35plus" && visitor?.gender === "Nữ" &&
+    `Xin chào chị ${visitor?.name || ""}! Chào mừng chị đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Kính chúc chị có một chuyến tham quan thật ý nghĩa!`}
+</p>
         <button type="button" onClick={speak}>🔊 Nghe lại lời chào</button>
       </div>
     </div>
