@@ -800,10 +800,14 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
 </group>
 
       {/* Chân dung */}
-      <group
-        position={[-8, 2.65, -8.25]}
-        onClick={() => onExhibit(exhibits[0])}
-      >
+     {/* Chân dung Bác Hồ */}
+<group
+  position={[-8, 2.65, -8.25]}
+  onClick={(e) => {
+    e.stopPropagation();
+    window.dispatchEvent(new Event("open-portrait"));
+  }}
+>
         <mesh>
           <boxGeometry args={[4.5, 3.1, 0.18]} />
           <meshStandardMaterial color="#6e492d" />
@@ -1174,6 +1178,21 @@ const [showPadlet, setShowPadlet] = useState(false);
 const [showBook1, setShowBook1] = useState(false);
 const [showMuseum3D, setShowMuseum3D] = useState(false);
 const [showLibrary, setShowLibrary] = useState(false);
+const [showPortraitSlideshow, setShowPortraitSlideshow] = useState(false);
+const [activePortrait, setActivePortrait] = useState(1);
+
+useEffect(() => {
+  const openPortrait = () => {
+    setActivePortrait(1);
+    setShowPortraitSlideshow(true);
+  };
+
+  window.addEventListener("open-portrait", openPortrait);
+
+  return () => {
+    window.removeEventListener("open-portrait", openPortrait);
+  };
+}, []);
 
 useEffect(() => {
   const openLibrary = () => setShowLibrary(true);
@@ -1885,6 +1904,185 @@ audio.addEventListener("ended", () => {
         border: 0,
       }}
     />
+  </div>
+)}
+
+
+{showPortraitSlideshow && (
+  <div
+    onClick={() => setShowPortraitSlideshow(false)}
+    style={{
+      position: "fixed",
+      inset: 0,
+      zIndex: 10000,
+      background: "rgba(20, 16, 12, 0.96)",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      padding: "24px 20px",
+      boxSizing: "border-box",
+      overflowY: "auto",
+      color: "#ffe6a0",
+    }}
+  >
+    <style>{`
+      @keyframes portraitMainEnter {
+        from {
+          opacity: 0;
+          transform: scale(0.94) translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      @keyframes portraitThumbEnter {
+        from {
+          opacity: 0.4;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .portrait-main-image {
+        animation: portraitMainEnter 0.45s ease both;
+      }
+
+      .portrait-thumb {
+        animation: portraitThumbEnter 0.35s ease both;
+        transition: transform 0.25s ease, border-color 0.25s ease;
+      }
+
+      .portrait-thumb:hover {
+        transform: translateY(-5px) scale(1.04);
+      }
+
+      .portrait-thumbnails {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-start;
+        width: 100%;
+        overflow-x: auto;
+        padding: 12px 4px 18px;
+        box-sizing: border-box;
+      }
+
+      .portrait-thumbnails::-webkit-scrollbar {
+        height: 7px;
+      }
+
+      .portrait-thumbnails::-webkit-scrollbar-thumb {
+        background: #9c7848;
+        border-radius: 10px;
+      }
+
+      @media (max-width: 600px) {
+        .portrait-main-image {
+          max-height: 48vh !important;
+        }
+      }
+    `}</style>
+
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        setShowPortraitSlideshow(false);
+      }}
+      style={{
+        alignSelf: "flex-end",
+        border: "1px solid #c5a66c",
+        borderRadius: 8,
+        padding: "9px 16px",
+        background: "#681b1b",
+        color: "#fff",
+        cursor: "pointer",
+        fontSize: 16,
+      }}
+    >
+      ✕ Đóng
+    </button>
+
+    <h2 style={{ textAlign: "center", margin: "8px 0 18px" }}>
+      CHÂN DUNG CHỦ TỊCH HỒ CHÍ MINH
+    </h2>
+
+    <div
+      key={activePortrait}
+      className="portrait-main-image"
+      onClick={(e) => e.stopPropagation()}
+      style={{
+        flex: "0 1 auto",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: "100%",
+        minHeight: 0,
+      }}
+    >
+      <img
+        src={`${import.meta.env.BASE_URL}hinh-bac/${activePortrait}.${activePortrait === 1 ? "jpg" : "jpge"}`}
+        alt={`Chân dung Bác Hồ ${activePortrait}`}
+        style={{
+          display: "block",
+          maxWidth: "90vw",
+          maxHeight: "58vh",
+          width: "auto",
+          height: "auto",
+          objectFit: "contain",
+          border: "5px solid #b18a4e",
+          borderRadius: 8,
+          boxShadow: "0 12px 40px #0009",
+        }}
+      />
+    </div>
+
+    <p style={{ margin: "14px 0 4px", fontSize: 15 }}>
+      Hình {activePortrait} / 10
+    </p>
+
+    <div
+      className="portrait-thumbnails"
+      onClick={(e) => e.stopPropagation()}
+    >
+      {Array.from({ length: 10 }, (_, i) => i + 1)
+        .filter((n) => n !== activePortrait)
+        .map((n) => (
+          <button
+            key={n}
+            className="portrait-thumb"
+            onClick={() => setActivePortrait(n)}
+            title={`Xem hình ${n}`}
+            style={{
+              flex: "0 0 105px",
+              height: 115,
+              padding: 4,
+              cursor: "pointer",
+              background: "#35291e",
+              border: "2px solid #9c7848",
+              borderRadius: 8,
+              boxShadow: "0 3px 10px #0005",
+            }}
+          >
+            <img
+              src={`${import.meta.env.BASE_URL}hinh-bac/${n}.${n === 1 ? "jpg" : "jpge"}`}
+              alt={`Hình ${n}`}
+              loading="lazy"
+              style={{
+                width: "100%",
+                height: 82,
+                objectFit: "contain",
+              }}
+            />
+            <span style={{ color: "#ffe6a0", fontSize: 13 }}>
+              Hình {n}
+            </span>
+          </button>
+        ))}
+    </div>
   </div>
 )}
 
