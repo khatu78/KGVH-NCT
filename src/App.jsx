@@ -573,7 +573,7 @@ function SecondRoom({ onSpaceClick }) {
 
 
 
-function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
+function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary, onOpenChuS }) {
 
 const [activeChuS, setActiveChuS] = useState(0);
 
@@ -973,7 +973,7 @@ const z = -4.5 - Math.sin(t * Math.PI * 2) * 1.2;
   rotation={[0, -Math.PI / 2, 0]}
   onClick={(e) => {
   e.stopPropagation();
-  setActiveChuS(i + 1);
+  onOpenChuS(i + 1);
 }}
 >
    
@@ -1556,6 +1556,7 @@ audio.addEventListener("ended", () => {
   room2Active={room2Active}
   activeSpace={activeSpace}
   onSpaceArrive={setSelectedSpace}
+    onOpenChuS={setActiveChuS}
 />
        
       </Canvas>
