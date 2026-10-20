@@ -1243,10 +1243,14 @@ const handleNavigateSpot = (index) => {
   setActiveSpace(null);
   setRoom2Active(false);
 
-  if (index === 4) {
-    setShowMuseum3D(true);
-    return;
-  }
+ if (index === 4) {
+  window.open(
+    "https://hochiminh.vn/bao-tang-3d",
+    "_blank",
+    "noopener,noreferrer"
+  );
+  return;
+}
 
   setShowMuseum3D(false);
   moveToSpot(index);
