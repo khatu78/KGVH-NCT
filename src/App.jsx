@@ -10,7 +10,7 @@ const ROOM = { width: 24, depth: 18, height: 5.5 };
 export const CONTENT_LIST = [
     // 5 vị trí tham quan
   { id: 1, name: "Lối vào", type: "spot" },
-  { id: 2, name: "Chân dung Bác Hồ", type: "spot" },
+  { id: 2, name: "Hình ảnh về Bác Hồ", type: "spot" },
   { id: 3, name: "Video tư liệu", type: "spot" },
   { id: 4, name: "Tủ sách", type: "spot" },
   { id: 5, name: "Bảo tàng 3D", type: "spot" },
@@ -29,7 +29,7 @@ export const CONTENT_LIST = [
 
 const spots = [
   { id: 0, name: "Lối vào", position: [0, 1.6, 6.5] },
-  { id: 1, name: "Chân dung Bác Hồ", position: [-8.5, 1.6, -3] },
+  { id: 1, name: "Hình ảnh về Bác Hồ", position: [-8.5, 1.6, -3] },
   { id: 2, name: "Video tư liệu", position: [0, 1.6, 0] },
   { id: 3, name: "Tủ sách", position: [8.5, 1.6, -3] },
   { id: 4, name: "Bảo tàng 3D", position: [5, 1.6, 1.5] },
@@ -823,7 +823,7 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
   />
 </mesh>
         <Text
-          position={[0, -1.25, 0.2]}
+          position={[0, -4.25, 0.2]}
           fontSize={0.22}
           color="#3b281c"
           anchorX="center"
@@ -2013,7 +2013,7 @@ audio.addEventListener("ended", () => {
     </button>
 
     <h2 style={{ textAlign: "center", margin: "8px 0 18px" }}>
-      CHÂN DUNG CHỦ TỊCH HỒ CHÍ MINH
+      HÌNH ẢNH VỀ BÁC HỒ KÍNH YÊU
     </h2>
 
     <div
@@ -2031,7 +2031,7 @@ audio.addEventListener("ended", () => {
     >
       <img
         src={`${import.meta.env.BASE_URL}hinh-bac/${activePortrait}.${activePortrait === 1 ? "jpg" : "jpeg"}`}
-        alt={`Chân dung Bác Hồ ${activePortrait}`}
+        alt={`Hình ảnh về Bác Hồ ${activePortrait}`}
         style={{
           display: "block",
           maxWidth: "90vw",
