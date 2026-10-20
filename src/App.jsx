@@ -962,8 +962,8 @@ const chuSTextures = useTexture(
 
 {/* 10 khung ảnh treo tường theo hình chữ S */}
 {Array.from({ length: 10 }, (_, i) => {
-const t = i / 9;
-const y = 0.6 + i * 0.6;
+  const t = (9 - i) / 9;
+const y = 0.8 + i * 0.35;
 const z = -4.5 - Math.sin(t * Math.PI * 2) * 1.2;
 
   return (
@@ -979,13 +979,13 @@ const z = -4.5 - Math.sin(t * Math.PI * 2) * 1.2;
    
       {/* Viền khung */}
       <mesh>
-        <boxGeometry args={[0.6, 0.6, 0.06]} />
+        <boxGeometry args={[1.05, 1.05, 0.06]} />
         <meshStandardMaterial color="#70472d" />
       </mesh>
 
       {/* Mặt ảnh */}
      <mesh position={[0, 0, 0.036]}>
-  <planeGeometry args={[0.55, 0.55]} />
+  <planeGeometry args={[1, 1]} />
   <meshBasicMaterial
     map={chuSTextures[i]}
     toneMapped={false}
