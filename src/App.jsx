@@ -1242,15 +1242,15 @@ const handleNavigateSpot = (index) => {
   setSelectedSpace(null);
   setActiveSpace(null);
   setRoom2Active(false);
-  moveToSpot(index);
 
   if (index === 4) {
     setShowMuseum3D(true);
-  } else {
-    setShowMuseum3D(false);
+    return;
   }
-};
 
+  setShowMuseum3D(false);
+  moveToSpot(index);
+};
 const returnToPreviousSpot = () => {
   setRoom2Active(false);
   setActiveSpace(null);
@@ -1829,24 +1829,17 @@ audio.addEventListener("ended", () => {
 
 
 {showMuseum3D && (
-  <div
-    style={{
-      position: "fixed",
-      inset: 0,
-      zIndex: 7000,
-      background: "#f5f0e6",
-      padding: 12,
-    }}
-  >
+  <div style={{
+    position: "fixed",
+    inset: 0,
+    zIndex: 99999,
+    background: "#fff",
+  }}>
     <button
       onClick={() => setShowMuseum3D(false)}
-      style={{
-        padding: "10px 18px",
-        marginBottom: 10,
-        cursor: "pointer",
-      }}
+      style={{ padding: 12, cursor: "pointer" }}
     >
-      ✕ Đóng bảo tàng 3D
+      ✕ Đóng bảo tàng
     </button>
 
     <iframe
@@ -1854,10 +1847,9 @@ audio.addEventListener("ended", () => {
       title="Bảo tàng 3D"
       style={{
         width: "100%",
-        height: "calc(100vh - 65px)",
-        border: "none",
+        height: "calc(100vh - 50px)",
+        border: 0,
       }}
-      allowFullScreen
     />
   </div>
 )}
