@@ -2,7 +2,7 @@
 import { useEffect, useCallback } from "react";
 import "./RobotGuide.css";
 
-export default function RobotGuide({ active, visitor }) {
+export default function RobotGuide({ active, visitor, audioRef }) {
   
 const getGreeting = useCallback(() => {
   const age = visitor?.ageGroup;
@@ -24,15 +24,16 @@ const getGreeting = useCallback(() => {
 
 
  
+
 const speak = useCallback(() => {
   if (!window.speechSynthesis) return;
 
   window.speechSynthesis.cancel();
 
-  const audio = document.querySelector("audio");
+  const audio = audioRef?.current;
   const oldVolume = audio ? audio.volume : 0.45;
 
-  if (audio) audio.volume = 0.1;
+  if (audio) audio.volume = 0.05;
 
   const utterance = new SpeechSynthesisUtterance(getGreeting());
   utterance.lang = "vi-VN";
@@ -45,14 +46,17 @@ const speak = useCallback(() => {
   if (voice) utterance.voice = voice;
 
   const restoreMusic = () => {
-    if (audio) audio.volume = oldVolume;
+    if (audioRef?.current === audio && audio) {
+      audio.volume = oldVolume;
+    }
   };
 
   utterance.onend = restoreMusic;
   utterance.onerror = restoreMusic;
 
   window.speechSynthesis.speak(utterance);
-}, [getGreeting]);
+}, [getGreeting, audioRef]);
+
 
 
   useEffect(() => {
