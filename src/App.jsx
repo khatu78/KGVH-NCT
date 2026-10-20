@@ -13,7 +13,7 @@ export const CONTENT_LIST = [
   { id: 2, name: "Chân dung Bác Hồ", type: "spot" },
   { id: 3, name: "Video tư liệu", type: "spot" },
   { id: 4, name: "Tủ sách", type: "spot" },
-  { id: 5, name: "Khu trưng bày", type: "spot" },
+  { id: 5, name: "Bảo tàng 3D", type: "spot" },
 
     // 8 thẻ nội dung trưng bày
   { id: 6, name: "Tiểu sử và cuộc đời Chủ tịch Hồ Chí Minh", type: "space" },
@@ -32,7 +32,7 @@ const spots = [
   { id: 1, name: "Chân dung Bác Hồ", position: [-8.5, 1.6, -3] },
   { id: 2, name: "Video tư liệu", position: [0, 1.6, 0] },
   { id: 3, name: "Tủ sách", position: [8.5, 1.6, -3] },
-  { id: 4, name: "Khu trưng bày", position: [5, 1.6, 1.5] },
+  { id: 4, name: "Bảo tàng 3D", position: [5, 1.6, 1.5] },
 ];
 const targets = [
   [0, 1.6, -8],       // id 0: nhìn về vách sau
@@ -61,7 +61,7 @@ const exhibits = [
     position: [8, 2.4, -8.2],
   },
   {
-    title: "Khu trưng bày",
+    title: "Bảo tàng 3D",
     description:
       "Các hiện vật và tư liệu được sắp xếp theo chủ đề để người tham quan khám phá.",
     position: [9.5, 1.4, 1],
@@ -1051,7 +1051,7 @@ const z = -4.5 - Math.sin(t * Math.PI * 2) * 1.2;
   anchorY="middle"
   textAlign="center"
   >
-    KHU TRƯNG BÀY
+    BẢO TÀNG 3D
   </Text>
 </group>
     </group>
@@ -1151,6 +1151,7 @@ const [showMap, setShowMap] = useState(false);
 const [showPDF, setShowPDF] = useState(false);
 const [showPadlet, setShowPadlet] = useState(false);
 const [showBook1, setShowBook1] = useState(false);
+const [showMuseum3D, setShowMuseum3D] = useState(false);
 
 
 useEffect(() => {
@@ -1242,6 +1243,12 @@ const handleNavigateSpot = (index) => {
   setActiveSpace(null);
   setRoom2Active(false);
   moveToSpot(index);
+
+  if (index === 4) {
+    setShowMuseum3D(true);
+  } else {
+    setShowMuseum3D(false);
+  }
 };
 
 const returnToPreviousSpot = () => {
@@ -1820,6 +1827,40 @@ audio.addEventListener("ended", () => {
 )}
 
 
+
+{showMuseum3D && (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      zIndex: 7000,
+      background: "#f5f0e6",
+      padding: 12,
+    }}
+  >
+    <button
+      onClick={() => setShowMuseum3D(false)}
+      style={{
+        padding: "10px 18px",
+        marginBottom: 10,
+        cursor: "pointer",
+      }}
+    >
+      ✕ Đóng bảo tàng 3D
+    </button>
+
+    <iframe
+      src="https://hochiminh.vn/bao-tang-3d"
+      title="Bảo tàng 3D"
+      style={{
+        width: "100%",
+        height: "calc(100vh - 65px)",
+        border: "none",
+      }}
+      allowFullScreen
+    />
+  </div>
+)}
 
 
 {showMap && (
