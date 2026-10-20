@@ -575,6 +575,8 @@ function SecondRoom({ onSpaceClick }) {
 
 function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
 
+const [activeChuS, setActiveChuS] = useState(0);
+
 const chuSTextures = useTexture(
   Array.from({ length: 10 }, (_, i) =>
     `${import.meta.env.BASE_URL}hinh-bac/${i + 1}.${i === 0 ? "jpg" : "jpeg"}`
@@ -960,16 +962,20 @@ const chuSTextures = useTexture(
 
 {/* 10 khung ảnh treo tường theo hình chữ S */}
 {Array.from({ length: 10 }, (_, i) => {
-  const t = i / 9;
+  const t = (9 - i) / 9;
 const y = 4.3 - t * 3.5;
 const z = -4.5 - Math.sin(t * Math.PI * 2) * 1.2;
 
   return (
     <group
-      key={i}
-      position={[11.78, y, z]}
-      rotation={[0, -Math.PI / 2, 0]}
-    >
+  key={i}
+  position={[11.78, y, z]}
+  rotation={[0, -Math.PI / 2, 0]}
+  onClick={(e) => {
+  e.stopPropagation();
+  setActiveChuS(i + 1);
+}}
+>
    
       {/* Viền khung */}
       <mesh>
@@ -1090,6 +1096,83 @@ const z = -4.5 - Math.sin(t * Math.PI * 2) * 1.2;
     BẢO TÀNG 3D
   </Text>
 </group>
+
+
+{activeChuS > 0 && (
+  <div
+    onClick={() => setActiveChuS(0)}
+    style={{
+      position: "fixed",
+      inset: 0,
+      zIndex: 9999,
+      background: "#000d",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: 20,
+      overflowY: "auto",
+    }}
+  >
+    <button
+      onClick={() => setActiveChuS(0)}
+      style={{ marginBottom: 12, cursor: "pointer" }}
+    >
+      Đóng ✕
+    </button>
+
+    <img
+      src={`${import.meta.env.BASE_URL}hinh-bac/${activeChuS}.${activeChuS === 1 ? "jpg" : "jpeg"}`}
+      alt={`Hình chữ S ${activeChuS}`}
+      onClick={(e) => e.stopPropagation()}
+      style={{
+        maxWidth: "90vw",
+        maxHeight: "55vh",
+        objectFit: "contain",
+        border: "5px solid #b18a4e",
+        borderRadius: 8,
+        boxShadow: "0 12px 40px #0009",
+      }}
+    />
+
+    <p style={{ color: "white" }}>
+      Hình {activeChuS} / 10
+    </p>
+
+    <div
+      onClick={(e) => e.stopPropagation()}
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center",
+        gap: 8,
+      }}
+    >
+      {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
+        <button
+          key={n}
+          onClick={() => setActiveChuS(n)}
+          style={{
+            width: 75,
+            padding: 5,
+            cursor: "pointer",
+            border: n === activeChuS ? "3px solid gold" : "2px solid #9c7848",
+            borderRadius: 8,
+            background: "#35291e",
+            color: "#ffe6a0",
+          }}
+        >
+          <img
+            src={`${import.meta.env.BASE_URL}hinh-bac/${n}.${n === 1 ? "jpg" : "jpeg"}`}
+            alt={`Hình ${n}`}
+            style={{ width: "100%", height: 55, objectFit: "contain" }}
+          />
+          Hình {n}
+        </button>
+      ))}
+    </div>
+  </div>
+)}
     </group>
 
   
@@ -1199,6 +1282,7 @@ const [showMuseum3D, setShowMuseum3D] = useState(false);
 const [showLibrary, setShowLibrary] = useState(false);
 const [showPortraitSlideshow, setShowPortraitSlideshow] = useState(false);
 const [activePortrait, setActivePortrait] = useState(1);
+const [activeChuS, setActiveChuS] = useState(0);
 
 useEffect(() => {
   const openPortrait = () => {
