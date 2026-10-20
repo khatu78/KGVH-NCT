@@ -823,7 +823,7 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
   />
 </mesh>
         <Text
-          position={[0, -1.35, 0.2]}
+          position={[0, -2.5, 0.2]}
           fontSize={0.22}
           color="#3b281c"
           anchorX="center"
