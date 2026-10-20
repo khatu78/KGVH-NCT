@@ -1132,7 +1132,7 @@ function NavigationMarkers({ current, onMove }) {
 }
 
 
-function Scene({ spotIndex, onMove, onExhibit, onSpaceClick, room2Active, activeSpace, onSpaceArrive, }) {
+function Scene({ spotIndex, onMove, onExhibit, onSpaceClick, room2Active, activeSpace, onSpaceArrive, onOpenChuS, }) {
  
 
   return (
@@ -1141,9 +1141,10 @@ function Scene({ spotIndex, onMove, onExhibit, onSpaceClick, room2Active, active
       <ambientLight intensity={1.5} />
       <directionalLight position={[4, 8, 5]} intensity={2} castShadow />
 
-    <Room
+   <Room
   onExhibit={onExhibit}
   onSpaceClick={onSpaceClick}
+  onOpenChuS={onOpenChuS}
   onOpenLibrary={() => window.dispatchEvent(new Event("open-library"))}
   onOpenMuseum={() =>
     window.open(
