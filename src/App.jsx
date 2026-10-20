@@ -573,7 +573,7 @@ function SecondRoom({ onSpaceClick }) {
 
 
 
-function Room({ onExhibit, onSpaceClick, onOpenMuseum }) {
+function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
    const banDo = useTexture(`${import.meta.env.BASE_URL}images/bandoVN.jpg`);
    const [doorOpen, setDoorOpen] = useState(true);
    return (
@@ -852,7 +852,10 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum }) {
       {/* Tủ sách */}
       <group
         position={[8, 2.2, -8.1]}
-        onClick={() => setShowLibrary(true)}
+        onClick={(e) => {
+  e.stopPropagation();
+  onOpenLibrary();
+}}
       >
         <mesh>
           <boxGeometry args={[3.6, 4.3, 0.65]} />
@@ -1109,6 +1112,7 @@ function Scene({ spotIndex, onMove, onExhibit, onSpaceClick, room2Active, active
     <Room
   onExhibit={onExhibit}
   onSpaceClick={onSpaceClick}
+  onOpenLibrary={() => window.dispatchEvent(new Event("open-library"))}
   onOpenMuseum={() =>
     window.open(
       "https://hochiminh.vn/bao-tang-3d",
@@ -1171,6 +1175,14 @@ const [showBook1, setShowBook1] = useState(false);
 const [showMuseum3D, setShowMuseum3D] = useState(false);
 const [showLibrary, setShowLibrary] = useState(false);
 
+useEffect(() => {
+  const openLibrary = () => setShowLibrary(true);
+  window.addEventListener("open-library", openLibrary);
+
+  return () => {
+    window.removeEventListener("open-library", openLibrary);
+  };
+}, []);
 
 useEffect(() => {
   const enter = () => {
