@@ -852,7 +852,7 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum }) {
       {/* Tủ sách */}
       <group
         position={[8, 2.2, -8.1]}
-        onClick={() => onExhibit(exhibits[2])}
+        onClick={() => setShowLibrary(true)}
       >
         <mesh>
           <boxGeometry args={[3.6, 4.3, 0.65]} />
@@ -1169,6 +1169,7 @@ const [showPDF, setShowPDF] = useState(false);
 const [showPadlet, setShowPadlet] = useState(false);
 const [showBook1, setShowBook1] = useState(false);
 const [showMuseum3D, setShowMuseum3D] = useState(false);
+const [showLibrary, setShowLibrary] = useState(false);
 
 
 useEffect(() => {
@@ -1962,8 +1963,8 @@ audio.addEventListener("ended", () => {
       </div>
 
 
-
-{selectedSpace?.id === 3 && (
+{/**ROOM 1 */}
+{(selectedSpace?.id === 3 || showLibrary) && (
   <div
     style={{
       position: "fixed",
@@ -1976,7 +1977,10 @@ audio.addEventListener("ended", () => {
     }}
   >
     <button
-  onClick={() => setSelectedSpace(null)}
+onClick={() => {
+  setSelectedSpace(null);
+  setShowLibrary(false);
+}}
   style={{
     padding: "10px 18px",
     border: "1px solid #c8b99f",
