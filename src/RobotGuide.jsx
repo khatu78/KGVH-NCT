@@ -4,15 +4,15 @@ import "./RobotGuide.css";
 export default function RobotGuide({ active, visitor, audioRef }) {
   const [room2Text, setRoom2Text] = useState(false);
   useEffect(() => {
-  const enterRoom2 = () => setRoom2Text(true);
-  const leaveRoom2 = () => setRoom2Text(false);
+  const enter = () => setRoom2Text(true);
+  const leave = () => setRoom2Text(false);
 
-  window.addEventListener("enter-second-room", enterRoom2);
-  window.addEventListener("leave-second-room", leaveRoom2);
+  window.addEventListener("enter-second-room", enter);
+  window.addEventListener("leave-second-room", leave);
 
   return () => {
-    window.removeEventListener("enter-second-room", enterRoom2);
-    window.removeEventListener("leave-second-room", leaveRoom2);
+    window.removeEventListener("enter-second-room", enter);
+    window.removeEventListener("leave-second-room", leave);
   };
 }, []);
   
@@ -65,16 +65,8 @@ const speak = useCallback(() => {
 }, [visitor, audioRef]);
 
 
-
 useEffect(() => {
   if (active && !room2Text) speak();
-
-  return () => {
-    if (window.robotVoiceAudio) {
-      window.robotVoiceAudio.pause();
-      window.robotVoiceAudio.currentTime = 0;
-    }
-  };
 }, [active, room2Text, speak]);
 
   if (!active) return null;

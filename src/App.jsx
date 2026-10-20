@@ -1175,7 +1175,7 @@ const leave = () => {
   setPreviousSpotIndex(0);
 };
 
-  window.removeEventListener("enter-second-room", enter);
+  window.addEventListener("enter-second-room", enter);
   window.addEventListener("leave-second-room", leave);
 
   return () => {
