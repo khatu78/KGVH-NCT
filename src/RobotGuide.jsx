@@ -66,12 +66,16 @@ const speak = useCallback(() => {
 
 
 
+useEffect(() => {
+  if (active && !room2Text) speak();
 
-  useEffect(() => {
-    if (active) speak();
-
-   return () => {};
-  }, [active, speak]);
+  return () => {
+    if (window.robotVoiceAudio) {
+      window.robotVoiceAudio.pause();
+      window.robotVoiceAudio.currentTime = 0;
+    }
+  };
+}, [active, room2Text, speak]);
 
   if (!active) return null;
 

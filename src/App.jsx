@@ -1137,8 +1137,14 @@ useEffect(() => {
 }, []);
 
 useEffect(() => {
-  const enter = () => {
-  // Dừng âm thanh phòng 1
+ 
+  
+const enter = () => {
+  if (window.robotVoiceAudio) {
+    window.robotVoiceAudio.pause();
+    window.robotVoiceAudio.currentTime = 0;
+  }
+
   if (audioRef.current) {
     audioRef.current.pause();
     audioRef.current.currentTime = 0;
@@ -1151,14 +1157,13 @@ useEffect(() => {
   setSelectedExhibit(null);
   setShowMap(false);
 
-  // Phát lời giới thiệu phòng 2
   const voice = new Audio(
     `${import.meta.env.BASE_URL}voice/room2voice.mp3`
   );
-  voice.play().catch((err) => {
-    console.log("Không phát được âm thanh phòng 2:", err);
-  });
+  window.robotVoiceAudio = voice;
+  voice.play().catch(console.error);
 };
+
 
 const leave = () => {
   setRoom2Active(false);
