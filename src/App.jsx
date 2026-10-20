@@ -827,6 +827,9 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
           fontSize={0.22}
           color="#3b281c"
           anchorX="center"
+ outlineWidth={0.003}
+  outlineColor="#3b281c"
+
         >
           CHỦ TỊCH HỒ CHÍ MINH
         </Text>
