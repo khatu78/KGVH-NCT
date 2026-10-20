@@ -1388,7 +1388,12 @@ audio.addEventListener("ended", () => {
 
   return (
     <div className="app">
-  <RobotGuide active={started} visitor={visitor} />
+
+  <RobotGuide
+  active={started}
+  visitor={visitor}
+  audioRef={audioRef}
+/>
   <div
   style={{
   position: "fixed",
