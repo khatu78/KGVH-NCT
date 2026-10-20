@@ -577,7 +577,7 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
 
 const chuSTextures = useTexture(
   Array.from({ length: 10 }, (_, i) =>
-    `${import.meta.env.BASE_URL}hinh-chu-s/${i + 1}.${i === 0 ? "jpg" : "jpeg"}`
+    `${import.meta.env.BASE_URL}hinh-bac/${i + 1}.${i === 0 ? "jpg" : "jpeg"}`
   )
 );
 
