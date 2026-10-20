@@ -1098,81 +1098,7 @@ const z = -4.5 - Math.sin(t * Math.PI * 2) * 1.2;
 </group>
 
 
-{activeChuS > 0 && (
-  <div
-    onClick={() => setActiveChuS(0)}
-    style={{
-      position: "fixed",
-      inset: 0,
-      zIndex: 9999,
-      background: "#000d",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: 20,
-      overflowY: "auto",
-    }}
-  >
-    <button
-      onClick={() => setActiveChuS(0)}
-      style={{ marginBottom: 12, cursor: "pointer" }}
-    >
-      Đóng ✕
-    </button>
 
-    <img
-      src={`${import.meta.env.BASE_URL}hinh-bac/${activeChuS}.${activeChuS === 1 ? "jpg" : "jpeg"}`}
-      alt={`Hình chữ S ${activeChuS}`}
-      onClick={(e) => e.stopPropagation()}
-      style={{
-        maxWidth: "90vw",
-        maxHeight: "55vh",
-        objectFit: "contain",
-        border: "5px solid #b18a4e",
-        borderRadius: 8,
-        boxShadow: "0 12px 40px #0009",
-      }}
-    />
-
-    <p style={{ color: "white" }}>
-      Hình {activeChuS} / 10
-    </p>
-
-    <div
-      onClick={(e) => e.stopPropagation()}
-      style={{
-        display: "flex",
-        flexWrap: "wrap",
-        justifyContent: "center",
-        gap: 8,
-      }}
-    >
-      {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
-        <button
-          key={n}
-          onClick={() => setActiveChuS(n)}
-          style={{
-            width: 75,
-            padding: 5,
-            cursor: "pointer",
-            border: n === activeChuS ? "3px solid gold" : "2px solid #9c7848",
-            borderRadius: 8,
-            background: "#35291e",
-            color: "#ffe6a0",
-          }}
-        >
-          <img
-            src={`${import.meta.env.BASE_URL}hinh-bac/${n}.${n === 1 ? "jpg" : "jpeg"}`}
-            alt={`Hình ${n}`}
-            style={{ width: "100%", height: 55, objectFit: "contain" }}
-          />
-          Hình {n}
-        </button>
-      ))}
-    </div>
-  </div>
-)}
     </group>
 
   
@@ -1984,6 +1910,8 @@ audio.addEventListener("ended", () => {
 
 
 
+
+
 {showMuseum3D && (
   <div style={{
     position: "fixed",
@@ -2188,6 +2116,101 @@ audio.addEventListener("ended", () => {
     </div>
   </div>
 )}
+
+
+
+{activeChuS > 0 && (
+  <div
+    onClick={() => setActiveChuS(0)}
+    style={{
+      position: "fixed",
+      inset: 0,
+      zIndex: 10001,
+      background: "rgba(20,16,12,0.96)",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      padding: "24px 20px",
+      boxSizing: "border-box",
+      overflowY: "auto",
+      color: "#ffe6a0",
+    }}
+  >
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        setActiveChuS(0);
+      }}
+      style={{
+        alignSelf: "flex-end",
+        padding: "9px 16px",
+        background: "#681b1b",
+        color: "#fff",
+        cursor: "pointer",
+      }}
+    >
+      ✕ Đóng
+    </button>
+
+    <h2>HÌNH ẢNH TRƯNG BÀY CHỮ S</h2>
+
+    <img
+      src={`${import.meta.env.BASE_URL}hinh-bac/${activeChuS}.${activeChuS === 1 ? "jpg" : "jpeg"}`}
+      alt={`Hình ${activeChuS}`}
+      onClick={(e) => e.stopPropagation()}
+      style={{
+        maxWidth: "90vw",
+        maxHeight: "55vh",
+        objectFit: "contain",
+        border: "5px solid #b18a4e",
+        borderRadius: 8,
+        boxShadow: "0 12px 40px #0009",
+      }}
+    />
+
+    <p>Hình {activeChuS} / 10</p>
+
+    <div
+      onClick={(e) => e.stopPropagation()}
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "center",
+        gap: 10,
+      }}
+    >
+      {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
+        <button
+          key={n}
+          onClick={() => setActiveChuS(n)}
+          style={{
+            width: 100,
+            padding: 5,
+            cursor: "pointer",
+            background: "#35291e",
+            color: "#ffe6a0",
+            border: n === activeChuS
+              ? "3px solid gold"
+              : "2px solid #9c7848",
+            borderRadius: 8,
+          }}
+        >
+          <img
+            src={`${import.meta.env.BASE_URL}hinh-bac/${n}.${n === 1 ? "jpg" : "jpeg"}`}
+            alt={`Hình ${n}`}
+            style={{
+              width: "100%",
+              height: 70,
+              objectFit: "contain",
+            }}
+          />
+          Hình {n}
+        </button>
+      ))}
+    </div>
+  </div>
+)}
+
 
 
 {showMap && (
