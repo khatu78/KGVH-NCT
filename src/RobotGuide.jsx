@@ -4,58 +4,58 @@ import "./RobotGuide.css";
 
 export default function RobotGuide({ active, visitor, audioRef }) {
   
-const getGreeting = useCallback(() => {
-  const age = visitor?.ageGroup;
-  const gender = visitor?.gender;
-  const name = visitor?.name?.trim() || "bạn";
-
-  if (age === "under15") {
-    return `Xin chào em ${name}! Chào mừng em đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Chúc em có chuyến tham quan thật vui và bổ ích nhé!`;
-  }
-
-  if (age === "age15to34") {
-    return `Xin chào bạn ${name}! Chào mừng bạn đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Chúc bạn có những trải nghiệm thật thú vị!`;
-  }
-
-  const word = gender === "Nữ" ? "chị" : "anh";
-
-  return `Xin chào ${word} ${name}! Chào mừng ${word} đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Kính chúc ${word} có một chuyến tham quan thật ý nghĩa!`;
-}, [visitor?.ageGroup, visitor?.gender, visitor?.name]);
 
 
  
 
-const speak = useCallback(() => {
-  if (!window.speechSynthesis) return;
 
-  window.speechSynthesis.cancel();
+const speak = useCallback(() => {
+  const ageGroup = visitor?.ageGroup;
+  const gender = visitor?.gender;
+
+  let voiceFile = "";
+
+  if (ageGroup === "under15") {
+    voiceFile = "under15.mp3";
+  } else if (ageGroup === "age15to34") {
+    voiceFile = "15-35voice.mp3";
+  } else if (ageGroup === "age35plus") {
+    voiceFile = gender === "Nữ" ? "woman.mp3" : "men.mp3";
+  }
+
+  if (!voiceFile) return;
 
   const audio = audioRef?.current;
   const oldVolume = audio ? audio.volume : 0.45;
 
+  // Dừng lời chào trước đó nếu có
+  if (window.robotVoiceAudio) {
+    window.robotVoiceAudio.pause();
+    window.robotVoiceAudio.currentTime = 0;
+  }
+
+  const voice = new Audio(
+    `${import.meta.env.BASE_URL}voice/${voiceFile}`
+  );
+
+  window.robotVoiceAudio = voice;
+  voice.volume = 1;
+
   if (audio) audio.volume = 0.05;
 
-  const utterance = new SpeechSynthesisUtterance(getGreeting());
-  utterance.lang = "vi-VN";
-  utterance.rate = 0.9;
-
-  const voice = window.speechSynthesis
-    .getVoices()
-    .find((v) => v.lang.toLowerCase().startsWith("vi"));
-
-  if (voice) utterance.voice = voice;
-
   const restoreMusic = () => {
-    if (audioRef?.current === audio && audio) {
-      audio.volume = oldVolume;
-    }
+    if (audio) audio.volume = oldVolume;
   };
 
-  utterance.onend = restoreMusic;
-  utterance.onerror = restoreMusic;
+  voice.onended = restoreMusic;
+  voice.onerror = restoreMusic;
 
-  window.speechSynthesis.speak(utterance);
-}, [getGreeting, audioRef]);
+  voice.play().catch((err) => {
+    console.error("Không phát được file giọng đọc:", err);
+    restoreMusic();
+  });
+}, [visitor, audioRef]);
+
 
 
 
