@@ -574,6 +574,9 @@ function SecondRoom({ onSpaceClick }) {
 
 
 function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
+  const portraitTexture = useTexture(
+  `${import.meta.env.BASE_URL}hinh-bac/1.jpg`
+);
    const banDo = useTexture(`${import.meta.env.BASE_URL}images/bandoVN.jpg`);
    const [doorOpen, setDoorOpen] = useState(true);
    return (
@@ -813,9 +816,12 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
           <meshStandardMaterial color="#6e492d" />
         </mesh>
         <mesh position={[0, 0, 0.11]}>
-          <planeGeometry args={[4.05, 2.65]} />
-          <meshStandardMaterial color="#c9b69b" />
-        </mesh>
+  <planeGeometry args={[4.05, 2.65]} />
+  <meshBasicMaterial
+    map={useTexture(`${import.meta.env.BASE_URL}hinh-bac/1.jpg`)}
+    toneMapped={false}
+  />
+</mesh>
         <Text
           position={[0, -1.25, 0.2]}
           fontSize={0.22}
@@ -2024,7 +2030,7 @@ audio.addEventListener("ended", () => {
       }}
     >
       <img
-        src={`${import.meta.env.BASE_URL}hinh-bac/${activePortrait}.${activePortrait === 1 ? "jpg" : "jpge"}`}
+        src={`${import.meta.env.BASE_URL}hinh-bac/${activePortrait}.${activePortrait === 1 ? "jpg" : "jpeg"}`}
         alt={`Chân dung Bác Hồ ${activePortrait}`}
         style={{
           display: "block",
