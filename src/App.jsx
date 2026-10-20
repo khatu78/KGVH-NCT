@@ -573,7 +573,7 @@ function SecondRoom({ onSpaceClick }) {
 
 
 
-function Room({ onExhibit, onSpaceClick }) {
+function Room({ onExhibit, onSpaceClick, onOpenMuseum }) {
    const banDo = useTexture(`${import.meta.env.BASE_URL}images/bandoVN.jpg`);
    const [doorOpen, setDoorOpen] = useState(true);
    return (
@@ -1030,29 +1030,39 @@ const z = -4.5 - Math.sin(t * Math.PI * 2) * 1.2;
 
 
 <group
-  position={[11.78, 2.7, 1.5]}
-  rotation={[0, -Math.PI / 2, 0]}
+  position={[11.78, 2.7, 1.5]}
+  rotation={[0, -Math.PI / 2, 0]}
+  onClick={(e) => {
+    e.stopPropagation();
+    onOpenMuseum();
+  }}
+  onPointerOver={(e) => {
+    e.stopPropagation();
+    document.body.style.cursor = "pointer";
+  }}
+  onPointerOut={() => {
+    document.body.style.cursor = "default";
+  }}
 >
-  <mesh>
-    <boxGeometry args={[3.2, 0.65, 0.08]} />
-    <meshStandardMaterial
-      color="#5c1717"
-      metalness={0.25}
-      roughness={0.5}
-    />
-  </mesh>
+  <mesh>
+    <boxGeometry args={[3.2, 0.65, 0.08]} />
+    <meshStandardMaterial
+      color="#5c1717"
+      metalness={0.25}
+      roughness={0.5}
+    />
+  </mesh>
 
-  <Text
-     position={[0, 0, 0.055]}
-
-  fontSize={0.27}
-  color="#ffd700"
-  anchorX="center"
-  anchorY="middle"
-  textAlign="center"
-  >
-    BẢO TÀNG 3D
-  </Text>
+  <Text
+    position={[0, 0, 0.055]}
+    fontSize={0.27}
+    color="#ffd700"
+    anchorX="center"
+    anchorY="middle"
+    textAlign="center"
+  >
+    BẢO TÀNG 3D
+  </Text>
 </group>
     </group>
 
@@ -1099,6 +1109,13 @@ function Scene({ spotIndex, onMove, onExhibit, onSpaceClick, room2Active, active
     <Room
   onExhibit={onExhibit}
   onSpaceClick={onSpaceClick}
+  onOpenMuseum={() =>
+    window.open(
+      "https://hochiminh.vn/bao-tang-3d",
+      "_blank",
+      "noopener,noreferrer"
+    )
+  }
 />
       {room2Active && (
   <SecondRoom onSpaceClick={onSpaceClick} />
