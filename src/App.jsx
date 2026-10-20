@@ -1970,7 +1970,7 @@ audio.addEventListener("ended", () => {
       .portrait-thumbnails {
         display: flex;
         gap: 10px;
-        justify-content: flex-start;
+        justify-content: "center";
         width: 100%;
         overflow-x: auto;
         padding: 12px 4px 18px;
