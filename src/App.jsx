@@ -2050,14 +2050,14 @@ audio.addEventListener("ended", () => {
     </div>
 
     <p style={{ margin: "14px 0 4px", fontSize: 15 }}>
-      Hình {activePortrait} / 10
+      Hình {activePortrait} / 12
     </p>
 
     <div
       className="portrait-thumbnails"
       onClick={(e) => e.stopPropagation()}
     >
-      {Array.from({ length: 10 }, (_, i) => i + 1)
+      {Array.from({ length: 12 }, (_, i) => i + 1)
         .filter((n) => n !== activePortrait)
         .map((n) => (
           <button
