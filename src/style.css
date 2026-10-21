@@ -2,6 +2,7 @@
   box-sizing: border-box;
 }
 
+
 html,
 body,
 #root {
@@ -20,7 +21,7 @@ body,
 }
 
 body {
-  background: #eee6d7;
+  background: #f4ede2;
 }
 
 button,
@@ -30,7 +31,7 @@ select {
 }
 
 /* =========================
-   MÀN HÌNH CHÀO
+   MÀN HÌNH CHÀO (WELCOME SCREEN)
 ========================= */
 
 .welcome-page {
@@ -40,159 +41,120 @@ select {
   align-items: center;
   justify-content: center;
   padding: 24px;
-
   background:
     radial-gradient(
-      circle at 20% 20%,
-      rgba(255, 255, 255, 0.9),
-      transparent 35%
+      circle at 30% 30%,
+      rgba(255, 255, 255, 0.8),
+      transparent 50%
     ),
-    linear-gradient(135deg, #eadfc9, #c6d6dd);
+    linear-gradient(135deg, #f5ebd9, #d0e1e8);
 }
 
 .welcome-card {
-  width: min(520px, 100%);
-  padding: 42px;
-  border-radius: 28px;
-
-  background: rgba(255, 255, 255, 0.95);
-
-  box-shadow:
-    0 25px 70px rgba(60, 45, 30, 0.2);
-
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  width: min(480px, 100%);
+  padding: 40px;
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 20px 50px rgba(70, 50, 35, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  transition: all 0.3s ease;
 }
 
 .welcome-badge {
   display: inline-block;
-  padding: 7px 12px;
-  margin-bottom: 12px;
-
+  padding: 6px 14px;
+  margin-bottom: 14px;
   border-radius: 999px;
-
-  background: #eee1c8;
-  color: #76502d;
-
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  background: #f3e6cd;
+  color: #7a522e;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
 }
 
 .welcome-card h1 {
-  margin: 0;
-
-  color: #56361f;
-
-  font-size: clamp(36px, 7vw, 56px);
-  line-height: 1;
+  margin: 0 0 8px 0;
+  color: #4a3222;
+  font-size: clamp(32px, 6vw, 48px);
+  font-weight: 800;
+  line-height: 1.1;
 }
 
 .welcome-description {
-  margin: 20px 0 28px;
-
-  color: #655d54;
-
-  line-height: 1.7;
+  margin: 0 0 28px 0;
+  color: #75685c;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 .visitor-form {
   display: flex;
   flex-direction: column;
-  gap: 17px;
+  gap: 18px;
 }
 
 .visitor-form label {
   display: flex;
   flex-direction: column;
   gap: 8px;
-
-  color: #49372a;
-
-  font-size: 14px;
-  font-weight: 700;
+  color: #594435;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .visitor-form input,
 .visitor-form select {
   width: 100%;
-  height: 48px;
-
-  padding: 0 14px;
-
-  border: 1px solid #d8cbb9;
-  border-radius: 12px;
-
+  height: 50px;
+  padding: 0 18px;
+  border: 1.5px solid #e2d3be;
+  border-radius: 16px;
   outline: none;
-
-  background: #fffdf9;
-  color: #382d25;
-
-  transition: 0.2s;
+  background: #fffefb;
+  color: #3d2f24;
+  font-size: 14px;
+  transition: all 0.25s ease;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .visitor-form input:focus,
 .visitor-form select:focus {
-  border-color: #8b6846;
-
-  box-shadow:
-    0 0 0 3px rgba(139, 104, 70, 0.12);
+  border-color: #9c6e43;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(156, 110, 67, 0.12), inset 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .form-error {
-  padding: 13px 15px;
-
-  border-radius: 12px;
-
-  background: #fff0ee;
-  border: 1px solid #e7a49d;
-
-  color: #a52c25;
-
-  font-weight: 800;
+  padding: 12px 16px;
+  border-radius: 14px;
+  background: #fdf2f1;
+  border: 1px solid #f2c4c0;
+  color: #b33b32;
+  font-weight: 600;
+  font-size: 13px;
   text-align: center;
-
-  animation: errorIn 0.2s ease;
-}
-
-@keyframes errorIn {
-  from {
-    opacity: 0;
-    transform: translateY(-5px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .start-button {
   height: 52px;
-
-  margin-top: 4px;
-
+  margin-top: 6px;
   border: none;
-  border-radius: 14px;
-
-  background: #654328;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #7c4b2a, #59331a);
   color: white;
-
   font-size: 14px;
-  font-weight: 800;
-
+  font-weight: 700;
+  letter-spacing: 0.05em;
   cursor: pointer;
-
-  box-shadow:
-    0 10px 22px rgba(101, 67, 40, 0.22);
-
-  transition:
-    transform 0.15s,
-    background 0.15s;
+  box-shadow: 0 10px 25px rgba(124, 75, 42, 0.28);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .start-button:hover {
-  background: #4f321e;
   transform: translateY(-2px);
+  box-shadow: 0 14px 30px rgba(124, 75, 42, 0.38);
 }
 
 .start-button:active {
@@ -200,17 +162,14 @@ select {
 }
 
 /* =========================
-   GAME
+   CANVAS & APP CONTAINER
 ========================= */
 
 .app {
   width: 100%;
   height: 100%;
-
   position: relative;
-
   background: #b9d2e3;
-
   touch-action: none;
 }
 
@@ -220,177 +179,285 @@ select {
 }
 
 /* =========================
-   THÔNG TIN PHÍA TRÊN
+   TOP INFO (THÔNG TIN PHÍA TRÊN)
 ========================= */
 
 .top-info {
   position: absolute;
-
-  top: 18px;
-  left: 18px;
-
+  top: 20px;
+  left: 20px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
-
-  padding: 13px 17px;
-
-  border-radius: 14px;
-
-  background: rgba(255, 255, 255, 0.9);
-
-  color: #4d3827;
-
-  box-shadow:
-    0 8px 25px rgba(40, 30, 20, 0.13);
-
+  gap: 4px;
+  padding: 14px 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #4a3828;
+  box-shadow: 0 10px 30px rgba(40, 30, 20, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   pointer-events: none;
 }
 
 .top-info strong {
-  font-size: 15px;
+  font-size: 14px;
+  font-weight: 700;
 }
 
-.top-info span {
+.top-info p {
+  margin: 0;
   font-size: 12px;
-  color: #766a5e;
+  color: #736456;
 }
 
 /* =========================
-   HƯỚNG DẪN
+   CONTROLS (HƯỚNG DẪN GÓC DƯỚI TRÁI)
 ========================= */
 
 .controls {
   position: absolute;
-
-  left: 18px;
-  bottom: 18px;
-
+  left: 20px;
+  bottom: 20px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
-
-  padding: 12px 15px;
-
-  border-radius: 13px;
-
-  background: rgba(255, 255, 255, 0.88);
-
-  color: #5a4939;
-
+  gap: 4px;
+  padding: 14px 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #594738;
   font-size: 12px;
-
+  box-shadow: 0 10px 30px rgba(40, 30, 20, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   pointer-events: none;
 }
 
 /* =========================
-   THÔNG TIN HIỆN VẬT
+   RETURN BUTTON (NÚT QUAY VỀ)
+========================= */
+
+.return-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 20;
+  padding: 11px 20px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #8c1c1c, #631212);
+  color: #ffeaad;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(140, 28, 28, 0.3);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.return-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(140, 28, 28, 0.4);
+}
+
+.return-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* =========================
+   NAVIGATION PANEL (THANH DANH MỤC 13 MỤC)
+========================= */
+
+.navigation-panel {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  width: 290px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 100;
+  color: #f8e9bd;
+  background: rgba(46, 23, 19, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 168, 91, 0.3);
+  border-radius: 24px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.navigation-panel.collapsed {
+  width: 52px;
+  border-radius: 26px;
+}
+
+.navigation-toggle {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  color: #ffeaad;
+  background: rgba(94, 28, 28, 0.6);
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 13px;
+  transition: background 0.2s;
+}
+
+.navigation-toggle:hover {
+  background: rgba(124, 38, 38, 0.8);
+}
+
+.navigation-panel.collapsed .navigation-toggle {
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 0;
+}
+
+.navigation-content {
+  max-height: calc(80vh - 60px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 8px 10px 12px;
+}
+
+.navigation-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.navigation-content::-webkit-scrollbar-thumb {
+  background: rgba(212, 168, 91, 0.3);
+  border-radius: 999px;
+}
+
+.navigation-heading {
+  padding: 14px 10px 8px;
+  color: #e3c586;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  border-bottom: 1px solid rgba(212, 168, 91, 0.15);
+  margin-bottom: 4px;
+}
+
+.navigation-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 10px;
+  margin-top: 4px;
+  text-align: left;
+  color: #f7f0e4;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1.4;
+  transition: all 0.2s ease;
+}
+
+.navigation-item:hover {
+  background: rgba(255, 234, 173, 0.1);
+  border-color: rgba(255, 234, 173, 0.2);
+}
+
+.navigation-item.active {
+  color: #ffeaad;
+  background: rgba(185, 149, 81, 0.25);
+  border-color: rgba(212, 168, 91, 0.5);
+  font-weight: 600;
+}
+
+.navigation-number {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(128, 85, 47, 0.6);
+  color: #fff4d6;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.navigation-item.active .navigation-number {
+  background: #d4a85b;
+  color: #381b16;
+}
+
+/* =========================
+   EXHIBIT INFO & MODALS (HIỆN VẬT & THÔNG TIN)
 ========================= */
 
 .exhibit-info {
-  position: absolute;
-
+  position: fixed;
   left: 50%;
-  bottom: 28px;
-
+  bottom: 30px;
   transform: translateX(-50%);
+  width: min(520px, calc(100% - 40px));
+  padding: 22px 26px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 20px 50px rgba(40, 30, 20, 0.18);
+  color: #4a3828;
+  pointer-events: auto;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  z-index: 1000;
+}
 
-  width: min(520px, calc(100% - 32px));
+.close-exhibit {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #f0e6d8;
+  border: none;
+  color: #594435;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background 0.2s;
+}
 
-  padding: 17px 20px;
-
-  border-radius: 17px;
-
-  background: rgba(255, 255, 255, 0.95);
-
-  box-shadow:
-    0 15px 40px rgba(40, 30, 20, 0.2);
-
-  color: #4c3929;
-
-  pointer-events: none;
+.close-exhibit:hover {
+  background: #e2d2bc;
 }
 
 .exhibit-title {
-  margin-bottom: 6px;
-
-  font-size: 17px;
+  margin-bottom: 8px;
+  font-size: 18px;
   font-weight: 800;
+  color: #4a3222;
+  padding-right: 30px;
 }
 
 .exhibit-description {
   font-size: 13px;
   line-height: 1.6;
-  color: #6e6257;
+  color: #736456;
 }
 
 /* =========================
-   JOYSTICK
-========================= */
-
-.joystick {
-  display: none;
-
-  position: absolute;
-
-  left: 25px;
-  bottom: 30px;
-
-  width: 110px;
-  height: 110px;
-
-  border-radius: 50%;
-
-  background: rgba(255, 255, 255, 0.28);
-
-  border: 2px solid rgba(255, 255, 255, 0.6);
-
-  backdrop-filter: blur(5px);
-
-  touch-action: none;
-}
-
-.joystick-knob {
-  position: absolute;
-
-  left: 50%;
-  top: 50%;
-
-  width: 54px;
-  height: 54px;
-
-  border-radius: 50%;
-
-  transform: translate(-50%, -50%);
-
-  background: rgba(101, 67, 40, 0.82);
-
-  box-shadow:
-    0 5px 15px rgba(0, 0, 0, 0.18);
-
-  pointer-events: none;
-}
-
-.mobile-hint {
-  display: none;
-
-  position: absolute;
-
-  left: 25px;
-  bottom: 8px;
-
-  color: white;
-
-  font-size: 10px;
-
-  text-shadow:
-    0 1px 4px rgba(0, 0, 0, 0.6);
-
-  pointer-events: none;
-}
-
-/* =========================
-   MOBILE
+   MOBILE RESPONSIVE
 ========================= */
 
 @media (max-width: 768px) {
@@ -399,304 +466,38 @@ select {
   }
 
   .welcome-card {
-    padding: 28px 22px;
-    border-radius: 22px;
+    padding: 30px 24px;
+    border-radius: 24px;
   }
 
   .welcome-card h1 {
-    font-size: 42px;
+    font-size: 36px;
   }
 
   .top-info {
-    top: 10px;
-    left: 10px;
-    right: 10px;
-
-    padding: 10px 12px;
-  }
-
-  .top-info strong {
-    font-size: 12px;
-  }
-
-  .top-info span {
-    font-size: 10px;
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    padding: 12px 14px;
   }
 
   .controls {
     display: none;
   }
 
-  .joystick {
-    display: block;
-  }
-
-  .mobile-hint {
-    display: block;
-  }
-
-  .exhibit-info {
-    bottom: 155px;
-    padding: 13px 15px;
-  }
-
-  .exhibit-title {
-    font-size: 14px;
-  }
-
-  .exhibit-description {
-    font-size: 11px;
-  }
-}
-.exhibit-info {
-  position: fixed;
-  z-index: 1000;
-  pointer-events: auto;
-}
-
-.close-exhibit {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  left: auto;
-  z-index: 1001;
-  cursor: pointer;
-  pointer-events: auto;
-}
-
-.return-button {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 20;
-  padding: 11px 18px;
-  border: 1px solid #d4af37;
-  border-radius: 8px;
-  background: #7a1010;
-  color: #ffd700;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background 0.2s, transform 0.2s;
-}
-
-.return-button:hover:not(:disabled) {
-  background: #a51c1c;
-  transform: translateY(-2px);
-}
-
-.return-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.welcome-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 3000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 0, 0, 0.8);
-  padding: 20px;
-}
-
-.welcome-box {
-  width: 100%;
-  max-width: 420px;
-  padding: 28px;
-  border-radius: 16px;
-  background: white;
-  color: #333;
-  text-align: center;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-}
-
-.welcome-box h2 {
-  font-size: 22px;
-  margin-bottom: 22px;
-}
-
-.welcome-box input,
-.welcome-box select {
-  box-sizing: border-box;
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 14px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
-}
-
-.welcome-box button {
-  width: 100%;
-  padding: 12px;
-  border: none;
-  border-radius: 8px;
-  background: #8b1e1e;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-
-/* Thanh điều hướng 13 mục */
-.navigation-panel {
-  position: fixed;
-  top: 50%;
-  right: 16px;
-  transform: translateY(-50%);
-  width: 290px;
-  max-height: 78vh;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  z-index: 100;
-  color: #f8e9bd;
-  background: rgba(55, 24, 20, 0.96);
-  border: 1px solid #b99551;
-  border-radius: 12px;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.3);
-  transition: width 0.2s ease;
-}
-
-.navigation-panel.collapsed {
-  width: 48px;
-}
-
-.navigation-toggle {
-  min-height: 46px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  padding: 10px 12px;
-  color: #ffe6a0;
-  background: #681b1b;
-  border: none;
-  cursor: pointer;
-  font-weight: 700;
-}
-
-.navigation-panel.collapsed .navigation-toggle {
-  flex-direction: column;
-  justify-content: center;
-  gap: 8px;
-  padding: 10px 0;
-}
-
-.navigation-content {
-  max-height: 280px;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.navigation-heading {
-  padding: 12px 8px 7px;
-  color: #d8bd83;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  border-bottom: 1px solid rgba(216, 189, 131, 0.3);
-}
-
-.navigation-item {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 9px 7px;
-  margin-top: 3px;
-  text-align: left;
-  color: #f7f0e4;
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 7px;
-  cursor: pointer;
-  font-size: 12px;
-  line-height: 1.4;
-}
-
-.navigation-item:hover {
-  background: rgba(255, 230, 160, 0.12);
-  border-color: rgba(255, 230, 160, 0.3);
-}
-
-.navigation-item.active {
-  color: #ffe6a0;
-  background: rgba(185, 149, 81, 0.22);
-  border-color: #b99551;
-}
-
-.navigation-number {
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: #80552f;
-  color: #fff4d6;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.navigation-item.active .navigation-number {
-  background: #b99551;
-  color: #381b16;
-}
-
-@media (max-width: 600px) {
   .navigation-panel {
-    left: 8px;
-    width: min(220px, 78vw);
-    max-height: 65vh;
+    left: 12px;
+    right: auto;
+    width: min(240px, 80vw);
+    max-height: 60vh;
   }
 
   .navigation-panel.collapsed {
-    width: 44px;
+    width: 48px;
   }
 
-  .navigation-item {
-    font-size: 11px;
+  .exhibit-info {
+    bottom: 24px;
+    padding: 18px 20px;
   }
-}
-
-
-.pdf-overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-
-.pdf-window {
-  width: min(1000px, 95vw);
-  height: 90vh;
-  background: white;
-  border-radius: 14px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
-}
-
-.pdf-close {
-  padding: 12px 18px;
-  border: none;
-  background: #8b1e1e;
-  color: white;
-  cursor: pointer;
-  text-align: right;
-}
-
-.pdf-window iframe {
-  width: 100%;
-  flex: 1;
-  border: none;
 }
