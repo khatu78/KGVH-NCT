@@ -1414,25 +1414,20 @@ audio.addEventListener("ended", () => {
   visitor={visitor}
   audioRef={audioRef}
 />
- 
- 
- {/* TRÌNH PHÁT NHẠC */}
-<div
+  <div
   style={{
-    position: "fixed",
-    top: 150,
-    left: 16,
-    zIndex: 1000,
-    background: "rgba(42, 22, 18, 0.88)", // <-- Thay màu nền kính mờ ấm
-    backdropFilter: "blur(14px)",          // <-- Thêm hiệu ứng kính mờ
-    color: "#ffeaad",
-    padding: "14px 18px",                  // <-- Tăng padding cho thoáng
-    borderRadius: "20px",                  // <-- Bo tròn mềm mại thay vì vuông 10px
-    minWidth: 305,
-    boxSizing: "border-box",
-    boxShadow: "0 15px 35px rgba(0,0,0,0.25)", // <-- Đổ bóng êm hơn
-    border: "1px solid rgba(212, 168, 91, 0.3)",
-  }}
+  position: "fixed",
+  top: 150,
+  left: 16,
+  zIndex: 1000,
+  background: "rgba(20, 30, 45, 0.92)",
+  color: "white",
+  padding: "8px 10px",
+  borderRadius: 10,
+  minWidth: 305,
+  boxSizing: "border-box",
+  boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
+}}
 >
   <div style={{ fontWeight: "bold", marginBottom: 8 }}>
     🎵 Nhạc nền tham quan
@@ -1465,18 +1460,13 @@ audio.addEventListener("ended", () => {
       }
     }}
     style={{
-      width: "100%",
-      padding: "8px 14px",
-      fontSize: 12,
-      border: "none",
-      borderRadius: "12px",
-      background: "linear-gradient(135deg, #d4a85b, #b8863b)",
-      color: "#381b16",
-      cursor: "pointer",
-      fontWeight: "700",
-      boxShadow: "0 4px 12px rgba(212,168,91,0.3)",
-      transition: "all 0.2s ease",
-    }}
+  padding: "5px 10px",
+  fontSize: 12,
+  border: "none",
+  borderRadius: 6,
+  cursor: "pointer",
+  fontWeight: "bold",
+}}
   >
     {musicPlaying ? "⏸ Tạm dừng" : "▶ Phát nhạc"}
   </button>
@@ -1652,8 +1642,7 @@ audio.addEventListener("ended", () => {
       position: "fixed",
       inset: 0,
       zIndex: 3000,
-      background: "rgba(0,0,0,0.7)",
-      backdropFilter: "blur(6px)", // <-- Thêm mờ nền phía sau modal
+      background: "rgba(0,0,0,0.75)",
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
@@ -1663,55 +1652,47 @@ audio.addEventListener("ended", () => {
     <div
       onClick={(e) => e.stopPropagation()}
       style={{
-        width: "min(680px, 92vw)",
-        minHeight: 380,
-        background: "#fbf7f0",                // <-- Màu giấy dó sáng sủa
-        border: "1px solid rgba(212, 168, 91, 0.5)", // <-- Viền vàng kim tinh tế thay cho viền thô
-        borderRadius: "28px",                 // <-- Bo tròn góc lớn
-        padding: "36px",                      // <-- Tăng khoảng trống
-        color: "#3d2f24",
+        width: "min(850px, 95vw)",
+        minHeight: 400,
+        background: "#f5f0e5",
+        border: "5px solid #80552f",
+        borderRadius: 12,
+        padding: 28,
+        color: "#38271c",
         position: "relative",
-        boxShadow: "0 30px 60px rgba(40,30,20,0.25)", // <-- Đổ bóng mềm
       }}
     >
       <button
         onClick={() => setSelectedSpace(null)}
         style={{
           position: "absolute",
-          right: 18,
-          top: 18,
-          fontSize: 18,
-          width: 36,
-          height: 36,
-          borderRadius: "50%", // <-- Nút đóng hình tròn
-          background: "#f0e6d8",
-          border: "none",
+          right: 12,
+          top: 12,
+          fontSize: 22,
           cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
         }}
       >
         ✕
       </button>
 
-      <h2 style={{ color: "#7c2929", paddingRight: 35, fontSize: 22, marginBottom: 16 }}>
+      <h2 style={{ color: "#7c2929", paddingRight: 35 }}>
         {selectedSpace.title}
       </h2>
-     <p style={{ lineHeight: "1.7", color: "#665446" }}>{selectedSpace.description}</p>
+
+      <p>{selectedSpace.description}</p>
 
       <div
         style={{
-          minHeight: 160,
-          border: "2px dashed #d8c9ad", // <-- Viền nét đứt mềm mại hơn
-          borderRadius: "20px",         // <-- Bo tròn khối bên trong
+          minHeight: 230,
+          border: "2px dashed #b49a78",
+          borderRadius: 8,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
           textAlign: "center",
           padding: 20,
-          background: "#f4ebd9",        // <-- Màu nền ấm
+          background: "#e9e0d0",
         }}
       >
        
@@ -1726,42 +1707,16 @@ audio.addEventListener("ended", () => {
     }
   }}
   style={{
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "6px",
-    padding: "18px 32px",
-    borderRadius: "20px",
-    background: "linear-gradient(135deg, #fffaf0, #f4ebd9)",
-    border: "1.5px solid rgba(212, 168, 91, 0.4)",
-    color: "#6b2424",
+    fontSize: 42,
+    color: "#7c2929",
+    background: "transparent",
+    border: "none",
     cursor: "pointer",
-    boxShadow: "0 8px 24px rgba(70, 45, 25, 0.08)",
-    transition: "all 0.25s ease",
-    width: "100%",
-    maxWidth: "280px",
-    margin: "0 auto",
-  }}
-  onMouseEnter={(e) => {
-    e.currentTarget.style.transform = "translateY(-3px)";
-    e.currentTarget.style.boxShadow = "0 12px 30px rgba(70, 45, 25, 0.15)";
-    e.currentTarget.style.borderColor = "#b58444";
-  }}
-  onMouseLeave={(e) => {
-    e.currentTarget.style.transform = "translateY(0)";
-    e.currentTarget.style.boxShadow = "0 8px 24px rgba(70, 45, 25, 0.08)";
-    e.currentTarget.style.borderColor = "rgba(212, 168, 91, 0.4)";
   }}
 >
-  <span style={{ fontSize: "26px", lineHeight: 1 }}>📖</span>
-  <span style={{ fontSize: "14px", fontWeight: "700", letterSpacing: "0.5px" }}>
-    MỞ KHU VỰC TƯ LIỆU
-  </span>
-  <span style={{ fontSize: "12px", color: "#8a6d52" }}>
-    Nhấn để xem tài liệu chi tiết →
-  </span>
+  ➜
 </button>
+<h3>KHU VỰC TƯ LIỆU</h3>
 
         
       </div>
