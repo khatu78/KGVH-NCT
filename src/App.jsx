@@ -409,15 +409,20 @@ function InteractiveSpaces({ onSelect }) {
             />
           </mesh>
 
-          <Text
-            position={[0, 2.05, 0.9]}
-            fontSize={0.135}
-            color="#ffe6a0"
-            anchorX="center"
-            anchorY="middle"
-            maxWidth={1.9}
-            textAlign="center"
-          >
+         <Text
+  position={[0, 2.05, 0.9]}
+  fontSize={0.15}
+  color="#FFF0C2"
+  anchorX="center"
+  anchorY="middle"
+  maxWidth={2.1}
+  textAlign="center"
+  outlineWidth={0.003}
+  outlineColor="#79552C"
+  letterSpacing={0.005}
+  lineHeight={1.3}
+  material-toneMapped={false}
+>
             {space.title}
           </Text>
 
