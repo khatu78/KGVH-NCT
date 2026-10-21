@@ -768,54 +768,56 @@ const chuSTextures = useTexture(
 
       {/* Tiêu đề */}
      {/* Biển tiêu đề trang trọng */}
+
 <group position={[0, 4.8, -8.08]}>
-  {/* Nền biển tiêu đề */}
-  <mesh>
+  {/* Nền biển đỏ rượu vang */}
+  <mesh castShadow receiveShadow>
     <boxGeometry args={[12.5, 1.05, 0.18]} />
     <meshStandardMaterial
-      color="#681b1b"
-      metalness={0.35}
-      roughness={0.4}
+      color="#571f29"
+      metalness={0.12}
+      roughness={0.55}
     />
   </mesh>
 
-  {/* Viền vàng phía trước */}
+  {/* Viền vàng champagne */}
   <mesh position={[0, 0, 0.1]}>
-    <boxGeometry args={[12.25, 0.82, 0.025]} />
+    <boxGeometry args={[12.25, 0.84, 0.025]} />
     <meshStandardMaterial
-      color="#d4af37"
-      metalness={0.75}
-      roughness={0.25}
+      color="#c9a86a"
+      metalness={0.3}
+      roughness={0.42}
     />
   </mesh>
 
-  {/* Mặt nền bên trong */}
+  {/* Mặt nền phía trong */}
   <mesh position={[0, 0, 0.12]}>
-    <boxGeometry args={[12.12, 0.69, 0.025]} />
+    <boxGeometry args={[12.15, 0.74, 0.025]} />
     <meshStandardMaterial
-      color="#681b1b"
-      roughness={0.5}
+      color="#682630"
+      metalness={0.08}
+      roughness={0.62}
     />
   </mesh>
 
   {/* Chữ tiêu đề */}
   <Text
     position={[0, 0, 0.17]}
-    fontSize={0.48}
-    color="#ffe6a0"
+    fontSize={0.46}
+    color="#ffe9b5"
     anchorX="center"
     anchorY="middle"
     maxWidth={11.8}
     textAlign="center"
-    outlineWidth={0.006}
-    outlineColor="#8b6425"
-    letterSpacing={0.035}
-    material-metalness={0.35}
-    material-roughness={0.3}
+    outlineWidth={0.003}
+    outlineColor="#4b2021"
+    letterSpacing={0.025}
+    material-toneMapped={false}
   >
     KHÔNG GIAN VĂN HÓA HỒ CHÍ MINH
   </Text>
 </group>
+
 
       {/* Chân dung */}
      {/* Chân dung Bác Hồ */}
