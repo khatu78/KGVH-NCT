@@ -1,11 +1,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { Environment, OrbitControls, Text, useTexture } from "@react-three/drei";
+import { Environment, OrbitControls, Text, useTexture, RoundedBox } from "@react-three/drei";
 import * as THREE from "three";
 import "./style.css";
 import RobotGuide from "./RobotGuide";
-import { Environment, OrbitControls, Text, useTexture, RoundedBox } from "@react-three/drei";
+
 
 
 const ROOM = { width: 24, depth: 18, height: 5.5 };
