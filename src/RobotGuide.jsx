@@ -3,6 +3,7 @@ import "./RobotGuide.css";
 
 export default function RobotGuide({ active, visitor, audioRef }) {
   const [room2Text, setRoom2Text] = useState(false);
+  const [voiceProgress, setVoiceProgress] = useState(0);
   useEffect(() => {
   const enter = () => setRoom2Text(true);
   const leave = () => setRoom2Text(false);
@@ -46,8 +47,18 @@ const speak = useCallback(() => {
     `${import.meta.env.BASE_URL}voice/${voiceFile}`
   );
 
-  window.robotVoiceAudio = voice;
-  voice.volume = 1;
+ window.robotVoiceAudio = voice;
+voice.volume = 1;
+
+setVoiceProgress(0);
+
+voice.ontimeupdate = () => {
+  if (voice.duration && Number.isFinite(voice.duration)) {
+    setVoiceProgress(
+      Math.min(voice.currentTime / voice.duration, 1)
+    );
+  }
+};
 
   if (audio) audio.volume = 0.05;
 
@@ -55,8 +66,15 @@ const speak = useCallback(() => {
     if (audio) audio.volume = oldVolume;
   };
 
-  voice.onended = restoreMusic;
-  voice.onerror = restoreMusic;
+voice.onended = () => {
+  setVoiceProgress(1);
+  restoreMusic();
+};
+
+voice.onerror = () => {
+  setVoiceProgress(1);
+  restoreMusic();
+};
 
   voice.play().catch((err) => {
     console.error("Không phát được file giọng đọc:", err);
@@ -89,15 +107,29 @@ useEffect(() => {
        <p>
   {room2Text
     ? "Đây là phòng trưng bày các chuyên đề."
-    : visitor?.ageGroup === "under15"
-    ? `Xin chào em ${visitor?.name || ""}! Chào mừng em đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Chúc em có một chuyến tham quan thật vui và bổ ích nhé!`
-    : visitor?.ageGroup === "age15to34"
-    ? `Xin chào bạn ${visitor?.name || ""}! Chào mừng bạn đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Chúc bạn có những trải nghiệm thật thú vị!`
-    : visitor?.ageGroup === "age35plus" && visitor?.gender === "Nam"
-    ? `Xin chào anh ${visitor?.name || ""}! Chào mừng anh đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Kính chúc anh có một chuyến tham quan thật ý nghĩa!`
-    : visitor?.ageGroup === "age35plus" && visitor?.gender === "Nữ"
-    ? `Xin chào chị ${visitor?.name || ""}! Chào mừng chị đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Kính chúc chị có một chuyến tham quan thật ý nghĩa!`
-    : ""}
+    : (
+      visitor?.ageGroup === "under15"
+        ? `Xin chào em ${visitor?.name || ""}! Chào mừng em đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Chúc em có một chuyến tham quan thật vui và bổ ích nhé!`
+        : visitor?.ageGroup === "age15to34"
+        ? `Xin chào bạn ${visitor?.name || ""}! Chào mừng bạn đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Chúc bạn có những trải nghiệm thật thú vị!`
+        : visitor?.ageGroup === "age35plus" && visitor?.gender === "Nam"
+        ? `Xin chào anh ${visitor?.name || ""}! Chào mừng anh đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Kính chúc anh có một chuyến tham quan thật ý nghĩa!`
+        : visitor?.ageGroup === "age35plus" && visitor?.gender === "Nữ"
+        ? `Xin chào chị ${visitor?.name || ""}! Chào mừng chị đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Kính chúc chị có một chuyến tham quan thật ý nghĩa!`
+        : ""
+    ).slice(
+      0,
+      Math.ceil(
+        (visitor?.ageGroup === "under15"
+          ? `Xin chào em ${visitor?.name || ""}! Chào mừng em đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Chúc em có một chuyến tham quan thật vui và bổ ích nhé!`
+          : visitor?.ageGroup === "age15to34"
+          ? `Xin chào bạn ${visitor?.name || ""}! Chào mừng bạn đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Chúc bạn có những trải nghiệm thật thú vị!`
+          : visitor?.gender === "Nam"
+          ? `Xin chào anh ${visitor?.name || ""}! Chào mừng anh đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Kính chúc anh có một chuyến tham quan thật ý nghĩa!`
+          : `Xin chào chị ${visitor?.name || ""}! Chào mừng chị đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Kính chúc chị có một chuyến tham quan thật ý nghĩa!`).length * voiceProgress
+      )
+    )
+  }
 </p>
         <button type="button" onClick={speak}>🔊 Nghe lại lời chào</button>
       </div>
