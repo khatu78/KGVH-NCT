@@ -732,7 +732,9 @@ const chuSTextures = useTexture(
       document.body.style.cursor = "auto";
     }}
   >
-    <RoundedBox args={[0.16, 0.6, 2.0]} radius={0.07} smoothness={6} />
+   <RoundedBox args={[0.13, 0.64, 1.9]} radius={0.07} smoothness={6}>
+  <meshStandardMaterial color="#fffdf8" roughness={0.8} />
+</RoundedBox>
     <meshStandardMaterial color="#681b1b" />
   </mesh>
 
