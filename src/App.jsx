@@ -770,7 +770,7 @@ const chuSTextures = useTexture(
      {/* Biển tiêu đề trang trọng */}
 
 
-<group position={[0, 4.8, -8.08]}>
+<group position={[0, 5.1, -8.08]}>
   {/* Bóng đổ phía sau biển */}
   <mesh position={[0, -0.035, -0.045]} castShadow>
     <boxGeometry args={[12.5, 1.08, 0.16]} />
@@ -826,21 +826,19 @@ const chuSTextures = useTexture(
   </mesh>
 
   {/* Chữ tiêu đề */}
-  <Text
-    position={[0, 0, 0.15]}
-    fontSize={0.46}
-    color="#244d83"
-    anchorX="center"
-    anchorY="middle"
-    maxWidth={11.5}
-    textAlign="center"
-    outlineWidth={0.001}
-    outlineColor="#ffffff"
-    letterSpacing={0.018}
-    material-toneMapped={false}
-  >
-    KHÔNG GIAN VĂN HÓA HỒ CHÍ MINH
-  </Text>
+ <Text
+  position={[0, 0, 0.15]}
+  font="https://fonts.gstatic.com/s/be vietnam pro/"
+  fontSize={0.46}
+  color="#244d83"
+  anchorX="center"
+  anchorY="middle"
+  maxWidth={11.5}
+  textAlign="center"
+  letterSpacing={0.008}
+>
+  KHÔNG GIAN VĂN HÓA HỒ CHÍ MINH
+</Text>
 </group>
 
 
@@ -1147,6 +1145,16 @@ const [showLibrary, setShowLibrary] = useState(false);
 const [showPortraitSlideshow, setShowPortraitSlideshow] = useState(false);
 const [activePortrait, setActivePortrait] = useState(1);
 const [activeChuS, setActiveChuS] = useState(0);
+
+useEffect(() => {
+  const link = document.createElement("link");
+  link.href =
+    "https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@500;600;700&display=swap";
+  link.rel = "stylesheet";
+  document.head.appendChild(link);
+
+  return () => link.remove();
+}, []);
 
 useEffect(() => {
   const openPortrait = () => {
