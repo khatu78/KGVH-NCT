@@ -769,53 +769,80 @@ const chuSTextures = useTexture(
       {/* Tiêu đề */}
      {/* Biển tiêu đề trang trọng */}
 
+
 <group position={[0, 4.8, -8.08]}>
-  {/* Nền biển đỏ rượu vang */}
+  {/* Bóng đổ phía sau biển */}
+  <mesh position={[0, -0.035, -0.045]} castShadow>
+    <boxGeometry args={[12.5, 1.08, 0.16]} />
+    <meshStandardMaterial
+      color="#b9cce5"
+      roughness={0.85}
+    />
+  </mesh>
+
+  {/* Thân biển bo màu trắng xanh */}
   <mesh castShadow receiveShadow>
     <boxGeometry args={[12.5, 1.05, 0.18]} />
     <meshStandardMaterial
-      color="#571f29"
-      metalness={0.12}
-      roughness={0.55}
+      color="#f8fbff"
+      roughness={0.7}
     />
   </mesh>
 
-  {/* Viền vàng champagne */}
-  <mesh position={[0, 0, 0.1]}>
-    <boxGeometry args={[12.25, 0.84, 0.025]} />
+  {/* Dải màu xanh tím phía sau */}
+  <mesh position={[0, 0, 0.096]}>
+    <boxGeometry args={[12.25, 0.83, 0.025]} />
     <meshStandardMaterial
-      color="#c9a86a"
-      metalness={0.3}
-      roughness={0.42}
+      color="#dceaff"
+      roughness={0.75}
     />
   </mesh>
 
-  {/* Mặt nền phía trong */}
-  <mesh position={[0, 0, 0.12]}>
-    <boxGeometry args={[12.15, 0.74, 0.025]} />
+  {/* Mặt nền sáng ở giữa */}
+  <mesh position={[0, 0, 0.113]}>
+    <boxGeometry args={[12.13, 0.71, 0.02]} />
     <meshStandardMaterial
-      color="#682630"
-      metalness={0.08}
-      roughness={0.62}
+      color="#f4f8ff"
+      roughness={0.8}
+    />
+  </mesh>
+
+  {/* Vạch nhấn xanh ngọc bên trái */}
+  <mesh position={[-5.85, 0, 0.13]}>
+    <boxGeometry args={[0.055, 0.48, 0.018]} />
+    <meshStandardMaterial
+      color="#55c9b0"
+      roughness={0.5}
+    />
+  </mesh>
+
+  {/* Vạch nhấn tím bên phải */}
+  <mesh position={[5.85, 0, 0.13]}>
+    <boxGeometry args={[0.055, 0.48, 0.018]} />
+    <meshStandardMaterial
+      color="#8c80ed"
+      roughness={0.5}
     />
   </mesh>
 
   {/* Chữ tiêu đề */}
   <Text
-    position={[0, 0, 0.17]}
+    position={[0, 0, 0.15]}
     fontSize={0.46}
-    color="#ffe9b5"
+    color="#244d83"
     anchorX="center"
     anchorY="middle"
-    maxWidth={11.8}
+    maxWidth={11.5}
     textAlign="center"
-    outlineWidth={0.003}
-    outlineColor="#4b2021"
-    letterSpacing={0.025}
+    outlineWidth={0.001}
+    outlineColor="#ffffff"
+    letterSpacing={0.018}
     material-toneMapped={false}
   >
     KHÔNG GIAN VĂN HÓA HỒ CHÍ MINH
   </Text>
+</group>
+
 </group>
 
 
