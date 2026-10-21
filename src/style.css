@@ -920,8 +920,7 @@ select {
 /* Nút quay về lối vào */
 
 .return-button {
-  position: relative;
-  z-index: 9999;
+ 
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -935,6 +934,10 @@ select {
   font-weight: 700;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(65, 112, 170, 0.12);
+  position: fixed;
+top: 20px;
+left: 20px;
+z-index: 99999;
 }
 
 .return-button:hover:not(:disabled) {
