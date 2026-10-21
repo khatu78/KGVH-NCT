@@ -106,7 +106,10 @@ useEffect(() => {
         <strong>Robot hướng dẫn viên</strong>
        <p>
   {room2Text
-    ? "Đây là phòng trưng bày các chuyên đề."
+    ? "Đây là phòng trưng bày các chuyên đề.".slice(
+    0,
+    Math.ceil("Đây là phòng trưng bày các chuyên đề.".length * voiceProgress)
+  )
     : (
       visitor?.ageGroup === "under15"
         ? `Xin chào em ${visitor?.name || ""}! Chào mừng em đến với Không gian văn hóa Hồ Chí Minh của Trường Trung học cơ sở Nguyễn Chí Thanh. Chúc em có một chuyến tham quan thật vui và bổ ích nhé!`
