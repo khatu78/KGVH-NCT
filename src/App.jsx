@@ -7,6 +7,7 @@ import "./style.css";
 import RobotGuide from "./RobotGuide";
 import { Environment, OrbitControls, Text, useTexture, RoundedBox } from "@react-three/drei";
 
+
 const ROOM = { width: 24, depth: 18, height: 5.5 };
 
 export const CONTENT_LIST = [
@@ -718,25 +719,23 @@ const chuSTextures = useTexture(
 
 {/* Biển nhấn để vào phòng trưng bày */}
 <group position={[0, 1.5, 0]}>
-  <mesh
-    onClick={(e) => {
-      e.stopPropagation();
-      window.dispatchEvent(
-        new Event("enter-second-room")
-      );
-    }}
-    onPointerOver={() => {
-      document.body.style.cursor = "pointer";
-    }}
-    onPointerOut={() => {
-      document.body.style.cursor = "auto";
-    }}
-  >
-   <RoundedBox args={[0.13, 0.64, 1.9]} radius={0.07} smoothness={6}>
-  <meshStandardMaterial color="#fffdf8" roughness={0.8} />
+  <RoundedBox
+  args={[0.16, 0.6, 2.0]}
+  radius={0.07}
+  smoothness={6}
+  onClick={(e) => {
+    e.stopPropagation();
+    window.dispatchEvent(new Event("enter-second-room"));
+  }}
+  onPointerOver={() => {
+    document.body.style.cursor = "pointer";
+  }}
+  onPointerOut={() => {
+    document.body.style.cursor = "auto";
+  }}
+>
+  <meshStandardMaterial color="#681b1b" roughness={0.7} />
 </RoundedBox>
-    <meshStandardMaterial color="#681b1b" />
-  </mesh>
 
   <Text
     position={[0.09, 0, 0]}
