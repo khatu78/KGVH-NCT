@@ -718,16 +718,7 @@ const chuSTextures = useTexture(
 {/* Biển nhấn để vào phòng trưng bày */}
 
 <group position={[0, 1.5, 0]}>
-  {/* Trụ đỡ xanh pastel */}
-  <mesh position={[0, 0, -0.08]} castShadow>
-    <boxGeometry args={[0.2, 0.85, 2.15]} />
-    <meshStandardMaterial
-      color="#b9d5f5"
-      roughness={0.65}
-    />
-  </mesh>
-
-  {/* Thân biển màu trắng xanh */}
+  {/* Thân bảng màu trắng kem */}
   <mesh
     onClick={(e) => {
       e.stopPropagation();
@@ -742,63 +733,76 @@ const chuSTextures = useTexture(
     castShadow
     receiveShadow
   >
-    <boxGeometry args={[0.24, 0.72, 2.0]} />
+    <boxGeometry args={[0.13, 0.64, 1.9]} />
     <meshStandardMaterial
-      color="#f5f9ff"
-      roughness={0.55}
-      metalness={0.05}
+      color="#fffdf8"
+      roughness={0.8}
     />
   </mesh>
 
-  {/* Viền xanh phía trước */}
-  <mesh position={[0.125, 0, 0]}>
-    <boxGeometry args={[0.025, 0.66, 1.92]} />
+  {/* Viền pastel xanh nhạt */}
+  <mesh position={[0.068, 0, 0]}>
+    <boxGeometry args={[0.012, 0.59, 1.84]} />
     <meshStandardMaterial
-      color="#7ca9ed"
-      roughness={0.45}
+      color="#c5dff5"
+      roughness={0.7}
     />
   </mesh>
 
-  {/* Mặt biển PHÒNG TRƯNG BÀY */}
-  <mesh position={[0.142, 0, 0]}>
-    <planeGeometry args={[0.61, 1.82]} />
-    <meshBasicMaterial color="#f5f9ff" />
+  {/* Mặt bảng phía phòng trưng bày */}
+  <mesh position={[0.075, 0, 0]}>
+    <planeGeometry args={[0.52, 1.76]} />
+    <meshBasicMaterial color="#fffdf8" />
   </mesh>
 
+  {/* Nhấn màu xanh mint */}
+  <mesh position={[0.078, 0.22, 0]}>
+    <planeGeometry args={[0.025, 1.25]} />
+    <meshBasicMaterial color="#b9e5d7" />
+  </mesh>
+
+  {/* Chữ PHÒNG TRƯNG BÀY */}
   <Text
-    position={[0.16, 0, 0]}
+    position={[0.085, 0, 0]}
     rotation={[0, Math.PI / 2, 0]}
-    fontSize={0.17}
-    color="#3569a8"
+    fontSize={0.155}
+    color="#496b91"
     anchorX="center"
     anchorY="middle"
-    maxWidth={1.7}
+    maxWidth={1.6}
     textAlign="center"
     lineHeight={1.4}
-    outlineWidth={0.001}
-    outlineColor="#ffffff"
+    outlineWidth={0}
+    material-toneMapped={false}
   >
     PHÒNG TRƯNG BÀY
   </Text>
 
-  {/* Mặt biển SẢNH CHÍNH */}
-  <mesh position={[-0.142, 0, 0]} rotation={[0, Math.PI, 0]}>
-    <planeGeometry args={[0.61, 1.82]} />
-    <meshBasicMaterial color="#f5f9ff" />
+  {/* Mặt bảng phía sảnh chính */}
+  <mesh position={[-0.075, 0, 0]} rotation={[0, Math.PI, 0]}>
+    <planeGeometry args={[0.52, 1.76]} />
+    <meshBasicMaterial color="#fffdf8" />
   </mesh>
 
+  {/* Nhấn màu tím pastel */}
+  <mesh position={[-0.078, 0.22, 0]} rotation={[0, Math.PI, 0]}>
+    <planeGeometry args={[0.025, 1.25]} />
+    <meshBasicMaterial color="#d9d2f5" />
+  </mesh>
+
+  {/* Chữ SẢNH CHÍNH */}
   <Text
-    position={[-0.16, 0, 0]}
+    position={[-0.085, 0, 0]}
     rotation={[0, -Math.PI / 2, 0]}
-    fontSize={0.18}
-    color="#3569a8"
+    fontSize={0.17}
+    color="#496b91"
     anchorX="center"
     anchorY="middle"
-    maxWidth={1.7}
+    maxWidth={1.6}
     textAlign="center"
     lineHeight={1.4}
-    outlineWidth={0.001}
-    outlineColor="#ffffff"
+    outlineWidth={0}
+    material-toneMapped={false}
   >
     SẢNH CHÍNH
   </Text>
