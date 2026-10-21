@@ -3,6 +3,24 @@ import "./RobotGuide.css";
 
 export default function RobotGuide({ active, visitor, audioRef }) {
   const [room2Text, setRoom2Text] = useState(false);
+  useEffect(() => {
+  if (!room2Text) return;
+
+  setVoiceProgress(0);
+  let count = 0;
+  const text = "Đây là phòng trưng bày các chuyên đề.";
+
+  const timer = setInterval(() => {
+    count++;
+    setVoiceProgress(count / text.length);
+
+    if (count >= text.length) {
+      clearInterval(timer);
+    }
+  }, 80);
+
+  return () => clearInterval(timer);
+}, [room2Text]);
   const [voiceProgress, setVoiceProgress] = useState(0);
   useEffect(() => {
   const enter = () => setRoom2Text(true);
