@@ -843,7 +843,7 @@ const chuSTextures = useTexture(
   </Text>
 </group>
 
-</group>
+
 
 
       {/* Chân dung */}
