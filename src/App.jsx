@@ -3,9 +3,10 @@ import WelcomeScreen from "./components/WelcomeScreen";
 import NavigationPanel from "./components/NavigationPanel";
 import MusicPlayer from "./components/MusicPlayer";
 import MuseumCanvas from "./scenes/MuseumCanvas";
-import RobotGuide from "./RobotGuide";
+import RobotGuide from "./components/RobotGuide";
 import { spots, spaces } from "./data/contentList";
 import "./style.css";
+
 
 export default function App() {
   const [room2Active, setRoom2Active] = useState(false);
