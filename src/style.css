@@ -936,7 +936,8 @@ select {
   box-shadow: 0 4px 12px rgba(65, 112, 170, 0.12);
   position: fixed;
 top: 20px;
-left: 20px;
+left: auto;
+right: 20px;
 z-index: 99999;
 }
 
