@@ -190,14 +190,7 @@ select {
     background 0.15s;
 }
 
-.start-button:hover {
-  background: #4f321e;
-  transform: translateY(-2px);
-}
 
-.start-button:active {
-  transform: translateY(0);
-}
 
 /* =========================
    GAME
@@ -861,13 +854,23 @@ select {
     filter 0.2s ease;
 }
 
+
 .start-button:hover {
+  background: linear-gradient(135deg, #3478dc, #625fe0 55%, #7960d8);
+  color: #ffffff;
   transform: translateY(-2px);
-  filter: brightness(1.05);
-  box-shadow: 0 12px 26px rgba(83, 123, 231, 0.34);
+  box-shadow: 0 10px 22px rgba(83, 123, 231, 0.3);
+  filter: none;
+}
+
+.start-button:focus-visible {
+  outline: 3px solid #a9d3ff;
+  outline-offset: 3px;
 }
 
 .start-button:active {
+  background: linear-gradient(135deg, #2866c2, #554fc8);
+  color: #ffffff;
   transform: translateY(0) scale(0.98);
 }
 
