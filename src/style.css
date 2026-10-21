@@ -1,23 +1,39 @@
-/* ==========================================================
-   TỔNG THỂ & RESET
-========================================================== */
 * {
   box-sizing: border-box;
 }
 
-html, body, #root {
+
+html,
+body,
+#root {
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: #f7f2ea;
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
-/* ==========================================================
-   1. MÀN HÌNH CHÀO (WELCOME SCREEN)
-========================================================== */
+body {
+  background: #f4ede2;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+/* =========================
+   MÀN HÌNH CHÀO (WELCOME SCREEN)
+========================= */
+
 .welcome-page {
   width: 100%;
   height: 100%;
@@ -25,20 +41,24 @@ html, body, #root {
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background: 
-    radial-gradient(circle at 20% 20%, rgba(212, 168, 91, 0.15), transparent 40%),
-    radial-gradient(circle at 80% 80%, rgba(120, 28, 28, 0.1), transparent 40%),
-    linear-gradient(135deg, #f5ebd9, #e4edf2);
+  background:
+    radial-gradient(
+      circle at 30% 30%,
+      rgba(255, 255, 255, 0.8),
+      transparent 50%
+    ),
+    linear-gradient(135deg, #f5ebd9, #d0e1e8);
 }
 
 .welcome-card {
   width: min(480px, 100%);
-  padding: 42px;
+  padding: 40px;
   border-radius: 32px;
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 25px 60px rgba(70, 45, 25, 0.15), 0 0 0 1px rgba(212, 168, 91, 0.3);
+  box-shadow: 0 20px 50px rgba(70, 50, 35, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.9);
   transition: all 0.3s ease;
 }
 
@@ -47,27 +67,26 @@ html, body, #root {
   padding: 6px 14px;
   margin-bottom: 14px;
   border-radius: 999px;
-  background: #fdf3d8;
-  color: #8c581e;
+  background: #f3e6cd;
+  color: #7a522e;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  border: 1px solid rgba(212, 168, 91, 0.4);
+  letter-spacing: 0.1em;
 }
 
 .welcome-card h1 {
-  margin: 0 0 10px 0;
-  color: #4a2e1b;
-  font-size: clamp(32px, 5vw, 42px);
+  margin: 0 0 8px 0;
+  color: #4a3222;
+  font-size: clamp(32px, 6vw, 48px);
   font-weight: 800;
-  line-height: 1.15;
+  line-height: 1.1;
 }
 
 .welcome-description {
   margin: 0 0 28px 0;
-  color: #7a6856;
+  color: #75685c;
   font-size: 14px;
-  line-height: 1.65;
+  line-height: 1.6;
 }
 
 .visitor-form {
@@ -80,7 +99,7 @@ html, body, #root {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  color: #5c4331;
+  color: #594435;
   font-size: 13px;
   font-weight: 600;
 }
@@ -102,9 +121,9 @@ html, body, #root {
 
 .visitor-form input:focus,
 .visitor-form select:focus {
-  border-color: #b58444;
+  border-color: #9c6e43;
   background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(181, 132, 68, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 0 0 4px rgba(156, 110, 67, 0.12), inset 0 2px 4px rgba(0, 0, 0, 0.02);
 }
 
 .form-error {
@@ -112,7 +131,7 @@ html, body, #root {
   border-radius: 14px;
   background: #fdf2f1;
   border: 1px solid #f2c4c0;
-  color: #a8322b;
+  color: #b33b32;
   font-weight: 600;
   font-size: 13px;
   text-align: center;
@@ -123,59 +142,169 @@ html, body, #root {
   margin-top: 6px;
   border: none;
   border-radius: 16px;
-  background: linear-gradient(135deg, #8b2626, #5c1414);
-  color: #ffeaad;
+  background: linear-gradient(135deg, #7c4b2a, #59331a);
+  color: white;
   font-size: 14px;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   cursor: pointer;
-  box-shadow: 0 10px 25px rgba(139, 38, 38, 0.3);
+  box-shadow: 0 10px 25px rgba(124, 75, 42, 0.28);
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .start-button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 30px rgba(139, 38, 38, 0.4);
+  box-shadow: 0 14px 30px rgba(124, 75, 42, 0.38);
 }
 
-/* ==========================================================
-   2. THANH DANH MỤC THAM QUAN (NAVIGATION PANEL)
-========================================================== */
+.start-button:active {
+  transform: translateY(0);
+}
+
+/* =========================
+   CANVAS & APP CONTAINER
+========================= */
+
+.app {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  background: #b9d2e3;
+  touch-action: none;
+}
+
+.app canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* =========================
+   TOP INFO (THÔNG TIN PHÍA TRÊN)
+========================= */
+
+.top-info {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #4a3828;
+  box-shadow: 0 10px 30px rgba(40, 30, 20, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+}
+
+.top-info strong {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.top-info p {
+  margin: 0;
+  font-size: 12px;
+  color: #736456;
+}
+
+/* =========================
+   CONTROLS (HƯỚNG DẪN GÓC DƯỚI TRÁI)
+========================= */
+
+.controls {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #594738;
+  font-size: 12px;
+  box-shadow: 0 10px 30px rgba(40, 30, 20, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+}
+
+/* =========================
+   RETURN BUTTON (NÚT QUAY VỀ)
+========================= */
+
+.return-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 20;
+  padding: 11px 20px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #8c1c1c, #631212);
+  color: #ffeaad;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(140, 28, 28, 0.3);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.return-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 25px rgba(140, 28, 28, 0.4);
+}
+
+.return-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* =========================
+   NAVIGATION PANEL (THANH DANH MỤC 13 MỤC)
+========================= */
+
 .navigation-panel {
   position: fixed;
   top: 50%;
   right: 20px;
   transform: translateY(-50%);
   width: 290px;
-  max-height: 82vh;
+  max-height: 80vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   z-index: 100;
   color: #f8e9bd;
-  background: rgba(42, 22, 18, 0.88);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(212, 168, 91, 0.35);
+  background: rgba(46, 23, 19, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(212, 168, 91, 0.3);
   border-radius: 24px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .navigation-panel.collapsed {
-  width: 54px;
-  border-radius: 27px;
+  width: 52px;
+  border-radius: 26px;
 }
 
 .navigation-toggle {
-  min-height: 54px;
+  min-height: 52px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 12px 18px;
+  padding: 12px 16px;
   color: #ffeaad;
-  background: rgba(110, 32, 32, 0.65);
+  background: rgba(94, 28, 28, 0.6);
   border: none;
   cursor: pointer;
   font-weight: 700;
@@ -184,22 +313,29 @@ html, body, #root {
 }
 
 .navigation-toggle:hover {
-  background: rgba(140, 42, 42, 0.85);
+  background: rgba(124, 38, 38, 0.8);
+}
+
+.navigation-panel.collapsed .navigation-toggle {
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 0;
 }
 
 .navigation-content {
-  max-height: calc(82vh - 60px);
+  max-height: calc(80vh - 60px);
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 10px 12px 16px;
+  padding: 8px 10px 12px;
 }
 
 .navigation-content::-webkit-scrollbar {
-  width: 5px;
+  width: 6px;
 }
 
 .navigation-content::-webkit-scrollbar-thumb {
-  background: rgba(212, 168, 91, 0.35);
+  background: rgba(212, 168, 91, 0.3);
   border-radius: 999px;
 }
 
@@ -208,23 +344,23 @@ html, body, #root {
   color: #e3c586;
   font-size: 11px;
   font-weight: 800;
-  letter-spacing: 1px;
-  border-bottom: 1px solid rgba(212, 168, 91, 0.2);
-  margin-bottom: 6px;
+  letter-spacing: 0.8px;
+  border-bottom: 1px solid rgba(212, 168, 91, 0.15);
+  margin-bottom: 4px;
 }
 
 .navigation-item {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  margin-top: 5px;
+  gap: 10px;
+  padding: 10px 10px;
+  margin-top: 4px;
   text-align: left;
   color: #f7f0e4;
   background: transparent;
   border: 1px solid transparent;
-  border-radius: 14px;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 12px;
   line-height: 1.4;
@@ -232,14 +368,14 @@ html, body, #root {
 }
 
 .navigation-item:hover {
-  background: rgba(255, 234, 173, 0.12);
-  border-color: rgba(255, 234, 173, 0.25);
+  background: rgba(255, 234, 173, 0.1);
+  border-color: rgba(255, 234, 173, 0.2);
 }
 
 .navigation-item.active {
   color: #ffeaad;
-  background: rgba(185, 149, 81, 0.28);
-  border-color: rgba(212, 168, 91, 0.55);
+  background: rgba(185, 149, 81, 0.25);
+  border-color: rgba(212, 168, 91, 0.5);
   font-weight: 600;
 }
 
@@ -251,7 +387,7 @@ html, body, #root {
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: rgba(138, 92, 53, 0.6);
+  background: rgba(128, 85, 47, 0.6);
   color: #fff4d6;
   font-size: 11px;
   font-weight: 700;
@@ -262,106 +398,25 @@ html, body, #root {
   color: #381b16;
 }
 
-/* ==========================================================
-   3. CÁC KHUNG THÔNG TIN, NÚT ĐIỀU HƯỚNG & HƯỚNG DẪN GÓC
-========================================================== */
-.top-info {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 14px 20px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  color: #4a3828;
-  box-shadow: 0 10px 30px rgba(40, 30, 20, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  pointer-events: none;
-  z-index: 20;
-}
+/* =========================
+   EXHIBIT INFO & MODALS (HIỆN VẬT & THÔNG TIN)
+========================= */
 
-.top-info strong {
-  font-size: 14px;
-  font-weight: 700;
-  color: #6b2424;
-}
-
-.top-info p {
-  margin: 0;
-  font-size: 12px;
-  color: #736456;
-}
-
-.controls {
-  position: absolute;
-  left: 20px;
-  bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-  padding: 14px 20px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  color: #594738;
-  font-size: 12px;
-  box-shadow: 0 10px 30px rgba(40, 30, 20, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  pointer-events: none;
-  z-index: 20;
-}
-
-.return-button {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  z-index: 25;
-  padding: 11px 22px;
-  border: none;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #8b1e1e, #5c1414);
-  color: #ffeaad;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 8px 22px rgba(139, 30, 30, 0.35);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.return-button:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(139, 30, 30, 0.45);
-}
-
-.return-button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  box-shadow: none;
-}
-
-/* ==========================================================
-   4. BẢNG HIỆN VẬT & MODAL (XEM CHI TIẾT)
-========================================================== */
 .exhibit-info {
   position: fixed;
   left: 50%;
   bottom: 30px;
   transform: translateX(-50%);
-  width: min(540px, calc(100% - 40px));
-  padding: 24px 28px;
-  border-radius: 26px;
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  box-shadow: 0 25px 55px rgba(40, 30, 20, 0.22);
+  width: min(520px, calc(100% - 40px));
+  padding: 22px 26px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 20px 50px rgba(40, 30, 20, 0.18);
   color: #4a3828;
   pointer-events: auto;
-  border: 1px solid rgba(212, 168, 91, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.8);
   z-index: 1000;
 }
 
@@ -369,8 +424,8 @@ html, body, #root {
   position: absolute;
   top: 14px;
   right: 14px;
-  width: 34px;
-  height: 34px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -391,12 +446,58 @@ html, body, #root {
   margin-bottom: 8px;
   font-size: 18px;
   font-weight: 800;
-  color: #6b2424;
+  color: #4a3222;
   padding-right: 30px;
 }
 
 .exhibit-description {
-  font-size: 13.5px;
-  line-height: 1.65;
+  font-size: 13px;
+  line-height: 1.6;
   color: #736456;
+}
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+
+@media (max-width: 768px) {
+  .welcome-page {
+    padding: 16px;
+  }
+
+  .welcome-card {
+    padding: 30px 24px;
+    border-radius: 24px;
+  }
+
+  .welcome-card h1 {
+    font-size: 36px;
+  }
+
+  .top-info {
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    padding: 12px 14px;
+  }
+
+  .controls {
+    display: none;
+  }
+
+  .navigation-panel {
+    left: 12px;
+    right: auto;
+    width: min(240px, 80vw);
+    max-height: 60vh;
+  }
+
+  .navigation-panel.collapsed {
+    width: 48px;
+  }
+
+  .exhibit-info {
+    bottom: 24px;
+    padding: 18px 20px;
+  }
 }
