@@ -1443,18 +1443,39 @@ audio.addEventListener("ended", () => {
   </div>
 
   <button
-    onClick={() => { ... }}
+    onClick={() => {
+      const audio = audioRef.current;
+      if (!audio) return;
+
+      if (audio.paused) {
+        if (audio.ended) {
+          const startTime = {
+            under15: 17,
+            age15to34: 17,
+            age35plus: 30,
+          };
+
+          audio.currentTime =
+            startTime[visitor.ageGroup] ?? 0;
+        }
+
+        audio.play().catch(console.warn);
+      } else {
+        audio.pause();
+      }
+    }}
     style={{
       width: "100%",
       padding: "8px 14px",
       fontSize: 12,
       border: "none",
-      borderRadius: "12px", // <-- Bo tròn nút
-      background: "linear-gradient(135deg, #d4a85b, #b8863b)", // <-- Đổi sang vàng kim sang trọng
+      borderRadius: "12px",
+      background: "linear-gradient(135deg, #d4a85b, #b8863b)",
       color: "#381b16",
       cursor: "pointer",
       fontWeight: "700",
       boxShadow: "0 4px 12px rgba(212,168,91,0.3)",
+      transition: "all 0.2s ease",
     }}
   >
     {musicPlaying ? "⏸ Tạm dừng" : "▶ Phát nhạc"}
