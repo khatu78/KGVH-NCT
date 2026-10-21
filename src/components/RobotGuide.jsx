@@ -1,5 +1,5 @@
 import { useEffect, useCallback, useState } from "react";
-import "../styles/robotguide.css";
+import "./RobotGuide.css";
 
 export default function RobotGuide({ active, visitor, audioRef }) {
   const [room2Text, setRoom2Text] = useState(false);
