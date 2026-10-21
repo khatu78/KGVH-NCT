@@ -828,7 +828,7 @@ const chuSTextures = useTexture(
   {/* Chữ tiêu đề */}
  <Text
   position={[0, 0, 0.15]}
-  font="https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff"
+  font="https://raw.githubusercontent.com/bettergui/BeVietnamPro/main/fonts/ttf/BeVietnamPro-SemiBold.ttf"
   fontSize={0.46}
   color="#244d83"
   anchorX="center"
