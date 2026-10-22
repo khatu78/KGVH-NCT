@@ -620,7 +620,7 @@ select {
 }
 
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .navigation-panel {
     left: 8px;
     right: 8px;
@@ -993,7 +993,7 @@ z-index: 99999;
 
 
 /* ===== TỐI ƯU ĐIỆN THOẠI ===== */
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .return-button {
     top: 10px;
     right: 10px;
@@ -1004,7 +1004,7 @@ z-index: 99999;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .exhibit-info {
     bottom: 100px;
     width: calc(100% - 24px);
@@ -1036,7 +1036,7 @@ z-index: 99999;
 
 
 /* ===== SẮP XẾP GIAO DIỆN MOBILE ===== */
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .top-info {
     top: 10px;
     left: 10px;
@@ -1072,7 +1072,7 @@ z-index: 99999;
 }
 
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .navigation-panel {
     top: auto;
     bottom: 12px;
@@ -1101,7 +1101,7 @@ z-index: 99999;
 
 
 /* ===== HÌNH ẢNH BÁC HỒ - MOBILE ===== */
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .portrait-overlay,
   .image-overlay {
     position: fixed;
@@ -1144,7 +1144,7 @@ z-index: 99999;
 }
 
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .navigation-panel {
     top: 65px;
     bottom: auto;
@@ -1175,7 +1175,7 @@ z-index: 99999;
   display: none;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .music-icon {
     display: flex;
     align-items: center;
@@ -1201,13 +1201,13 @@ z-index: 99999;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .back-to-entrance.hide-on-mobile {
     display: none !important;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .portrait-main-image {
     max-height: 35vh !important;
   }
@@ -1233,7 +1233,7 @@ z-index: 99999;
 }
 
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .books-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 10px !important;
@@ -1262,7 +1262,7 @@ z-index: 99999;
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .book-card {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     -webkit-tap-highlight-color: transparent;

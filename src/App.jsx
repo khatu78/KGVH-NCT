@@ -1882,7 +1882,7 @@ export default function App() {
   box-sizing: border-box;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 480px) {
   .portrait-thumbnails {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 8px;
@@ -1908,7 +1908,7 @@ export default function App() {
         border-radius: 10px;
       }
 
-      @media (max-width: 600px) {
+      @media (max-width: 480px) {
         .portrait-main-image {
           max-height: 48vh !important;
         }
