@@ -616,7 +616,7 @@ function SpaceInteriorRoom({ space, onBack }) {
 
 ///căn phòng thứ 2
 
-function SecondRoom({ onSpaceClick }) {
+function SecondRoom({ onSpaceClick, setKhu1Content }) {
   return (
     <group>
       {/* Biển nhấn quay về sảnh chính */}
@@ -1163,7 +1163,8 @@ function Scene({
         }
       />
       {room2Active && !insideSpaceRoom && (
-        <SecondRoom onSpaceClick={onSpaceClick} />
+        <SecondRoom onSpaceClick={onSpaceClick}  
+        setKhu1Content={setKhu1Content}/>
       )}
       {room2Active && insideSpaceRoom && activeSpace && (
         <SpaceInteriorRoom
