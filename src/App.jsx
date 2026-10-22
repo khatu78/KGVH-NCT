@@ -1932,11 +1932,11 @@ export default function App() {
 
       .portrait-thumbnails {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(11, minmax(0, 1fr));
   gap: 10px;
   justify-content: center;
   width: 100%;
-  max-width: 900px;
+max-width: 1400px;
   overflow: visible;
   padding: 12px 4px 18px;
   box-sizing: border-box;
@@ -2127,6 +2127,9 @@ export default function App() {
         className="return-button back-to-entrance"
         onClick={returnToPreviousSpot}
         disabled={spotIndex === 0 && !room2Active}
+        style={{
+    display: showPortraitSlideshow ? "none" : undefined,
+  }}
       >
         {insideSpaceRoom ? "↩ Quay về phòng trưng bày" : "↩ Quay về lối vào"}
       </button>
