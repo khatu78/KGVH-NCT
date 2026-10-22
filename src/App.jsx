@@ -531,14 +531,16 @@ function SpaceInteriorRoom({ space, onBack }) {
           <meshStandardMaterial color="#681b1b" />
         </RoundedBox>
         <Text
-          position={[0, 0, 0.08]}
-          fontSize={0.18}
-          color="#ffe6a0"
-          anchorX="center"
-          anchorY="middle"
-        >
-          QUAY LẠI
-        </Text>
+  position={[0, 0, 0.08]}
+  fontSize={0.13}
+  color="#ffe6a0"
+  anchorX="center"
+  anchorY="middle"
+  maxWidth={1.9}
+  textAlign="center"
+>
+  QUAY VỀ PHÒNG TRƯNG BÀY
+</Text>
       </group>
     </group>
   );
