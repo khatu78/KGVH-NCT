@@ -89,7 +89,7 @@ function CameraView({ spots, spotIndex,room2Active, activeSpace, onSpaceArrive,}
   useEffect(() => {
     
     
-if (room2Active && activeSpace) {
+  if (room2Active && activeSpace) {
   const [x, , z] = activeSpace.position;
   const isTopRow = z < 0;
 
@@ -108,13 +108,13 @@ if (room2Active && activeSpace) {
   );
 
 
-} else if (room2Active) {
+  } else if (room2Active) {
   // Đứng chính giữa phòng 2
   destination.current.set(-22, 1.6, 5.75);
 
   // Nhìn về bức tường đối diện cửa
   lookTarget.current.set(-31.5, 2.2, 5.75);
-}
+  }
  else {
   // Giữ nguyên phần điều hướng phòng 1
   const spot = spots[spotIndex];
@@ -143,10 +143,10 @@ if (room2Active && activeSpace) {
   }
 }
 
-    isMovingRef.current = true;
-  }, [spotIndex, spots, camera, room2Active, activeSpace]);
+      isMovingRef.current = true;
+    }, [spotIndex, spots, camera, room2Active, activeSpace]);
 
-  useFrame((_, delta) => {
+useFrame((_, delta) => {
     if (!isMovingRef.current) return;
 
     const alpha = 1 - Math.exp(-5 * delta);
@@ -162,10 +162,10 @@ if (room2Active && activeSpace) {
   if (room2Active && activeSpace) {
     onSpaceArrive?.(activeSpace);
   }
-}
-  });
+  }
+    });
 
-  return null;
+    return null;
 }
   
 
@@ -195,7 +195,7 @@ function FixedLookControls() {
   startPitch = camera.rotation.x;
 
   element.setPointerCapture?.(e.pointerId);
-};
+  };
 
   const onPointerMove = (e) => {
   if (!dragging) return;
@@ -580,6 +580,8 @@ function SecondRoom({ onSpaceClick }) {
     </group>
   );
 }
+
+
 
 
 

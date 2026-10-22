@@ -619,18 +619,32 @@ select {
   color: #381b16;
 }
 
+
 @media (max-width: 600px) {
   .navigation-panel {
     left: 8px;
-    width: min(220px, 78vw);
-    max-height: 65vh;
+    right: 8px;
+    top: auto;
+    bottom: 12px;
+    transform: none;
+    width: min(250px, 72vw);
+    max-height: 42vh;
   }
 
   .navigation-panel.collapsed {
+    left: 8px;
+    right: auto;
+    bottom: 12px;
     width: 44px;
+    max-height: none;
+  }
+
+  .navigation-content {
+    max-height: calc(42vh - 50px);
   }
 
   .navigation-item {
+    min-height: 38px;
     font-size: 11px;
   }
 }
@@ -951,3 +965,71 @@ z-index: 99999;
   cursor: not-allowed;
 }
 
+
+
+/* ===== RESPONSIVE MOBILE ===== */
+@media (max-width: 768px) {
+  html,
+  body,
+  #root {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  button {
+    max-width: 100%;
+    font-size: 13px;
+  }
+
+  input,
+  select,
+  textarea {
+    max-width: 100%;
+    font-size: 16px;
+  }
+}
+
+
+
+/* ===== TỐI ƯU ĐIỆN THOẠI ===== */
+@media (max-width: 600px) {
+  .return-button {
+    top: 10px;
+    right: 10px;
+    padding: 9px 12px;
+    max-width: 48vw;
+    font-size: 11px;
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .exhibit-info {
+    bottom: 100px;
+    width: calc(100% - 24px);
+    max-height: 30vh;
+    overflow-y: auto;
+    padding: 12px;
+  }
+
+  .exhibit-description {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .close-exhibit {
+    top: 6px;
+    right: 6px;
+  }
+
+  .pdf-overlay {
+    padding: 6px;
+  }
+
+  .pdf-window {
+    width: 100%;
+    height: 92dvh;
+    border-radius: 10px;
+  }
+}
