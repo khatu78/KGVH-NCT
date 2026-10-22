@@ -96,48 +96,58 @@ function CameraView({
   const lookTarget = useRef(new THREE.Vector3(...targets[0]));
 
   useEffect(() => {
-    if (room2Active && activeSpace) {
-      const [x, , z] = activeSpace.position;
-      const isTopRow = z < 0;
+    
+if (room2Active && activeSpace && insideSpaceRoom) {
+  // Camera vào bên trong phòng riêng
+  destination.current.set(-22, 1.6, 7.5);
+  lookTarget.current.set(-22, 1.8, 2.5);
 
-      // Camera đứng ngoài mặt mở của gian
-      destination.current.set(-22 + x, 1.6, 5.75 + z + (isTopRow ? 2.8 : -2.8));
+} else if (room2Active && activeSpace) {
+  // Camera đứng ngoài gian đã chọn
+  const [x, , z] = activeSpace.position;
+  const isTopRow = z < 0;
 
-      // Nhìn vào giữa gian
-      lookTarget.current.set(-22 + x, 1.3, 5.75 + z);
-    } else if (room2Active) {
-      // Đứng chính giữa phòng 2
-      destination.current.set(-22, 1.6, 5.75);
+  destination.current.set(
+    -22 + x,
+    1.6,
+    5.75 + z + (isTopRow ? 2.8 : -2.8),
+  );
 
-      // Nhìn về bức tường đối diện cửa
-      lookTarget.current.set(-31.5, 2.2, 5.75);
-    } else {
-      // Giữ nguyên phần điều hướng phòng 1
-      const spot = spots[spotIndex];
-      const target = targets[spotIndex];
+  lookTarget.current.set(-22 + x, 1.3, 5.75 + z);
 
-      if (!spot || !target) return;
+} else if (room2Active) {
+  // Đứng chính giữa phòng trưng bày chuyên đề
+  destination.current.set(-22, 1.6, 5.75);
+  lookTarget.current.set(-31.5, 2.2, 5.75);
 
-      destination.current.set(...spot.position);
-      lookTarget.current.set(...target);
+} else {
+  // Giữ nguyên điều hướng Room 1
+  const spot = spots[spotIndex];
+  const target = targets[spotIndex];
 
-      if (spotIndex === 1 || spotIndex === 3) {
-        lookTarget.current.set(
-          destination.current.x,
-          destination.current.y,
-          -10,
-        );
-      }
+  if (!spot || !target) return;
 
-      if (isFirstRender.current) {
-        camera.position.set(...spots[0].position);
-        camera.lookAt(...targets[0]);
-        camera.rotation.order = "YXZ";
-        isFirstRender.current = false;
-        isMovingRef.current = false;
-        return;
-      }
-    }
+  destination.current.set(...spot.position);
+  lookTarget.current.set(...target);
+
+  if (spotIndex === 1 || spotIndex === 3) {
+    lookTarget.current.set(
+      destination.current.x,
+      destination.current.y,
+      -10,
+    );
+  }
+
+  if (isFirstRender.current) {
+    camera.position.set(...spots[0].position);
+    camera.lookAt(...targets[0]);
+    camera.rotation.order = "YXZ";
+    isFirstRender.current = false;
+    isMovingRef.current = false;
+    return;
+  }
+}
+
 
     isMovingRef.current = true;
   }, [spotIndex, spots, camera, room2Active, activeSpace]);
@@ -450,6 +460,85 @@ function InteractiveSpaces({ onSelect }) {
           </Text>
         </group>
       ))}
+    </group>
+  );
+}
+
+function SpaceInteriorRoom({ space, onBack }) {
+  if (!space) return null;
+
+  return (
+    <group position={[-22, 0, 5.75]}>
+      {/* Sàn phòng */}
+      <mesh position={[0, 0, 0]} receiveShadow>
+        <boxGeometry args={[10, 0.2, 8]} />
+        <meshStandardMaterial color="#d8c9ad" roughness={0.85} />
+      </mesh>
+
+      {/* Trần */}
+      <mesh position={[0, 4, 0]}>
+        <boxGeometry args={[10, 0.2, 8]} />
+        <meshStandardMaterial color="#f5f1e8" />
+      </mesh>
+
+      {/* Tường sau */}
+      <mesh position={[0, 2, -4]}>
+        <boxGeometry args={[10, 4, 0.2]} />
+        <meshStandardMaterial color="#eee6d7" />
+      </mesh>
+
+      {/* Tường trái */}
+      <mesh position={[-5, 2, 0]}>
+        <boxGeometry args={[0.2, 4, 8]} />
+        <meshStandardMaterial color="#eee6d7" />
+      </mesh>
+
+      {/* Tường phải */}
+      <mesh position={[5, 2, 0]}>
+        <boxGeometry args={[0.2, 4, 8]} />
+        <meshStandardMaterial color="#eee6d7" />
+      </mesh>
+
+      {/* Tiêu đề phòng */}
+      <Text
+        position={[0, 3.2, -3.85]}
+        fontSize={0.35}
+        color="#7c2929"
+        anchorX="center"
+        anchorY="middle"
+        maxWidth={8}
+        textAlign="center"
+      >
+        {space.title}
+      </Text>
+
+      {/* Biển quay lại đặt gần lối vào */}
+      <group
+        position={[0, 1.5, 3.7]}
+        onClick={(e) => {
+          e.stopPropagation();
+          onBack();
+        }}
+        onPointerOver={() => {
+          document.body.style.cursor = "pointer";
+        }}
+        onPointerOut={() => {
+          document.body.style.cursor = "auto";
+        }}
+      >
+        <RoundedBox args={[2, 0.55, 0.12]} radius={0.07} smoothness={6}>
+          <meshStandardMaterial color="#681b1b" />
+        </RoundedBox>
+        <Text
+          position={[0, 0, 0.08]}
+          fontSize={0.18}
+          color="#ffe6a0"
+          anchorX="center"
+          anchorY="middle"
+        >
+          QUAY LẠI
+        </Text>
+      </group>
     </group>
   );
 }
@@ -994,7 +1083,8 @@ function Scene({
   room2Active,
   activeSpace,
   onSpaceArrive,
-  onOpenChuS,
+  insideSpaceRoom,
+  setInsideSpaceRoom,
 }) {
   return (
     <>
@@ -1015,16 +1105,29 @@ function Scene({
           )
         }
       />
-      {room2Active && <SecondRoom onSpaceClick={onSpaceClick} />}
+      {room2Active && !insideSpaceRoom && (
+        <SecondRoom onSpaceClick={onSpaceClick} />
+      )}
+      {room2Active && insideSpaceRoom && activeSpace && (
+  <SpaceInteriorRoom
+    space={activeSpace}
+    onBack={() => {
+      setInsideSpaceRoom(false);
+      setActiveSpace(null);
+       setSelectedSpace(null);
+    }}
+  />
+)}
             <NavigationMarkers current={spotIndex} onMove={onMove} />
            
       <CameraView
-        spots={spots}
-        spotIndex={spotIndex}
-        room2Active={room2Active}
-        activeSpace={activeSpace}
-        onSpaceArrive={onSpaceArrive}
-      />
+  spots={spots}
+  spotIndex={spotIndex}
+  room2Active={room2Active}
+  activeSpace={activeSpace}
+  insideSpaceRoom={insideSpaceRoom}
+  onSpaceArrive={onSpaceArrive}
+/>
       <FixedLookControls />
                 <Environment preset="city" />   {" "}
     </>
@@ -1034,6 +1137,7 @@ function Scene({
 export default function App() {
   const [room2Active, setRoom2Active] = useState(false);
   const [activeSpace, setActiveSpace] = useState(null);
+  const [insideSpaceRoom, setInsideSpaceRoom] = useState(false);
   const [navCollapsed, setNavCollapsed] = useState(
     window.matchMedia("(max-width: 600px)").matches,
   );
@@ -1160,36 +1264,14 @@ export default function App() {
     setSpotIndex(nextIndex);
   };
 
-  // Chọn một gian trưng bày
-  //const handleSelectSpace = (space) => {
-  //if (room2Active && activeSpace?.id === space.id) {
-  //  setSelectedSpace(space);
-  //   return;
-  //}
-
-  //setSelectedSpace(null);
-  /// setActiveSpace(space);
-  // setRoom2Active(true);
-  //};
-
-  //const handleSelectSpace = (space) => {
-  //setSelectedSpace(null);
-  //setActiveSpace(space);
-  //setRoom2Active(true);
-
-  // if (space.id === 1) {
-  // setShowPDF(true);
-  // } else {
-  //   setShowPDF(false);
-  // }
-  //};
-
+  
   const handleSelectSpace = (space) => {
     setShowPDF(false);
     setShowPadlet(false);
     setSelectedSpace(space);
     setActiveSpace(space);
     setRoom2Active(true);
+    setInsideSpaceRoom(true);
   };
 
   // Chọn một vị trí trong phòng đầu
@@ -1453,7 +1535,8 @@ export default function App() {
           room2Active={room2Active}
           activeSpace={activeSpace}
           onSpaceArrive={setSelectedSpace}
-          onOpenChuS={setActiveChuS}
+          insideSpaceRoom={insideSpaceRoom}
+          setInsideSpaceRoom={setInsideSpaceRoom}
         />
                      {" "}
       </Canvas>
@@ -1719,7 +1802,7 @@ export default function App() {
 
               return (
                 <div
-                className="book-card"
+                  className="book-card"
                   key={so}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform =
@@ -2134,7 +2217,7 @@ export default function App() {
           <h2>THƯ VIỆN SÁCH VỀ BÁC HỒ</h2>
 
           <div
-           className="books-grid"
+            className="books-grid"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(4, minmax(0, 250px))",
@@ -2147,7 +2230,7 @@ export default function App() {
 
               return (
                 <div
-                className="book-card"
+                  className="book-card"
                   key={so}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform =
@@ -2160,8 +2243,8 @@ export default function App() {
                   }}
                   style={{
                     width: "100%",
-minWidth: 0,
-boxSizing: "border-box",
+                    minWidth: 0,
+                    boxSizing: "border-box",
                     cursor: "pointer",
                     textAlign: "center",
                     padding: 12,
