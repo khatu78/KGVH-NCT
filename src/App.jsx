@@ -1482,7 +1482,10 @@ export default function App() {
           color: "white",
           padding: "8px 10px",
           borderRadius: 10,
-          minWidth: 305,
+          width: 305,
+minWidth: 305,
+maxWidth: 305,
+overflow: "hidden",
           boxSizing: "border-box",
           boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
         }}
@@ -1494,7 +1497,16 @@ export default function App() {
           🎵 Nhạc nền tham quan
         </div>
 
-        <div className="music-name" style={{ fontSize: 13, marginBottom: 10 }}>
+        <div
+  className="music-name"
+  style={{
+    fontSize: 13,
+    marginBottom: 10,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  }}
+>
           {musicTitle || "Chưa chọn nhạc"}
         </div>
 
