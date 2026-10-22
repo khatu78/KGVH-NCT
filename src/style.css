@@ -1097,3 +1097,76 @@ z-index: 99999;
     justify-content: center;
   }
 }
+
+
+
+/* ===== HÌNH ẢNH BÁC HỒ - MOBILE ===== */
+@media (max-width: 600px) {
+  .portrait-overlay,
+  .image-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto;
+  }
+
+  .portrait-window,
+  .image-window {
+    width: 100%;
+    max-width: 100%;
+    max-height: 90dvh;
+    margin: auto;
+    padding: 12px;
+    border-radius: 14px;
+    overflow-y: auto;
+  }
+
+  .portrait-window img,
+  .image-window img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 72dvh;
+    object-fit: contain;
+    margin: 0 auto;
+  }
+
+  .portrait-window button,
+  .image-window button {
+    max-width: 100%;
+    min-height: 40px;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .navigation-panel {
+    top: 65px;
+    bottom: auto;
+    left: auto;
+    right: 10px;
+    transform: none;
+    width: min(240px, 72vw);
+    max-height: 45vh;
+  }
+
+  .navigation-panel.collapsed {
+    top: 65px;
+    right: 10px;
+    left: auto;
+    bottom: auto;
+    width: 44px;
+    max-height: 46px;
+    overflow: hidden;
+  }
+
+  .navigation-content {
+    max-height: calc(45vh - 50px);
+    overflow-y: auto;
+  }
+}
