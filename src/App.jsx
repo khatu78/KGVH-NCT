@@ -86,6 +86,7 @@ function CameraView({
   room2Active,
   activeSpace,
   onSpaceArrive,
+  insideSpaceRoom,
 }) {
   const { camera } = useThree();
   const isFirstRender = useRef(true);
