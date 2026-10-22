@@ -1033,3 +1033,67 @@ z-index: 99999;
     border-radius: 10px;
   }
 }
+
+
+/* ===== SẮP XẾP GIAO DIỆN MOBILE ===== */
+@media (max-width: 600px) {
+  .top-info {
+    top: 10px;
+    left: 10px;
+    right: auto;
+    width: calc(100% - 150px);
+    max-width: 240px;
+    padding: 10px;
+    border-radius: 12px;
+    overflow-wrap: anywhere;
+  }
+
+  .top-info strong {
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .top-info span {
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  .return-button {
+    top: 10px;
+    right: 10px;
+    left: auto;
+    width: 130px;
+    max-width: 38vw;
+    padding: 10px 6px;
+    font-size: 10px;
+    white-space: normal;
+    text-align: center;
+  }
+}
+
+
+@media (max-width: 600px) {
+  .navigation-panel {
+    top: auto;
+    bottom: 12px;
+    left: 10px;
+    right: auto;
+    transform: none;
+    width: min(250px, 75vw);
+    max-height: 42vh;
+  }
+
+  .navigation-panel.collapsed {
+    width: 44px;
+    max-height: 46px;
+    overflow: hidden;
+  }
+
+  .navigation-panel.collapsed .navigation-toggle {
+    width: 44px;
+    min-height: 44px;
+    padding: 8px 0;
+    align-items: center;
+    justify-content: center;
+  }
+}
