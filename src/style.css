@@ -1170,3 +1170,28 @@ z-index: 99999;
     overflow-y: auto;
   }
 }
+
+
+/* Mobile: thu gọn bảng nhạc nền thành icon */
+@media (max-width: 600px) {
+  .music-panel {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 50%;
+  }
+
+  .music-panel > *:not(button) {
+    display: none;
+  }
+
+  .music-panel button {
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    padding: 0;
+    font-size: 20px;
+  }
+}
