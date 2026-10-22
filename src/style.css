@@ -1171,18 +1171,32 @@ z-index: 99999;
   }
 }
 
-
 .music-icon {
   display: none;
 }
 
 @media (max-width: 600px) {
   .music-icon {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: fixed;
     top: 150px;
     left: 16px;
     z-index: 1001;
+    width: 44px;
+    height: 44px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    background: linear-gradient(145deg, #243b55, #141e30);
+    color: white;
+    font-size: 21px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .music-icon:active {
+    transform: scale(0.92);
   }
 }
