@@ -2061,7 +2061,7 @@ export default function App() {
           />
         </div>
       )}
-           
+           {!room2Active && (
       <button
         className="return-button"
         className="back-to-entrance"
@@ -2069,7 +2069,7 @@ export default function App() {
         disabled={spotIndex === 0 && !room2Active}
       >
           ↩ Quay về lối vào
-      </button>
+      </button>)}
            {" "}
       <div className="top-info">
                 <strong>Không gian văn hóa Hồ Chí Minh</strong>
