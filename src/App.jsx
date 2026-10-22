@@ -515,33 +515,36 @@ function SpaceInteriorRoom({ space, onBack }) {
 
       {/* Biển quay lại đặt gần lối vào */}
       <group
-        position={[0, 1.5, 3.7]}
-        onClick={(e) => {
-          e.stopPropagation();
-          onBack();
-        }}
-        onPointerOver={() => {
-          document.body.style.cursor = "pointer";
-        }}
-        onPointerOut={() => {
-          document.body.style.cursor = "auto";
-        }}
-      >
-        <RoundedBox args={[2, 0.55, 0.12]} radius={0.07} smoothness={6}>
-          <meshStandardMaterial color="#681b1b" />
-        </RoundedBox>
-       <Text
-  position={[0, 0, 0.09]}
-  fontSize={0.13}
-  color="yellow"
-  anchorX="center"
-  anchorY="middle"
-  maxWidth={1.9}
-  textAlign="center"
+  position={[0, 1.5, 3.7]}
+  onClick={(e) => {
+    e.stopPropagation();
+    onBack();
+  }}
+  onPointerOver={() => {
+    document.body.style.cursor = "pointer";
+  }}
+  onPointerOut={() => {
+    document.body.style.cursor = "auto";
+  }}
 >
-  QUAY VỀ PHÒNG TRƯNG BÀY
-</Text>
-      </group>
+  <RoundedBox args={[3.2, 0.65, 0.12]} radius={0.07} smoothness={6}>
+    <meshBasicMaterial color="#681b1b" />
+  </RoundedBox>
+
+  <Text
+    position={[0, 0, 0.15]}
+    fontSize={0.22}
+    color="white"
+    anchorX="center"
+    anchorY="middle"
+    maxWidth={3}
+    textAlign="center"
+    renderOrder={999}
+    material-depthTest={false}
+  >
+    QUAY VỀ PHÒNG TRƯNG BÀY
+  </Text>
+</group>
     </group>
   );
 }
