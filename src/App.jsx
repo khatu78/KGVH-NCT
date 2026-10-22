@@ -85,6 +85,7 @@ function CameraView({
   spotIndex,
   room2Active,
   activeSpace,
+   insideSpaceRoom,
   onSpaceArrive,
 }) {
   const { camera } = useThree();
