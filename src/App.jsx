@@ -1142,6 +1142,7 @@ function Scene({
   setActiveSpace,
   setSelectedSpace,
    onOpenVideo,
+   setKhu1Content,
 }) {
   return (
     <>
@@ -1610,6 +1611,7 @@ export default function App() {
           setActiveSpace={setActiveSpace}
           setSelectedSpace={setSelectedSpace}
           onOpenVideo={() => setShowVideo(true)}
+          setKhu1Content={setKhu1Content}
         />
                      
       </Canvas>
