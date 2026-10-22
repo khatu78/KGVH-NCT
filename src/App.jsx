@@ -1719,6 +1719,7 @@ export default function App() {
 
               return (
                 <div
+                className="book-card"
                   key={so}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform =
@@ -1730,7 +1731,7 @@ export default function App() {
                     e.currentTarget.style.boxShadow = "0 5px 18px #0002";
                   }}
                   style={{
-                    width: 250,
+                    maxWidth: 250,
                     cursor: "pointer",
                     textAlign: "center",
                     padding: 12,
@@ -1827,7 +1828,7 @@ export default function App() {
             flexDirection: "column",
             alignItems: "center",
             padding: "12px 16px",
-justifyContent: "center",
+            justifyContent: "center",
             boxSizing: "border-box",
             overflowY: "auto",
             color: "#ffe6a0",
@@ -2012,7 +2013,6 @@ justifyContent: "center",
           </div>
         </div>
       )}
-      
       {showMap && (
         <div
           onClick={() => setShowMap(false)}
