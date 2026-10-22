@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { useVideoTexture } from "@react-three/drei";
 import {
   Environment,
   OrbitControls,
@@ -275,6 +276,31 @@ function ArrowMarker({ position, onClick, label }) {
       </Text>
          
     </group>
+  );
+}
+
+
+function VideoScreen({ onOpen }) {
+  const texture = useVideoTexture(
+    `${import.meta.env.BASE_URL}video/TNDL.mp4`,
+    {
+      loop: true,
+      muted: true,
+      playsInline: true,
+    },
+  );
+
+  return (
+    <mesh
+      position={[0, 0, 0.14]}
+      onClick={(e) => {
+        e.stopPropagation();
+        onOpen();
+      }}
+    >
+      <planeGeometry args={[4.7, 2.6]} />
+      <meshBasicMaterial map={texture} toneMapped={false} />
+    </mesh>
   );
 }
 
@@ -893,29 +919,15 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
              
       </group>
             {/* Màn hình tư liệu */}     
-      <group position={[0, 2.7, -8.25]} onClick={() => onExhibit(exhibits[1])}>
-               
-        <mesh>
-                    <boxGeometry args={[5.2, 3.1, 0.25]} />
-                    <meshStandardMaterial color="#20242a" />       
-        </mesh>
-               
-        <mesh position={[0, 0, 0.14]}>
-                    <planeGeometry args={[4.7, 2.6]} />
-                    <meshStandardMaterial color="#273d4d" />       
-        </mesh>
-               
-        <Text
-          position={[0, 0, 0.2]}
-          fontSize={0.36}
-          color="white"
-          anchorX="center"
-          anchorY="middle"
-        >
-                    VIDEO TƯ LIỆU        
-        </Text>
-                      
-      </group>
+     {/* Màn hình tư liệu */}
+<group position={[0, 2.7, -8.25]}>
+  <mesh>
+    <boxGeometry args={[5.2, 3.1, 0.25]} />
+    <meshStandardMaterial color="#20242a" />
+  </mesh>
+
+  <VideoScreen onOpen={onOpenVideo} />
+</group>
             {/* Tủ sách */}     
       <group
         position={[8, 2.2, -8.1]}
@@ -1087,6 +1099,7 @@ function Scene({
             <directionalLight position={[4, 8, 5]} intensity={2} castShadow />
          
       <Room
+      onOpenVideo={onOpenVideo}
         onExhibit={onExhibit}
         onSpaceClick={onSpaceClick}
         onOpenLibrary={() => window.dispatchEvent(new Event("open-library"))}
@@ -1161,6 +1174,7 @@ export default function App() {
   const [activePortrait, setActivePortrait] = useState(1);
   const [activeChuS, setActiveChuS] = useState(0);
   const [musicExpanded, setMusicExpanded] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
 
   useEffect(() => {
     const link = document.createElement("link");
@@ -1538,6 +1552,7 @@ export default function App() {
           setInsideSpaceRoom={setInsideSpaceRoom}
           setActiveSpace={setActiveSpace}
           setSelectedSpace={setSelectedSpace}
+          onOpenVideo={() => setShowVideo(true)}
         />
                      
       </Canvas>
@@ -1589,6 +1604,51 @@ export default function App() {
           </div>
         )}
       </div>
+      {showVideo && (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      zIndex: 1000000,
+      background: "#000",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    }}
+  >
+    <video
+      src={`${import.meta.env.BASE_URL}video/TNDL.mp4`}
+      autoPlay
+      controls
+      playsInline
+      style={{
+        width: "100%",
+        height: "100%",
+        objectFit: "contain",
+      }}
+      onCanPlay={(e) => {
+        e.currentTarget.muted = false;
+        e.currentTarget.volume = 1;
+        e.currentTarget.play().catch(() => {});
+      }}
+    />
+
+    <button
+      onClick={() => setShowVideo(false)}
+      style={{
+        position: "absolute",
+        top: 20,
+        right: 20,
+        zIndex: 2,
+        padding: "10px 16px",
+        borderRadius: 10,
+        cursor: "pointer",
+      }}
+    >
+      ✕ Đóng video
+    </button>
+  </div>
+)}
       {showPDF && (
         <div
           style={{
