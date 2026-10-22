@@ -533,12 +533,11 @@ function SpaceInteriorRoom({ space, onBack }) {
        <Text
   position={[0, 0, 0.09]}
   fontSize={0.13}
-  color="#ffffff"
+  color="yellow"
   anchorX="center"
   anchorY="middle"
   maxWidth={1.9}
   textAlign="center"
-  renderOrder={10}
 >
   QUAY VỀ PHÒNG TRƯNG BÀY
 </Text>
