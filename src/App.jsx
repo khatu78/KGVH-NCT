@@ -664,7 +664,7 @@ function Room({
   onSpaceClick,
   onOpenMuseum,
   onOpenLibrary,
-  onOpenChuS,
+ 
 }) {
   const [activeChuS, setActiveChuS] = useState(0);
 
@@ -1095,7 +1095,6 @@ function Scene({
       <Room
         onExhibit={onExhibit}
         onSpaceClick={onSpaceClick}
-        onOpenChuS={onOpenChuS}
         onOpenLibrary={() => window.dispatchEvent(new Event("open-library"))}
         onOpenMuseum={() =>
           window.open(
