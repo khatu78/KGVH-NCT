@@ -1294,15 +1294,21 @@ export default function App() {
     setShowMuseum3D(false);
     moveToSpot(index);
   };
-  const returnToPreviousSpot = () => {
-     setInsideSpaceRoom(false); 
-    setRoom2Active(false);
+const returnToPreviousSpot = () => {
+  if (insideSpaceRoom) {
+    setInsideSpaceRoom(false);
     setActiveSpace(null);
     setSelectedSpace(null);
-    setSelectedExhibit(null);
-    setSpotIndex(0);
-    setPreviousSpotIndex(0);
-  };
+    return;
+  }
+
+  setRoom2Active(false);
+  setActiveSpace(null);
+  setSelectedSpace(null);
+  setSelectedExhibit(null);
+  setSpotIndex(0);
+  setPreviousSpotIndex(0);
+};
 
   const [showLocationNotice, setShowLocationNotice] = useState(false);
   useEffect(() => {
@@ -2072,8 +2078,10 @@ setSelectedSpace={setSelectedSpace}
         onClick={returnToPreviousSpot}
         disabled={spotIndex === 0 && !room2Active}
       >
-          ↩ Quay về lối vào
+         {insideSpaceRoom ? "↩ Quay về phòng trưng bày" : "↩ Quay về lối vào"}
       </button>
+
+
            {" "}
       <div className="top-info">
                 <strong>Không gian văn hóa Hồ Chí Minh</strong>
