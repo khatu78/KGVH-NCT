@@ -2136,6 +2136,7 @@ export default function App() {
            
       <button
         className="return-button"
+        className="back-to-entrance"
         onClick={returnToPreviousSpot}
         disabled={spotIndex === 0 && !room2Active}
       >

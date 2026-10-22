@@ -1200,3 +1200,9 @@ z-index: 99999;
     transform: scale(0.92);
   }
 }
+
+@media (max-width: 600px) {
+  .back-to-entrance.hide-on-mobile {
+    display: none !important;
+  }
+}
