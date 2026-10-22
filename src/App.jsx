@@ -85,7 +85,7 @@ function CameraView({
   spotIndex,
   room2Active,
   activeSpace,
-   insideSpaceRoom,
+  insideSpaceRoom,
   onSpaceArrive,
 }) {
   const { camera } = useThree();
@@ -97,58 +97,49 @@ function CameraView({
   const lookTarget = useRef(new THREE.Vector3(...targets[0]));
 
   useEffect(() => {
-    
-if (room2Active && activeSpace && insideSpaceRoom) {
-  // Camera vào bên trong phòng riêng
-  destination.current.set(-22, 1.6, 7.5);
-  lookTarget.current.set(-22, 1.8, 2.5);
+    if (room2Active && activeSpace && insideSpaceRoom) {
+      // Camera vào bên trong phòng riêng
+      destination.current.set(-22, 1.6, 7.5);
+      lookTarget.current.set(-22, 1.8, 2.5);
+    } else if (room2Active && activeSpace) {
+      // Camera đứng ngoài gian đã chọn
+      const [x, , z] = activeSpace.position;
+      const isTopRow = z < 0;
 
-} else if (room2Active && activeSpace) {
-  // Camera đứng ngoài gian đã chọn
-  const [x, , z] = activeSpace.position;
-  const isTopRow = z < 0;
+      destination.current.set(-22 + x, 1.6, 5.75 + z + (isTopRow ? 2.8 : -2.8));
 
-  destination.current.set(
-    -22 + x,
-    1.6,
-    5.75 + z + (isTopRow ? 2.8 : -2.8),
-  );
+      lookTarget.current.set(-22 + x, 1.3, 5.75 + z);
+    } else if (room2Active) {
+      // Đứng chính giữa phòng trưng bày chuyên đề
+      destination.current.set(-22, 1.6, 5.75);
+      lookTarget.current.set(-31.5, 2.2, 5.75);
+    } else {
+      // Giữ nguyên điều hướng Room 1
+      const spot = spots[spotIndex];
+      const target = targets[spotIndex];
 
-  lookTarget.current.set(-22 + x, 1.3, 5.75 + z);
+      if (!spot || !target) return;
 
-} else if (room2Active) {
-  // Đứng chính giữa phòng trưng bày chuyên đề
-  destination.current.set(-22, 1.6, 5.75);
-  lookTarget.current.set(-31.5, 2.2, 5.75);
+      destination.current.set(...spot.position);
+      lookTarget.current.set(...target);
 
-} else {
-  // Giữ nguyên điều hướng Room 1
-  const spot = spots[spotIndex];
-  const target = targets[spotIndex];
+      if (spotIndex === 1 || spotIndex === 3) {
+        lookTarget.current.set(
+          destination.current.x,
+          destination.current.y,
+          -10,
+        );
+      }
 
-  if (!spot || !target) return;
-
-  destination.current.set(...spot.position);
-  lookTarget.current.set(...target);
-
-  if (spotIndex === 1 || spotIndex === 3) {
-    lookTarget.current.set(
-      destination.current.x,
-      destination.current.y,
-      -10,
-    );
-  }
-
-  if (isFirstRender.current) {
-    camera.position.set(...spots[0].position);
-    camera.lookAt(...targets[0]);
-    camera.rotation.order = "YXZ";
-    isFirstRender.current = false;
-    isMovingRef.current = false;
-    return;
-  }
-}
-
+      if (isFirstRender.current) {
+        camera.position.set(...spots[0].position);
+        camera.lookAt(...targets[0]);
+        camera.rotation.order = "YXZ";
+        isFirstRender.current = false;
+        isMovingRef.current = false;
+        return;
+      }
+    }
 
     isMovingRef.current = true;
   }, [spotIndex, spots, camera, room2Active, activeSpace]);
@@ -515,36 +506,37 @@ function SpaceInteriorRoom({ space, onBack }) {
 
       {/* Biển quay lại đặt gần lối vào */}
       <group
-  position={[0, 1.5, 3.7]}
-  onClick={(e) => {
-    e.stopPropagation();
-    onBack();
-  }}
-  onPointerOver={() => {
-    document.body.style.cursor = "pointer";
-  }}
-  onPointerOut={() => {
-    document.body.style.cursor = "auto";
-  }}
->
-  <RoundedBox args={[3.2, 0.65, 0.12]} radius={0.07} smoothness={6}>
-    <meshBasicMaterial color="#681b1b" />
-  </RoundedBox>
+        position={[0, 1.5, 3.7]}
+        rotation={[0, Math.PI, 0]}
+        onClick={(e) => {
+          e.stopPropagation();
+          onBack();
+        }}
+        onPointerOver={() => {
+          document.body.style.cursor = "pointer";
+        }}
+        onPointerOut={() => {
+          document.body.style.cursor = "auto";
+        }}
+      >
+        <RoundedBox args={[3.2, 0.65, 0.12]} radius={0.07} smoothness={6}>
+          <meshBasicMaterial color="#681b1b" />
+        </RoundedBox>
 
-  <Text
-    position={[0, 0, 0.15]}
-    fontSize={0.22}
-    color="white"
-    anchorX="center"
-    anchorY="middle"
-    maxWidth={3}
-    textAlign="center"
-    renderOrder={999}
-    material-depthTest={false}
-  >
-    QUAY VỀ PHÒNG TRƯNG BÀY
-  </Text>
-</group>
+        <Text
+          position={[0, 0, 0.15]}
+          fontSize={0.22}
+          color="white"
+          anchorX="center"
+          anchorY="middle"
+          maxWidth={3}
+          textAlign="center"
+          renderOrder={999}
+          material-depthTest={false}
+        >
+          QUAY VỀ PHÒNG TRƯNG BÀY
+        </Text>
+      </group>
     </group>
   );
 }
@@ -665,13 +657,7 @@ function SecondRoom({ onSpaceClick }) {
   );
 }
 
-function Room({
-  onExhibit,
-  onSpaceClick,
-  onOpenMuseum,
-  onOpenLibrary,
- 
-}) {
+function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
   const [activeChuS, setActiveChuS] = useState(0);
 
   const chuSTextures = useTexture(
@@ -1092,7 +1078,7 @@ function Scene({
   insideSpaceRoom,
   setInsideSpaceRoom,
   setActiveSpace,
-setSelectedSpace,
+  setSelectedSpace,
 }) {
   return (
     <>
@@ -1116,25 +1102,25 @@ setSelectedSpace,
         <SecondRoom onSpaceClick={onSpaceClick} />
       )}
       {room2Active && insideSpaceRoom && activeSpace && (
-  <SpaceInteriorRoom
-    space={activeSpace}
-    onBack={() => {
-      setInsideSpaceRoom(false);
-      setActiveSpace(null);
-       setSelectedSpace(null);
-    }}
-  />
-)}
+        <SpaceInteriorRoom
+          space={activeSpace}
+          onBack={() => {
+            setInsideSpaceRoom(false);
+            setActiveSpace(null);
+            setSelectedSpace(null);
+          }}
+        />
+      )}
             <NavigationMarkers current={spotIndex} onMove={onMove} />
            
       <CameraView
-  spots={spots}
-  spotIndex={spotIndex}
-  room2Active={room2Active}
-  activeSpace={activeSpace}
-  insideSpaceRoom={insideSpaceRoom}
-  onSpaceArrive={onSpaceArrive}
-/>
+        spots={spots}
+        spotIndex={spotIndex}
+        room2Active={room2Active}
+        activeSpace={activeSpace}
+        insideSpaceRoom={insideSpaceRoom}
+        onSpaceArrive={onSpaceArrive}
+      />
       <FixedLookControls />
                 <Environment preset="city" />   {" "}
     </>
@@ -1271,7 +1257,6 @@ export default function App() {
     setSpotIndex(nextIndex);
   };
 
-  
   const handleSelectSpace = (space) => {
     setShowPDF(false);
     setShowPadlet(false);
@@ -1299,21 +1284,21 @@ export default function App() {
     setShowMuseum3D(false);
     moveToSpot(index);
   };
-const returnToPreviousSpot = () => {
-  if (insideSpaceRoom) {
-    setInsideSpaceRoom(false);
+  const returnToPreviousSpot = () => {
+    if (insideSpaceRoom) {
+      setInsideSpaceRoom(false);
+      setActiveSpace(null);
+      setSelectedSpace(null);
+      return;
+    }
+
+    setRoom2Active(false);
     setActiveSpace(null);
     setSelectedSpace(null);
-    return;
-  }
-
-  setRoom2Active(false);
-  setActiveSpace(null);
-  setSelectedSpace(null);
-  setSelectedExhibit(null);
-  setSpotIndex(0);
-  setPreviousSpotIndex(0);
-};
+    setSelectedExhibit(null);
+    setSpotIndex(0);
+    setPreviousSpotIndex(0);
+  };
 
   const [showLocationNotice, setShowLocationNotice] = useState(false);
   useEffect(() => {
@@ -1552,7 +1537,7 @@ const returnToPreviousSpot = () => {
           insideSpaceRoom={insideSpaceRoom}
           setInsideSpaceRoom={setInsideSpaceRoom}
           setActiveSpace={setActiveSpace}
-setSelectedSpace={setSelectedSpace}
+          setSelectedSpace={setSelectedSpace}
         />
                      {" "}
       </Canvas>
@@ -1691,7 +1676,6 @@ setSelectedSpace={setSelectedSpace}
           </div>
         </div>
       )}
-      
       {selectedSpace?.id === 3 && (
         <div
           style={{
@@ -2083,10 +2067,8 @@ setSelectedSpace={setSelectedSpace}
         onClick={returnToPreviousSpot}
         disabled={spotIndex === 0 && !room2Active}
       >
-         {insideSpaceRoom ? "↩ Quay về phòng trưng bày" : "↩ Quay về lối vào"}
+        {insideSpaceRoom ? "↩ Quay về phòng trưng bày" : "↩ Quay về lối vào"}
       </button>
-
-
            {" "}
       <div className="top-info">
                 <strong>Không gian văn hóa Hồ Chí Minh</strong>
