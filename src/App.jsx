@@ -683,7 +683,7 @@ function SecondRoom({ onSpaceClick }) {
   );
 }
 
-function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
+function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary,  onOpenVideo}) {
   const [activeChuS, setActiveChuS] = useState(0);
 
   const chuSTextures = useTexture(
@@ -1091,6 +1091,7 @@ function Scene({
   setInsideSpaceRoom,
   setActiveSpace,
   setSelectedSpace,
+   onOpenVideo,
 }) {
   return (
     <>
