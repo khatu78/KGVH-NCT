@@ -2136,7 +2136,7 @@ export default function App() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(4, 250px)",
+              gridTemplateColumns: "repeat(4, minmax(0, 250px))",
               justifyContent: "center",
               gap: 24,
             }}

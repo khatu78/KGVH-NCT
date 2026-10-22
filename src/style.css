@@ -1234,25 +1234,20 @@ z-index: 99999;
 
 @media (max-width: 600px) {
   .book-card {
-    width: 100% !important;
-    max-width: 170px;
+    width: 100%;
+    min-width: 0;
+    max-width: none !important;
     padding: 8px !important;
+    box-sizing: border-box;
   }
 
   .book-card img {
-    width: 100%;
     height: auto !important;
     aspect-ratio: 3 / 4;
-    object-fit: contain;
-  }
-
-  .book-card p {
-    font-size: 12px;
-    margin: 8px 0;
   }
 
   .book-card button {
-    padding: 8px 4px !important;
+    padding: 8px 2px !important;
     font-size: 11px !important;
   }
 }
