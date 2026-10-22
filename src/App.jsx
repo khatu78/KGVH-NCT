@@ -1114,7 +1114,9 @@ function Scene({ spotIndex, onMove, onExhibit, onSpaceClick, room2Active, active
 export default function App() {
   const [room2Active, setRoom2Active] = useState(false);
   const [activeSpace, setActiveSpace] = useState(null);
-const [navCollapsed, setNavCollapsed] = useState(false);
+const [navCollapsed, setNavCollapsed] = useState(
+  window.matchMedia("(max-width: 600px)").matches
+);
   const [selectedSpace, setSelectedSpace] = useState(null);
   const [userName, setUserName] = useState("");
 const [userAge, setUserAge] = useState("");
