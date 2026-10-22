@@ -1173,10 +1173,6 @@ z-index: 99999;
 
 .music-icon {
   display: none;
-  background: linear-gradient(145deg, #fff8df, #f2d58a);
-color: #7a4b12;
-border: 1px solid #e4bd61;
-box-shadow: 0 3px 10px rgba(120, 85, 25, 0.25);
 }
 
 @media (max-width: 600px) {
@@ -1190,19 +1186,14 @@ box-shadow: 0 3px 10px rgba(120, 85, 25, 0.25);
     z-index: 1001;
     width: 44px;
     height: 44px;
-    
     border-radius: 50%;
-   
- 
     font-size: 21px;
-   
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
-
     background: linear-gradient(145deg, #fff8df, #f2d58a);
-color: #7a4b12;
-border: 1px solid #e4bd61;
-box-shadow: 0 3px 10px rgba(120, 85, 25, 0.25);
+    color: #7a4b12;
+    border: 1px solid #e4bd61;
+    box-shadow: 0 3px 10px rgba(120, 85, 25, 0.25);
   }
 
   .music-icon:active {
