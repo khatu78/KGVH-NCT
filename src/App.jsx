@@ -381,7 +381,7 @@ const spaces = [
   },
 ];
 
-function InteractiveSpaces({ onSelect }) {
+function InteractiveSpaces({ onSelect, onOpenKhu1Content }) {
   return (
     <group>
       {spaces.map((space) => (
@@ -451,7 +451,47 @@ function InteractiveSpaces({ onSelect }) {
             {space.title}
           </Text>
 
+  {/* PHÒNG 1 */}
+{space.id === 1 && (
+  <group>
+    {/* Mặt bàn cảm ứng */}
+    <mesh position={[-0.45, 0.65, 0.25]} rotation={[-0.35, 0, 0]}>
+      <boxGeometry args={[1.3, 0.08, 0.85]} />
+      <meshStandardMaterial
+        color="#33383f"
+        metalness={0.5}
+        roughness={0.3}
+      />
+    </mesh>
+
+    {/* Màn hình bàn cảm ứng */}
+    <mesh
+      position={[-0.45, 0.72, 0.25]}
+      rotation={[-0.35, 0, 0]}
+      onClick={(e) => {
+        e.stopPropagation();
+        onOpenKhu1Content("pdf");
+      }}
+    >
+      <planeGeometry args={[1.15, 0.7]} />
+      <meshBasicMaterial color="#f5f0e5" />
+    </mesh>
+
+    {/* Màn hình video */}
+    <mesh
+      position={[0.55, 1.2, -0.65]}
+      onClick={(e) => {
+        e.stopPropagation();
+        onOpenKhu1Content("video");
+      }}
+    >
+      <boxGeometry args={[1.1, 0.7, 0.08]} />
+      <meshStandardMaterial color="#20252b" />
+    </mesh>
+  </group>
+)}
           {/* Biểu tượng tương tác tạm thời */}
+          {space.id !== 1 && (
           <mesh position={[0, 1.05, 0.84]}>
             <planeGeometry args={[1.35, 1.15]} />
             <meshBasicMaterial color="#d8c9ad" />
@@ -476,6 +516,7 @@ function InteractiveSpaces({ onSelect }) {
           >
             NHẤN ĐỂ KHÁM PHÁ
           </Text>
+          )}
         </group>
       ))}
     </group>
@@ -677,7 +718,10 @@ function SecondRoom({ onSpaceClick }) {
 
       {/* Tám gian trưng bày */}
       <group position={[-22, 0, 5.75]}>
-        <InteractiveSpaces onSelect={onSpaceClick} />
+        <InteractiveSpaces
+  onSelect={onSpaceClick}
+  onOpenKhu1Content={setKhu1Content}
+/>
       </group>
     </group>
   );
@@ -1143,6 +1187,7 @@ function Scene({
 
 export default function App() {
   const [room2Active, setRoom2Active] = useState(false);
+  const [khu1Content, setKhu1Content] = useState(null);
   const [activeSpace, setActiveSpace] = useState(null);
   const [insideSpaceRoom, setInsideSpaceRoom] = useState(false);
   const [navCollapsed, setNavCollapsed] = useState(
@@ -1654,6 +1699,43 @@ export default function App() {
     </button>
   </div>
 )}
+
+{khu1Content && (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      zIndex: 9999,
+      background: "#111",
+      display: "flex",
+      flexDirection: "column",
+    }}
+  >
+    <button
+      onClick={() => setKhu1Content(null)}
+      style={{ padding: 12, cursor: "pointer" }}
+    >
+      ✕ Đóng, quay lại phòng
+    </button>
+
+    <iframe
+      title={khu1Content === "pdf" ? "Tài liệu khu 1" : "Video khu 1"}
+      src={
+        khu1Content === "pdf"
+          ? `${import.meta.env.BASE_URL}doc/Khu1.pdf`
+          : "https://www.youtube.com/embed/R5wsX7xQsxY"
+      }
+      style={{ flex: 1, width: "100%", border: 0 }}
+      allow={
+        khu1Content === "video"
+          ? "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          : undefined
+      }
+      allowFullScreen
+    />
+  </div>
+)}
+
       {showPDF && (
         <div
           style={{
@@ -1684,7 +1766,7 @@ export default function App() {
             </button>
 
             <iframe
-              src={`${import.meta.env.BASE_URL}doc/Phòng 1_Tóm tắt tiểu sử và sự nghiệp của Chủ tịch Hồ Chí Minh.pdf`}
+              src={`${import.meta.env.BASE_URL}doc/Khu1.pdf`}
               title="Tiểu sử và cuộc đời Chủ tịch Hồ Chí Minh"
               style={{ width: "100%", flex: 1, border: 0 }}
             />
