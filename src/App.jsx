@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Html } from "@react-three/drei";
 import { useVideoTexture } from "@react-three/drei";
 import {
   Environment,
@@ -99,10 +100,10 @@ function CameraView({
 
   useEffect(() => {
     if (room2Active && activeSpace && insideSpaceRoom) {
-      // Camera vào bên trong phòng riêng
-      destination.current.set(-22, 1.6, 7.5);
-      lookTarget.current.set(-22, 1.8, 2.5);
-    } else if (room2Active && activeSpace) {
+  // Camera đứng bên trong phòng con, nhìn về hai màn hình
+  destination.current.set(-22, 1.6, 7.5);
+  lookTarget.current.set(-22, 1.8, 5.0);
+} else if (room2Active && activeSpace) {
       // Camera đứng ngoài gian đã chọn
       const [x, , z] = activeSpace.position;
       const isTopRow = z < 0;
@@ -143,7 +144,7 @@ function CameraView({
     }
 
     isMovingRef.current = true;
-  }, [spotIndex, spots, camera, room2Active, activeSpace]);
+  }, [spotIndex, spots, camera, room2Active, activeSpace, insideSpaceRoom]);
 
   useFrame((_, delta) => {
     if (!isMovingRef.current) return;
@@ -451,51 +452,58 @@ function InteractiveSpaces({ onSelect, onOpenKhu1Content }) {
             {space.title}
           </Text>
 
-      {/* PHÒNG 1 */}
-        
-        <group>
-        {/* Mặt bàn cảm ứng */}
-        <mesh position={[-0.45, 0.65, 0.25]} rotation={[-0.35, 0, 0]}>
-          <boxGeometry args={[1.3, 0.08, 0.85]} />
-          <meshStandardMaterial
-            color="#33383f"
-            metalness={0.5}
-            roughness={0.3}
-          />
-        </mesh>
+      
+{/* PHÒNG CON KHU 1 */}
+{space.id === 1 && (
+  <group>
+    {/* Vách ngăn bên trong, chừa lối vào */}
+    <mesh position={[-0.75, 1.1, -0.2]}>
+      <boxGeometry args={[0.12, 2.2, 1.2]} />
+      <meshStandardMaterial color="#eee6d7" />
+    </mesh>
 
-        {/* Màn hình bàn cảm ứng */}
-        <mesh
-          position={[-0.45, 0.72, 0.25]}
-          rotation={[-0.35, 0, 0]}
-          onClick={(e) => {
-            e.stopPropagation();
-            onOpenKhu1Content("pdf");
-          }}
-        >
-          <planeGeometry args={[1.15, 0.7]} />
-          <meshBasicMaterial color="#f5f0e5" />
-        </mesh>
+    <mesh position={[0.75, 1.1, -0.2]}>
+      <boxGeometry args={[0.12, 2.2, 1.2]} />
+      <meshStandardMaterial color="#eee6d7" />
+    </mesh>
 
-        {/* Màn hình video */}
-        <mesh
-          position={[0.55, 1.2, -0.65]}
-          onClick={(e) => {
-            e.stopPropagation();
-            onOpenKhu1Content("video");
-          }}
-        >
-          <boxGeometry args={[1.1, 0.7, 0.08]} />
-          <meshStandardMaterial color="#20252b" />
-        </mesh>
-        
-      </group>
+    {/* Bàn cảm ứng hiển thị PDF */}
+    <mesh position={[-0.35, 0.65, 0.25]}>
+      <boxGeometry args={[1.3, 0.08, 0.85]} />
+      <meshStandardMaterial color="#33383f" />
+    </mesh>
+
+    <mesh
+      position={[-0.35, 0.72, 0.25]}
+      rotation={[-0.35, 0, 0]}
+      onClick={(e) => {
+        e.stopPropagation();
+        onOpenKhu1Content("pdf");
+      }}
+    >
+      <planeGeometry args={[1.15, 0.7]} />
+      <meshBasicMaterial color="#f5f0e5" />
+    </mesh>
+
+    {/* Màn hình phát video */}
+    <mesh
+      position={[0.45, 1.3, -0.65]}
+      onClick={(e) => {
+        e.stopPropagation();
+        onOpenKhu1Content("video");
+      }}
+    >
+      <boxGeometry args={[1.1, 0.7, 0.08]} />
+      <meshStandardMaterial color="#20252b" />
+    </mesh>
+  </group>
+)}
 
 
 
 
           {/* Biểu tượng tương tác tạm thời */}
-         
+          {space.id !== 1 && (
             <group>
               <mesh position={[0, 1.05, 0.84]}>
                 <planeGeometry args={[1.35, 1.15]} />
@@ -522,7 +530,7 @@ function InteractiveSpaces({ onSelect, onOpenKhu1Content }) {
                 NHẤN ĐỂ THAM QUAN 
               </Text>
               </group>
-          
+          )}
         </group>
       ))}
     </group>
@@ -563,6 +571,52 @@ function SpaceInteriorRoom({ space, onBack }) {
         <boxGeometry args={[0.2, 4, 8]} />
         <meshStandardMaterial color="#eee6d7" />
       </mesh>
+
+
+      {/* Màn hình video trên tường trái */}
+      <mesh position={[-4.85, 2, -1.2]} rotation={[0, Math.PI / 2, 0]}>
+        <planeGeometry args={[2.8, 1.6]} />
+        <meshBasicMaterial color="#171b22" />
+      </mesh>
+
+      <Html
+        position={[-4.83, 2, -1.2]}
+        rotation={[0, Math.PI / 2, 0]}
+        transform
+        distanceFactor={5}
+      >
+        <iframe
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/R5wsX7xQsxY"
+          title="Video Khu 1"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          style={{ border: 0, borderRadius: 8 }}
+        />
+      </Html>
+
+      {/* Màn hình PDF trên tường phải */}
+      <mesh position={[4.85, 2, -1.2]} rotation={[0, -Math.PI / 2, 0]}>
+        <planeGeometry args={[2.8, 1.8]} />
+        <meshBasicMaterial color="#f5f0e5" />
+      </mesh>
+
+      <Html
+        position={[4.83, 2, -1.2]}
+        rotation={[0, -Math.PI / 2, 0]}
+        transform
+        distanceFactor={5}
+      >
+        <iframe
+          src={`${import.meta.env.BASE_URL}doc/Khu1.pdf`}
+          title="Tài liệu Khu 1"
+          width="560"
+          height="360"
+          style={{ border: 0, borderRadius: 8, background: "white" }}
+        />
+      </Html>
+
 
       {/* Tiêu đề phòng */}
       <Text
@@ -703,24 +757,7 @@ function SecondRoom({ onSpaceClick, setKhu1Content }) {
         KHÔNG GIAN TRƯNG BÀY CHUYÊN ĐỀ
       </Text>
 
-      {/* Cửa ở đầu lối đi giữa 8 gian 
-<group position={[-22, 0, -1.1]}>
- 
-  <mesh position={[-0.1, 1.25, -1.2]}>
-    <boxGeometry args={[2.5, 2.5, 0.15]} />
-    <meshStandardMaterial color="#70472d" />
-  </mesh>
-
-  <mesh position={[-0.1, 1.25, 1.2]}>
-    <boxGeometry args={[2.5, 2.5, 0.15]} />
-    <meshStandardMaterial color="#70472d" />
-  </mesh>
-
-  <mesh position={[-0.1, 2.5, 0]}>
-    <boxGeometry args={[2.5, 0.15, 2.5]} />
-    <meshStandardMaterial color="#70472d" />
-  </mesh>
-</group> */}
+    
 
       {/* Tám gian trưng bày */}
       <group position={[-22, 0, 5.75]}>
