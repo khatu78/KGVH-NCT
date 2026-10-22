@@ -1455,6 +1455,7 @@ audio.addEventListener("ended", () => {
   audioRef={audioRef}
 />
   <div
+  className="music-panel"
   style={{
   position: "fixed",
   top: 150,
@@ -1469,13 +1470,13 @@ audio.addEventListener("ended", () => {
   boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
 }}
 >
-  <div style={{ fontWeight: "bold", marginBottom: 8 }}>
-    🎵 Nhạc nền tham quan
-  </div>
+  <div className="music-title" style={{ fontWeight: "bold", marginBottom: 8 }}>
+  🎵 Nhạc nền tham quan
+</div>
 
-  <div style={{ fontSize: 13, marginBottom: 10 }}>
-    {musicTitle || "Chưa chọn nhạc"}
-  </div>
+<div className="music-name" style={{ fontSize: 13, marginBottom: 10 }}>
+  {musicTitle || "Chưa chọn nhạc"}
+</div>
 
   <button
     onClick={() => {

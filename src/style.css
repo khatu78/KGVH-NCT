@@ -1172,26 +1172,37 @@ z-index: 99999;
 }
 
 
-/* Mobile: thu gọn bảng nhạc nền thành icon */
+
 @media (max-width: 600px) {
   .music-panel {
+    top: 150px !important;
+    left: 10px !important;
     width: 44px;
+    min-width: 44px !important;
     height: 44px;
-    min-width: 44px;
-    padding: 0;
-    overflow: hidden;
-    border-radius: 50%;
+    padding: 0 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50% !important;
   }
 
-  .music-panel > *:not(button) {
-    display: none;
+  .music-panel .music-title,
+  .music-panel .music-name {
+    display: none !important;
   }
 
   .music-panel button {
     width: 44px;
     height: 44px;
-    min-height: 44px;
-    padding: 0;
-    font-size: 20px;
+    padding: 0 !important;
+    font-size: 0 !important;
+    background: transparent;
+    color: white;
+  }
+
+  .music-panel button::after {
+    content: "🎵";
+    font-size: 22px;
   }
 }
