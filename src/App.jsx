@@ -452,7 +452,7 @@ function InteractiveSpaces({ onSelect, onOpenKhu1Content }) {
           </Text>
 
       {/* PHÒNG 1 */}
-        {space.id === 1 && (
+        
         <group>
         {/* Mặt bàn cảm ứng */}
         <mesh position={[-0.45, 0.65, 0.25]} rotation={[-0.35, 0, 0]}>
@@ -490,12 +490,12 @@ function InteractiveSpaces({ onSelect, onOpenKhu1Content }) {
         </mesh>
         
       </group>
-)}
+
 
 
 
           {/* Biểu tượng tương tác tạm thời */}
-          {space.id !== 1 && (
+         
             <group>
               <mesh position={[0, 1.05, 0.84]}>
                 <planeGeometry args={[1.35, 1.15]} />
@@ -522,7 +522,7 @@ function InteractiveSpaces({ onSelect, onOpenKhu1Content }) {
                 NHẤN ĐỂ THAM QUAN 
               </Text>
               </group>
-          )}
+          
         </group>
       ))}
     </group>
