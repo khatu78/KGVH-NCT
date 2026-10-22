@@ -1482,7 +1482,7 @@ export default function App() {
           color: "white",
           padding: "8px 10px",
           borderRadius: 10,
-          Width: 305,
+          minWidth: 305,
           boxSizing: "border-box",
           boxShadow: "0 4px 12px rgba(0,0,0,0.25)",
         }}
