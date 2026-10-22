@@ -1250,4 +1250,9 @@ z-index: 99999;
     padding: 8px 2px !important;
     font-size: 11px !important;
   }
+   .books-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+    padding: 0 10px;
+  }
 }
