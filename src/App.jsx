@@ -498,6 +498,7 @@ function SecondRoom({ onSpaceClick }) {
 >
   SẢNH CHÍNH
 </Text>
+
 </group>
 
       {/* Sàn phòng 2: rộng 20, sâu 14 */}
@@ -749,18 +750,7 @@ const chuSTextures = useTexture(
   >
     PHÒNG TRƯNG BÀY
   </Text>
-  <Text
-  position={[-0.09, 0, 0]}
-  rotation={[0, -Math.PI / 2, 0]}
-  fontSize={0.2}
-  color="#ffe6a0"
-  anchorX="center"
-  anchorY="middle"
-  maxWidth={1.8}
-  textAlign="center"
->
-  SẢNH CHÍNH
-</Text>
+ 
 </group>
 
 
