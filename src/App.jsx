@@ -251,8 +251,7 @@ function ArrowMarker({ position, onClick, label }) {
     >
             {/* Tấm biển đỏ nằm ngang, sát mặt đất */}     {" "}
       <mesh position={[0, 0.65, 0]}>
-                <boxGeometry args={[1.5, 0.42, 0.1]} />
-               {" "}
+                <boxGeometry args={[1.5, 0.42, 0.1]} />       {" "}
         <meshStandardMaterial
           color={hovered ? "#c62828" : "#8b0000"}
           emissive="#5c0000"
@@ -866,8 +865,7 @@ function Room({
               0.42,
             ]}
           >
-                        <boxGeometry args={[0.25, 1, 0.08]} />
-                       {" "}
+                        <boxGeometry args={[0.25, 1, 0.08]} />           {" "}
             <meshStandardMaterial color={i % 2 ? "#a87b51" : "#486b72"} />     
                {" "}
           </mesh>
@@ -1828,7 +1826,8 @@ export default function App() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            padding: "24px 20px",
+            padding: "12px 16px",
+justifyContent: "center",
             boxSizing: "border-box",
             overflowY: "auto",
             color: "#ffe6a0",
@@ -1871,14 +1870,33 @@ export default function App() {
       }
 
       .portrait-thumbnails {
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-        width: 100%;
-        overflow-x: auto;
-        padding: 12px 4px 18px;
-        box-sizing: border-box;
-      }
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+  overflow: visible;
+  padding: 12px 4px 18px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+  .portrait-thumbnails {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .portrait-thumb {
+    min-width: 0 !important;
+    width: 100%;
+    height: 100px !important;
+  }
+
+  .portrait-thumb img {
+    height: 65px !important;
+  }
+}
 
       .portrait-thumbnails::-webkit-scrollbar {
         height: 7px;
@@ -1994,96 +2012,7 @@ export default function App() {
           </div>
         </div>
       )}
-      {activeChuS > 0 && (
-        <div
-          onClick={() => setActiveChuS(0)}
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 10001,
-            background: "rgba(20,16,12,0.96)",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            padding: "24px 20px",
-            boxSizing: "border-box",
-            overflowY: "auto",
-            color: "#ffe6a0",
-          }}
-        >
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setActiveChuS(0);
-            }}
-            style={{
-              alignSelf: "flex-end",
-              padding: "9px 16px",
-              background: "#681b1b",
-              color: "#fff",
-              cursor: "pointer",
-            }}
-          >
-            ✕ Đóng
-          </button>
-
-          <h2>HÌNH ẢNH TRƯNG BÀY CHỮ S</h2>
-
-          <img
-            src={`${import.meta.env.BASE_URL}hinh-bac/${activeChuS}.${activeChuS === 1 ? "jpg" : "jpeg"}`}
-            alt={`Hình ${activeChuS}`}
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              maxWidth: "90vw",
-              maxHeight: "55vh",
-              objectFit: "contain",
-              border: "5px solid #b18a4e",
-              borderRadius: 8,
-              boxShadow: "0 12px 40px #0009",
-            }}
-          />
-
-          <p>Hình {activeChuS} / 10</p>
-
-          <div
-            onClick={(e) => e.stopPropagation()}
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "center",
-              gap: 10,
-            }}
-          >
-            {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => (
-              <button
-                key={n}
-                onClick={() => setActiveChuS(n)}
-                style={{
-                  width: 100,
-                  padding: 5,
-                  cursor: "pointer",
-                  background: "#35291e",
-                  color: "#ffe6a0",
-                  border:
-                    n === activeChuS ? "3px solid gold" : "2px solid #9c7848",
-                  borderRadius: 8,
-                }}
-              >
-                <img
-                  src={`${import.meta.env.BASE_URL}hinh-bac/${n}.${n === 1 ? "jpg" : "jpeg"}`}
-                  alt={`Hình ${n}`}
-                  style={{
-                    width: "100%",
-                    height: 70,
-                    objectFit: "contain",
-                  }}
-                />
-                Hình {n}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+      
       {showMap && (
         <div
           onClick={() => setShowMap(false)}

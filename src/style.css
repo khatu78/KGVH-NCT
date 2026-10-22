@@ -1206,3 +1206,28 @@ z-index: 99999;
     display: none !important;
   }
 }
+
+@media (max-width: 600px) {
+  .portrait-main-image {
+    max-height: 35vh !important;
+  }
+
+  .portrait-main-image img {
+    max-height: 35vh !important;
+  }
+
+  .portrait-thumbnails {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .portrait-thumb {
+    min-width: 0 !important;
+    width: 100%;
+    height: 100px !important;
+  }
+
+  .portrait-thumb img {
+    height: 65px !important;
+  }
+}
