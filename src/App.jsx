@@ -1086,6 +1086,8 @@ function Scene({
   onSpaceArrive,
   insideSpaceRoom,
   setInsideSpaceRoom,
+  setActiveSpace,
+setSelectedSpace,
 }) {
   return (
     <>
@@ -1293,6 +1295,7 @@ export default function App() {
     moveToSpot(index);
   };
   const returnToPreviousSpot = () => {
+     setInsideSpaceRoom(false); 
     setRoom2Active(false);
     setActiveSpace(null);
     setSelectedSpace(null);
@@ -1537,6 +1540,8 @@ export default function App() {
           onSpaceArrive={setSelectedSpace}
           insideSpaceRoom={insideSpaceRoom}
           setInsideSpaceRoom={setInsideSpaceRoom}
+          setActiveSpace={setActiveSpace}
+setSelectedSpace={setSelectedSpace}
         />
                      {" "}
       </Canvas>
