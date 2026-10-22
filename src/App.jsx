@@ -2147,6 +2147,7 @@ export default function App() {
 
               return (
                 <div
+                className="book-card"
                   key={so}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform =
@@ -2158,7 +2159,9 @@ export default function App() {
                     e.currentTarget.style.boxShadow = "0 5px 18px #0002";
                   }}
                   style={{
-                    width: 250,
+                    width: "100%",
+minWidth: 0,
+boxSizing: "border-box",
                     cursor: "pointer",
                     textAlign: "center",
                     padding: 12,
