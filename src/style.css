@@ -1232,27 +1232,32 @@ z-index: 99999;
   }
 }
 
+
 @media (max-width: 600px) {
+  .books-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+    padding: 0 12px;
+    box-sizing: border-box;
+    width: 100%;
+  }
+
   .book-card {
     width: 100%;
     min-width: 0;
-    max-width: none !important;
-    padding: 8px !important;
+    max-width: 100% !important;
+    padding: 6px !important;
     box-sizing: border-box;
   }
 
   .book-card img {
-    height: auto !important;
-    aspect-ratio: 3 / 4;
+    width: 100%;
+    height: 180px !important;
+    object-fit: contain;
   }
 
   .book-card button {
-    padding: 8px 2px !important;
-    font-size: 11px !important;
-  }
-   .books-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 12px !important;
-    padding: 0 10px;
+    padding: 7px 2px !important;
+    font-size: 10px !important;
   }
 }
