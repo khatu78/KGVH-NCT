@@ -1172,37 +1172,17 @@ z-index: 99999;
 }
 
 
+.music-icon {
+  display: none;
+}
 
 @media (max-width: 600px) {
-  .music-panel {
-    top: 150px !important;
-    left: 10px !important;
-    width: 44px;
-    min-width: 44px !important;
-    height: 44px;
-    padding: 0 !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50% !important;
-  }
-
-  .music-panel .music-title,
-  .music-panel .music-name {
-    display: none !important;
-  }
-
-  .music-panel button {
-    width: 44px;
-    height: 44px;
-    padding: 0 !important;
-    font-size: 0 !important;
-    background: transparent;
-    color: white;
-  }
-
-  .music-panel button::after {
-    content: "🎵";
-    font-size: 22px;
+  .music-icon {
+    display: block;
+    position: fixed;
+    top: 150px;
+    left: 16px;
+    z-index: 1001;
+    cursor: pointer;
   }
 }
