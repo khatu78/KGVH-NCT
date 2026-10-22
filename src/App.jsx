@@ -466,26 +466,28 @@ function SecondRoom({ onSpaceClick }) {
     <group>
      {/* Biển nhấn quay về sảnh chính */}
 <group position={[-12.3, 1.5, 5.75]}>
-  <mesh
-    onClick={(e) => {
-      e.stopPropagation();
-      console.log("Đã nhấn biển SẢNH CHÍNH");
-      window.dispatchEvent(new Event("leave-second-room"));
-    }}
-    onPointerOver={() => {
-      document.body.style.cursor = "pointer";
-    }}
-    onPointerOut={() => {
-      document.body.style.cursor = "auto";
-    }}
-  >
-    <boxGeometry args={[0.16, 0.6, 2]} />
-    <meshStandardMaterial
-      color="#681b1b"
-      side={THREE.DoubleSide}
-    />
-  </mesh>
-
+  <RoundedBox
+  args={[0.16, 0.6, 2]}
+  radius={0.07}
+  smoothness={6}
+  onClick={(e) => {
+    e.stopPropagation();
+    console.log("Đã nhấn biển SẢNH CHÍNH");
+    window.dispatchEvent(new Event("leave-second-room"));
+  }}
+  onPointerOver={() => {
+    document.body.style.cursor = "pointer";
+  }}
+  onPointerOut={() => {
+    document.body.style.cursor = "auto";
+  }}
+>
+  <meshStandardMaterial
+    color="#681b1b"
+    side={THREE.DoubleSide}
+    roughness={0.7}
+  />
+</RoundedBox>
   <Text
   position={[-0.09, 0, 0]}
   rotation={[0, -Math.PI / 2, 0]}
