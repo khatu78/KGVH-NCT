@@ -251,17 +251,17 @@ function ArrowMarker({ position, onClick, label }) {
       }}
       scale={hovered ? 1.06 : 1}
     >
-            {/* Tấm biển đỏ nằm ngang, sát mặt đất */}     {" "}
+            {/* Tấm biển đỏ nằm ngang, sát mặt đất */}     
       <mesh position={[0, 0.65, 0]}>
-                <boxGeometry args={[1.5, 0.42, 0.1]} />       {" "}
+                <boxGeometry args={[1.5, 0.42, 0.1]} />       
         <meshStandardMaterial
           color={hovered ? "#c62828" : "#8b0000"}
           emissive="#5c0000"
           emissiveIntensity={hovered ? 0.3 : 0.1}
         />
-             {" "}
+             
       </mesh>
-            {/* Chữ vàng nhỏ */}     {" "}
+            {/* Chữ vàng nhỏ */}     
       <Text
         position={[0, 0.65, 0.056]}
         fontSize={0.12}
@@ -271,9 +271,9 @@ function ArrowMarker({ position, onClick, label }) {
         maxWidth={1.4}
         textAlign="center"
       >
-                {label}     {" "}
+                {label}     
       </Text>
-         {" "}
+         
     </group>
   );
 }
@@ -697,21 +697,21 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
           toneMapped={false}
         />
       </mesh>
-      {/* Sàn */}     {" "}
+      {/* Sàn */}     
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
                 <planeGeometry args={[ROOM.width, ROOM.depth]} />
-                <meshStandardMaterial color="#d8c9ad" />     {" "}
+                <meshStandardMaterial color="#d8c9ad" />     
       </mesh>
-            {/* Trần */}     {" "}
+            {/* Trần */}     
       <mesh position={[0, ROOM.height, 0]} rotation={[Math.PI / 2, 0, 0]}>
                 <planeGeometry args={[ROOM.width, ROOM.depth]} />
                 <meshStandardMaterial color="#f5f1e8" side={THREE.DoubleSide} />
-             {" "}
+             
       </mesh>
-            {/* Tường sau */}     {" "}
+            {/* Tường sau */}     
       <mesh position={[0, ROOM.height / 2, -ROOM.depth / 2]}>
                 <boxGeometry args={[ROOM.width, ROOM.height, 0.3]} />
-                <meshStandardMaterial color="#eee6d7" />     {" "}
+                <meshStandardMaterial color="#eee6d7" />     
       </mesh>
                   {/* Tường phải của sảnh chính */}
       <mesh position={[12, ROOM.height / 2, 0]}>
@@ -866,12 +866,12 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
           window.dispatchEvent(new Event("open-portrait"));
         }}
       >
-               {" "}
+               
         <mesh>
                     <boxGeometry args={[4.5, 3.1, 0.18]} />
-                    <meshStandardMaterial color="#6e492d" />       {" "}
+                    <meshStandardMaterial color="#6e492d" />       
         </mesh>
-               {" "}
+               
         <mesh position={[0, 0, 0.11]}>
           <planeGeometry args={[4.05, 2.65]} />
           <meshBasicMaterial
@@ -879,7 +879,7 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
             toneMapped={false}
           />
         </mesh>
-               {" "}
+               
         <Text
           position={[0, -2, 0.2]}
           fontSize={0.22}
@@ -888,23 +888,23 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
           outlineWidth={0.003}
           outlineColor="#3b281c"
         >
-                    CHỦ TỊCH HỒ CHÍ MINH        {" "}
+                    CHỦ TỊCH HỒ CHÍ MINH        
         </Text>
-             {" "}
+             
       </group>
-            {/* Màn hình tư liệu */}     {" "}
+            {/* Màn hình tư liệu */}     
       <group position={[0, 2.7, -8.25]} onClick={() => onExhibit(exhibits[1])}>
-               {" "}
+               
         <mesh>
                     <boxGeometry args={[5.2, 3.1, 0.25]} />
-                    <meshStandardMaterial color="#20242a" />       {" "}
+                    <meshStandardMaterial color="#20242a" />       
         </mesh>
-               {" "}
+               
         <mesh position={[0, 0, 0.14]}>
                     <planeGeometry args={[4.7, 2.6]} />
-                    <meshStandardMaterial color="#273d4d" />       {" "}
+                    <meshStandardMaterial color="#273d4d" />       
         </mesh>
-               {" "}
+               
         <Text
           position={[0, 0, 0.2]}
           fontSize={0.36}
@@ -912,11 +912,11 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
           anchorX="center"
           anchorY="middle"
         >
-                    VIDEO TƯ LIỆU        {" "}
+                    VIDEO TƯ LIỆU        
         </Text>
-                      {" "}
+                      
       </group>
-            {/* Tủ sách */}     {" "}
+            {/* Tủ sách */}     
       <group
         position={[8, 2.2, -8.1]}
         onClick={(e) => {
@@ -924,19 +924,19 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
           onOpenLibrary();
         }}
       >
-               {" "}
+               
         <mesh>
                     <boxGeometry args={[3.6, 4.3, 0.65]} />
-                    <meshStandardMaterial color="#71472d" />       {" "}
+                    <meshStandardMaterial color="#71472d" />       
         </mesh>
-               {" "}
+               
         {[0.8, 1.5, 2.2, 2.9].map((y) => (
           <mesh key={y} position={[0, -2.15 + y, 0.36]}>
                         <boxGeometry args={[3.2, 0.09, 0.05]} />
-                        <meshStandardMaterial color="#432b1c" />         {" "}
+                        <meshStandardMaterial color="#432b1c" />         
           </mesh>
         ))}
-               {" "}
+               
         {[...Array(16)].map((_, i) => (
           <mesh
             key={i}
@@ -946,12 +946,12 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
               0.42,
             ]}
           >
-                        <boxGeometry args={[0.25, 1, 0.08]} />           {" "}
+                        <boxGeometry args={[0.25, 1, 0.08]} />           
             <meshStandardMaterial color={i % 2 ? "#a87b51" : "#486b72"} />     
-               {" "}
+               
           </mesh>
         ))}
-             {" "}
+             
       </group>
             {/* Tủ trưng bày */}            {/* Bàn */}     {/* Bàn */}
       <group position={[10, 0, 1.5]}>
@@ -974,31 +974,31 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
           </mesh>
         ))}
       </group>
-            {/* Cây */}     {" "}
+            {/* Cây */}     
       <group position={[9, 0, 5]}>
-               {" "}
+               
         <mesh position={[0, 1, 0]}>
                     <cylinderGeometry args={[0.28, 0.38, 2, 16]} />
-                    <meshStandardMaterial color="#9b633b" />       {" "}
+                    <meshStandardMaterial color="#9b633b" />       
         </mesh>
-               {" "}
+               
         <mesh position={[0, 2.5, 0]}>
                     <sphereGeometry args={[1.1, 16, 12]} />
-                    <meshStandardMaterial color="#4e7750" />       {" "}
+                    <meshStandardMaterial color="#4e7750" />       
         </mesh>
-             {" "}
+             
       </group>
-            {/* Ánh sáng */}     {" "}
+            {/* Ánh sáng */}     
       {[-7, 0, 7].map((x) => (
         <group key={x} position={[x, 5.15, -2]}>
-                   {" "}
+                   
           <mesh>
                         <cylinderGeometry args={[0.35, 0.35, 0.15, 24]} />
-                        <meshStandardMaterial color="#d6b76d" />         {" "}
+                        <meshStandardMaterial color="#d6b76d" />         
           </mesh>
-                   {" "}
+                   
           <pointLight position={[0, -0.2, 0]} intensity={20} distance={9} />   
-             {" "}
+             
         </group>
       ))}
              {/* Chữ KHU TRƯNG BÀY gắn trên vách tường bên phải */}
@@ -1037,7 +1037,7 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary }) {
           BẢO TÀNG 3D
         </Text>
       </group>
-         {" "}
+         
     </group>
   );
 }
@@ -1053,7 +1053,7 @@ function NavigationMarkers({ current, onMove }) {
 
   return (
     <group>
-         {" "}
+         
       {signs.map((sign) => (
         <ArrowMarker
           key={sign.id}
@@ -1062,7 +1062,7 @@ function NavigationMarkers({ current, onMove }) {
           onClick={() => onMove(sign.id)}
         />
       ))}
-         {" "}
+         
     </group>
   );
 }
@@ -1122,7 +1122,7 @@ function Scene({
         onSpaceArrive={onSpaceArrive}
       />
       <FixedLookControls />
-                <Environment preset="city" />   {" "}
+                <Environment preset="city" />   
     </>
   );
 }
@@ -1380,19 +1380,19 @@ export default function App() {
   if (!started) {
     return (
       <div className="welcome-page">
-               {" "}
+               
         <div className="welcome-card">
                     <div className="welcome-badge">KHÔNG GIAN VĂN HÓA</div>     
-              <h1>Hồ Chí Minh</h1>         {" "}
+              <h1>Hồ Chí Minh</h1>         
           <p className="welcome-description">
                         Chào mừng bạn đến với không gian tham quan 3D.          
-              Hãy nhập thông tin để bắt đầu chuyến tham quan.          {" "}
+              Hãy nhập thông tin để bắt đầu chuyến tham quan.          
           </p>
-                   {" "}
+                   
           <form onSubmit={submit} className="visitor-form">
-                       {" "}
+                       
             <label>
-                            Họ và tên              {" "}
+                            Họ và tên              
               <input
                 value={visitor.name}
                 onChange={(e) =>
@@ -1400,9 +1400,9 @@ export default function App() {
                 }
                 placeholder="Nhập họ và tên"
               />
-                         {" "}
+                         
             </label>
-                       {" "}
+                       
             <label>
               Nhóm độ tuổi
               <select
@@ -1417,30 +1417,30 @@ export default function App() {
                 <option value="age35plus">Từ 35 tuổi trở lên</option>
               </select>
             </label>
-                       {" "}
+                       
             <label>
-                            Giới tính              {" "}
+                            Giới tính              
               <select
                 value={visitor.gender}
                 onChange={(e) =>
                   setVisitor({ ...visitor, gender: e.target.value })
                 }
               >
-                                <option value="Nam">Nam</option>               {" "}
-                <option value="Nữ">Nữ</option>             {" "}
+                                <option value="Nam">Nam</option>               
+                <option value="Nữ">Nữ</option>             
               </select>
-                         {" "}
+                         
             </label>
                         {error && <div className="form-error">{error}</div>}   
-                   {" "}
+                   
             <button type="submit" className="start-button">
-                            BẮT ĐẦU THAM QUAN            {" "}
+                            BẮT ĐẦU THAM QUAN            
             </button>
-                     {" "}
+                     
           </form>
-                 {" "}
+                 
         </div>
-             {" "}
+             
       </div>
     );
   }
@@ -1516,7 +1516,7 @@ export default function App() {
           {musicPlaying ? "⏸ Tạm dừng" : "▶ Phát nhạc"}
         </button>
       </div>
-           {" "}
+           
       <Canvas
         camera={{
           position: [0, 1.6, 6.5],
@@ -1525,7 +1525,7 @@ export default function App() {
           far: 100,
         }}
       >
-               {" "}
+               
         <Scene
           spotIndex={spotIndex}
           onMove={moveToSpot}
@@ -1539,7 +1539,7 @@ export default function App() {
           setActiveSpace={setActiveSpace}
           setSelectedSpace={setSelectedSpace}
         />
-                     {" "}
+                     
       </Canvas>
       {/* DANH SÁCH ĐIỀU HƯỚNG 13 MỤC */}
       <div className={`navigation-panel ${navCollapsed ? "collapsed" : ""}`}>
@@ -2069,7 +2069,7 @@ export default function App() {
       >
         {insideSpaceRoom ? "↩ Quay về phòng trưng bày" : "↩ Quay về lối vào"}
       </button>
-           {" "}
+           
       <div className="top-info">
                 <strong>Không gian văn hóa Hồ Chí Minh</strong>
         {visitor.name && (
@@ -2090,13 +2090,13 @@ export default function App() {
                 : "Từ 35 tuổi trở lên"}
           </p>
         )}
-             {" "}
+             
       </div>
-           {" "}
+           
       <div className="controls">
-                <div>🖱 Kéo chuột: Xoay góc nhìn 360°</div>       {" "}
-        <div>📍 Nhấp biển chỉ dẫn: Di chuyển đến khu vực</div>       {" "}
-        <div>Vị trí: {spots[spotIndex].name}</div>     {" "}
+                <div>🖱 Kéo chuột: Xoay góc nhìn 360°</div>       
+        <div>📍 Nhấp biển chỉ dẫn: Di chuyển đến khu vực</div>       
+        <div>Vị trí: {spots[spotIndex].name}</div>     
       </div>
       {/**ROOM 1 */}
       {(selectedSpace?.id === 3 || showLibrary) && (
@@ -2217,13 +2217,13 @@ export default function App() {
           </div>
         </div>
       )}
-           {" "}
+           
       {selectedExhibit && (
         <div
           className="exhibit-info"
           style={{ pointerEvents: "auto", zIndex: 1000 }}
         >
-                   {" "}
+                   
           <button
             className="close-exhibit"
             onClick={() => {
@@ -2231,20 +2231,20 @@ export default function App() {
               setSpotIndex(0);
             }}
           >
-                        ✕          {" "}
+                        ✕          
           </button>
-                   {" "}
+                   
           <div className="exhibit-title">
-                        {selectedExhibit.title}         {" "}
+                        {selectedExhibit.title}         
           </div>
-                   {" "}
+                   
           <div className="exhibit-description">
-                        {selectedExhibit.description}         {" "}
+                        {selectedExhibit.description}         
           </div>
-                 {" "}
+                 
         </div>
       )}
-         {" "}
+         
     </div>
   );
 }
