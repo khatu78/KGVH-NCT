@@ -86,7 +86,6 @@ function CameraView({
   room2Active,
   activeSpace,
   onSpaceArrive,
-  insideSpaceRoom,
 }) {
   const { camera } = useThree();
   const isFirstRender = useRef(true);
@@ -2061,15 +2060,14 @@ export default function App() {
           />
         </div>
       )}
-           {!room2Active && (
+           
       <button
-        className="return-button"
-        className="back-to-entrance"
+        className="return-button back-to-entrance"
         onClick={returnToPreviousSpot}
         disabled={spotIndex === 0 && !room2Active}
       >
           ↩ Quay về lối vào
-      </button>)}
+      </button>
            {" "}
       <div className="top-info">
                 <strong>Không gian văn hóa Hồ Chí Minh</strong>
