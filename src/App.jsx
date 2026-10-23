@@ -1261,6 +1261,7 @@ function Scene({
   setSelectedSpace,
    onOpenVideo,
    setKhu1Content,
+   setShowPadlet,
 }) {
   return (
     <>
@@ -1732,6 +1733,7 @@ export default function App() {
           setSelectedSpace={setSelectedSpace}
           onOpenVideo={() => setShowVideo(true)}
           setKhu1Content={setKhu1Content}
+          setShowPadlet={setShowPadlet}
         />
                      
       </Canvas>
