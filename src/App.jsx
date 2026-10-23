@@ -578,7 +578,7 @@ function SpaceInteriorRoom({ space, onBack }) {
 
       {/* Nội dung PDF */}
      <Html
-  position={[-0.85, 1.4, -3.45]}
+  position={[0.85, 1.4, -3.45]}
   transform
   distanceFactor={1.5}
   style={{
