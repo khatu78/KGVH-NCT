@@ -452,85 +452,33 @@ function InteractiveSpaces({ onSelect, onOpenKhu1Content }) {
             {space.title}
           </Text>
 
-      
-{/* PHÒNG CON KHU 1 */}
-{space.id === 1 && (
-  <group>
-    {/* Vách ngăn bên trong, chừa lối vào */}
-    <mesh position={[-0.75, 1.1, -0.2]}>
-      <boxGeometry args={[0.12, 2.2, 1.2]} />
-      <meshStandardMaterial color="#eee6d7" />
-    </mesh>
+          {/* Bảng tương tác cho cả 8 khu */}
+          <group>
+            <mesh position={[0, 1.05, 0.84]}>
+              <planeGeometry args={[1.35, 1.15]} />
+              <meshBasicMaterial color="#d8c9ad" />
+            </mesh>
 
-    <mesh position={[0.75, 1.1, -0.2]}>
-      <boxGeometry args={[0.12, 2.2, 1.2]} />
-      <meshStandardMaterial color="#eee6d7" />
-    </mesh>
+            <Text
+              position={[0, 1.15, 0.87]}
+              fontSize={0.19}
+              color="#7c2929"
+              anchorX="center"
+              anchorY="middle"
+            >
+              {`KHU ${space.id}`}
+            </Text>
 
-    {/* Bàn cảm ứng hiển thị PDF */}
-    <mesh position={[-0.35, 0.65, 0.25]}>
-      <boxGeometry args={[1.3, 0.08, 0.85]} />
-      <meshStandardMaterial color="#33383f" />
-    </mesh>
-
-    <mesh
-      position={[-0.35, 0.72, 0.25]}
-      rotation={[-0.35, 0, 0]}
-      onClick={(e) => {
-        e.stopPropagation();
-        onOpenKhu1Content("pdf");
-      }}
-    >
-      <planeGeometry args={[1.15, 0.7]} />
-      <meshBasicMaterial color="#f5f0e5" />
-    </mesh>
-
-    {/* Màn hình phát video */}
-    <mesh
-      position={[0.45, 1.3, -0.65]}
-      onClick={(e) => {
-        e.stopPropagation();
-        onOpenKhu1Content("video");
-      }}
-    >
-      <boxGeometry args={[1.1, 0.7, 0.08]} />
-      <meshStandardMaterial color="#20252b" />
-    </mesh>
-  </group>
-)}
-
-
-
-
-          {/* Biểu tượng tương tác tạm thời */}
-          {space.id !== 1 && (
-            <group>
-              <mesh position={[0, 1.05, 0.84]}>
-                <planeGeometry args={[1.35, 1.15]} />
-                <meshBasicMaterial color="#d8c9ad" />
-              </mesh>
-
-              <Text
-                position={[0, 1.15, 0.87]}
-                fontSize={0.19}
-                color="#7c2929"
-                anchorX="center"
-                anchorY="middle"
-              >
-                {`KHU ${space.id}`}
-              </Text>
-
-              <Text
-                position={[0, 0.85, 0.87]}
-                fontSize={0.12}
-                color="#5c1717"
-                anchorX="center"
-                anchorY="middle"
-              >
-                NHẤN ĐỂ THAM QUAN 
-              </Text>
-              </group>
-          )}
+            <Text
+              position={[0, 0.85, 0.87]}
+              fontSize={0.12}
+              color="#5c1717"
+              anchorX="center"
+              anchorY="middle"
+            >
+              NHẤN ĐỂ THAM QUAN
+            </Text>
+          </group>
         </group>
       ))}
     </group>
