@@ -2,6 +2,13 @@ import { useEffect, useState } from "react";
 
 export default function ImageFullscreen() {
   const [image, setImage] = useState(null);
+  useEffect(() => {
+  window.dispatchEvent(
+    new CustomEvent("wall-image-fullscreen", {
+      detail: Boolean(image),
+    })
+  );
+}, [image]);
 
   useEffect(() => {
     const open = (e) => setImage(e.detail);

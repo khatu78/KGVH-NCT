@@ -1322,6 +1322,7 @@ export default function App() {
   const [room2Active, setRoom2Active] = useState(false);
   const [khu1Content, setKhu1Content] = useState(null);
   const [activeSpace, setActiveSpace] = useState(null);
+  const [wallImageFull, setWallImageFull] = useState(false);
   
   const [insideSpaceRoom, setInsideSpaceRoom] = useState(false);
   const [navCollapsed, setNavCollapsed] = useState(
@@ -1387,6 +1388,18 @@ export default function App() {
       window.removeEventListener("open-library", openLibrary);
     };
   }, []);
+
+  useEffect(() => {
+  const handleImageFullscreen = (e) => {
+    setWallImageFull(e.detail);
+  };
+
+  window.addEventListener("wall-image-fullscreen", handleImageFullscreen);
+
+  return () => {
+    window.removeEventListener("wall-image-fullscreen", handleImageFullscreen);
+  };
+}, []);
 
   useEffect(() => {
     const enter = () => {
@@ -2355,8 +2368,11 @@ max-width: 1400px;
         onClick={returnToPreviousSpot}
         disabled={spotIndex === 0 && !room2Active}
         style={{
-    display: (showPortraitSlideshow || showPadlet) ? "none" : undefined,
-  }}
+  display:
+    (showPortraitSlideshow || showPadlet || wallImageFull)
+      ? "none"
+      : undefined,
+}}
       >
         {insideSpaceRoom ? "↩ Quay về phòng trưng bày" : "↩ Quay về lối vào"}
       </button>
