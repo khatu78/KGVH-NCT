@@ -4,6 +4,7 @@ import { Html } from "@react-three/drei";
 import { useVideoTexture } from "@react-three/drei";
 import  ImageFullscreen  from "./ImageFullscreen";
 import  WallImage  from "./WallImage";
+import CeilingDrum from "./CeilingDrum";
 import {
   Environment,
   OrbitControls,
@@ -577,6 +578,13 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
         <boxGeometry args={[10, 0.2, 8]} />
         <meshStandardMaterial color="#eee6d7" />
       </mesh>
+      {/* Hoa văn trống đồng trên trần */}
+<CeilingDrum
+  width={10}
+  depth={8}
+  y={4.11}
+  scale={0.8}
+/>
 
       {/* Vách sau - đối diện cửa */}
       <mesh position={[0, 2, -4]}>
@@ -806,7 +814,14 @@ function SecondRoom({ onSpaceClick, setKhu1Content }) {
         <boxGeometry args={[20, 0.2, 14]} />
         <meshStandardMaterial color="#f5f1e8" />
       </mesh>
-
+{/* Hoa văn trống đồng trên trần phòng 2 */}
+<CeilingDrum
+  width={20}
+  depth={14}
+  y={5.61}
+  position={[-22, 0, 5.75]}
+  scale={0.8}
+/>
       {/* Tường cuối phòng */}
       <mesh position={[-32, 2.75, 5.75]}>
         <boxGeometry args={[0.25, 5.5, 14]} />
@@ -905,6 +920,9 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary,  onOpenVid
                 <meshStandardMaterial color="#f5f1e8" side={THREE.DoubleSide} />
              
       </mesh>
+
+      {/* Hoa văn trống đồng trên trần sảnh chính */}
+<CeilingDrum y={ROOM.height + 0.02} size={6} />
             {/* Tường sau */}     
       <mesh position={[0, ROOM.height / 2, -ROOM.depth / 2]}>
                 <boxGeometry args={[ROOM.width, ROOM.height, 0.3]} />
