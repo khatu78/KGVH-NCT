@@ -82,6 +82,44 @@ const exhibits = [
     position: [9.5, 1.4, 1],
   },
 ];
+
+
+const SPACE_CONTENT = {
+  1: {
+    video: "https://www.youtube.com/embed/R5wsX7xQsxY",
+    pdf: `${import.meta.env.BASE_URL}doc/Khu1.pdf`,
+  },
+  2: {
+    video: "https://www.youtube.com/embed/R5wsX7xQsxY",
+    pdf: `${import.meta.env.BASE_URL}doc/Khu1.pdf`,
+  },
+  3: {
+    video: "https://www.youtube.com/embed/R5wsX7xQsxY",
+    pdf: `${import.meta.env.BASE_URL}doc/Khu1.pdf`,
+  },
+  4: {
+    video: "https://www.youtube.com/embed/R5wsX7xQsxY",
+    pdf: `${import.meta.env.BASE_URL}doc/Khu1.pdf`,
+  },
+  5: {
+    video: "https://www.youtube.com/embed/R5wsX7xQsxY",
+    pdf: `${import.meta.env.BASE_URL}doc/Khu1.pdf`,
+  },
+  6: {
+    video: "https://www.youtube.com/embed/R5wsX7xQsxY",
+    pdf: `${import.meta.env.BASE_URL}doc/Khu1.pdf`,
+  },
+  7: {
+    video: "https://www.youtube.com/embed/R5wsX7xQsxY",
+    pdf: `${import.meta.env.BASE_URL}doc/Khu1.pdf`,
+  },
+  8: {
+    video: "https://www.youtube.com/embed/R5wsX7xQsxY",
+    pdf: `${import.meta.env.BASE_URL}doc/Khu1.pdf`,
+  },
+};
+
+
 function CameraView({
   spots,
   spotIndex,
