@@ -661,22 +661,26 @@ function SpaceInteriorRoom({ space, onBack }) {
     />
 
     <button
-      onClick={() => setShowPadlet(true)}
-      style={{
-        position: "absolute",
-        right: 6,
-        top: 6,
-        zIndex: 10,
-        padding: "6px 10px",
-        border: "none",
-        borderRadius: 6,
-        background: "#70472e",
-        color: "#fff",
-        cursor: "pointer",
-      }}
-    >
-      ⛶ Toàn màn hình
-    </button>
+  onClick={(e) => {
+    e.stopPropagation();
+    setShowPadlet(true);
+  }}
+  style={{
+    position: "absolute",
+    right: 6,
+    top: 6,
+    zIndex: 9999,
+    pointerEvents: "auto",
+    padding: "6px 10px",
+    border: "none",
+    borderRadius: 6,
+    background: "#70472e",
+    color: "#fff",
+    cursor: "pointer",
+  }}
+>
+  ⛶ Toàn màn hình
+</button>
   </div>
 ) : (
   <iframe
