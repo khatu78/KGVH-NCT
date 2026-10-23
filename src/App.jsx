@@ -646,15 +646,7 @@ function SpaceInteriorRoom({ space, onBack }) {
     background: "#fff",
   }}
 >
-  <div
-    onClick={() => setPdfFullScreen(true)}
-    style={{
-      width: "100%",
-      height: "100%",
-      cursor: "pointer",
-    }}
-  >
-    <iframe
+  <iframe
     src={
       space.id === 2
         ? SPACE_CONTENT[2].padlet
@@ -670,8 +662,8 @@ function SpaceInteriorRoom({ space, onBack }) {
       borderRadius: "7px",
     }}
   />
-  </div>
 </Html>
+
 
 {pdfFullScreen && (
   <Html fullscreen>
