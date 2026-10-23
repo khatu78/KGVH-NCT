@@ -630,32 +630,37 @@ function SpaceInteriorRoom({ space, onBack }) {
     />
 
    {space.id === 2 && (
-  <button
-    onPointerDown={(e) => {
-      e.stopPropagation();
-    }}
-    onClick={(e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setShowPadlet(true);
-    }}
-    style={{
-      position: "absolute",
-      top: 5,
-      right: 5,
-      zIndex: 999999,
-      padding: "8px 10px",
-      border: 0,
-      borderRadius: 6,
-      background: "#70472e",
-      color: "#fff",
-      cursor: "pointer",
-      pointerEvents: "auto",
-      touchAction: "manipulation",
-    }}
-  >
-    ⛶ Toàn màn hình
-  </button>
+  
+<button
+  onPointerDown={(e) => {
+    e.stopPropagation();
+  }}
+  onMouseDown={(e) => {
+    e.stopPropagation();
+  }}
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setShowPadlet(true);
+  }}
+  style={{
+    position: "absolute",
+    top: 5,
+    right: 5,
+    zIndex: 9999999,
+    padding: "8px 10px",
+    border: 0,
+    borderRadius: 6,
+    background: "#70472e",
+    color: "#fff",
+    cursor: "pointer",
+    pointerEvents: "auto",
+    touchAction: "manipulation",
+  }}
+>
+  ⛶ Toàn màn hình
+</button>
+
 )}
     
   </div>
