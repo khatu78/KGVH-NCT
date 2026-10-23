@@ -99,10 +99,9 @@ function CameraView({
   const lookTarget = useRef(new THREE.Vector3(...targets[0]));
 
   useEffect(() => {
-    if (room2Active && activeSpace && insideSpaceRoom) {
-  // Camera đứng bên trong phòng con, nhìn về hai màn hình
-  destination.current.set(-22, 1.6, 7.5);
-  lookTarget.current.set(-22, 1.8, 5.0);
+   if (room2Active && activeSpace && insideSpaceRoom) {
+  destination.current.set(-22, 1.6, 5.75);
+  lookTarget.current.set(-22, 1.6, 1.75);
 } else if (room2Active && activeSpace) {
       // Camera đứng ngoài gian đã chọn
       const [x, , z] = activeSpace.position;
@@ -549,7 +548,7 @@ function SpaceInteriorRoom({ space, onBack }) {
 
       {/* Khung màn hình video */}
       <mesh position={[-0.85, 1.4, -3.45]}>
-        <boxGeometry args={[1.4, 0.9, 0.08]} />
+      <boxGeometry args={[1.54, 0.99, 0.025]} />
         <meshStandardMaterial color="#20252b" />
       </mesh>
 
@@ -559,8 +558,8 @@ function SpaceInteriorRoom({ space, onBack }) {
         transform
         distanceFactor={1.5}
         style={{
-          width: "280px",
-          height: "180px",
+          width: "308px",
+height: "198px",
           overflow: "hidden",
         }}
       >
@@ -577,7 +576,7 @@ function SpaceInteriorRoom({ space, onBack }) {
 
       {/* Khung màn hình PDF */}
       <mesh position={[0.85, 1.4, -3.45]}>
-        <boxGeometry args={[1.4, 0.9, 0.08]} />
+       <boxGeometry args={[1.54, 0.99, 0.025]} />
         <meshStandardMaterial color="#20252b" />
       </mesh>
 
@@ -587,8 +586,8 @@ function SpaceInteriorRoom({ space, onBack }) {
         transform
         distanceFactor={1.5}
         style={{
-          width: "280px",
-          height: "180px",
+         width: "308px",
+height: "198px",
           overflow: "hidden",
           background: "#fff",
         }}
