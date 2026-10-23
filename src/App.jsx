@@ -576,6 +576,7 @@ function SpaceInteriorRoom({ space, onBack }) {
       width: "100%",
       height: "100%",
       border: 0,
+        borderRadius: "7px",
       display: "block",
     }}
     allow="autoplay; encrypted-media; picture-in-picture"
@@ -614,6 +615,7 @@ function SpaceInteriorRoom({ space, onBack }) {
       width: "100%",
       height: "100%",
       border: 0,
+        borderRadius: "7px",
       display: "block",
     }}
   />
