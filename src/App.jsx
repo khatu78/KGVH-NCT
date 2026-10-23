@@ -485,6 +485,7 @@ function InteractiveSpaces({ onSelect, onOpenKhu1Content }) {
 }
 
 function SpaceInteriorRoom({ space, onBack }) {
+  const [pdfFullScreen, setPdfFullScreen] = useState(false);
   if (!space) return null;
 
   return (
@@ -1271,7 +1272,7 @@ export default function App() {
   const [room2Active, setRoom2Active] = useState(false);
   const [khu1Content, setKhu1Content] = useState(null);
   const [activeSpace, setActiveSpace] = useState(null);
-  const [pdfFullScreen, setPdfFullScreen] = useState(false);
+  
   const [insideSpaceRoom, setInsideSpaceRoom] = useState(false);
   const [navCollapsed, setNavCollapsed] = useState(
     window.matchMedia("(max-width: 600px)").matches,
