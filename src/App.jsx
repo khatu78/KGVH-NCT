@@ -561,7 +561,8 @@ function SpaceInteriorRoom({ space, onBack }) {
     padding: 0,
     margin: 0,
     overflow: "hidden",
-    border: "1px solid #999",
+    border: "3px solid #70472e",
+  borderRadius: "10px",
     boxSizing: "border-box",
     background: "#000",
   }}
@@ -598,7 +599,8 @@ function SpaceInteriorRoom({ space, onBack }) {
     padding: 0,
     margin: 0,
     overflow: "hidden",
-    border: "1px solid #999",
+    border: "3px solid #70472e",
+  borderRadius: "10px",
     boxSizing: "border-box",
     background: "#fff",
   }}
