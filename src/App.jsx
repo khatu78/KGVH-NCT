@@ -1293,7 +1293,7 @@ function Scene({
             setActiveSpace(null);
             setSelectedSpace(null);
           }}
-          setShowPadlet={setShowPadlet}
+          setShowPadlet={setShowPadlet} 
         />
       )}
             <NavigationMarkers current={spotIndex} onMove={onMove} />
