@@ -537,52 +537,31 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
     <group position={[-22, 0, 5.75]}>
 
 
-
-    <Html
-  position={[0, 2, -3.85]}
-  transform
-  distanceFactor={1.5}
-  style={{ width: "900px", height: "380px"  }}
->
-  <WallImage
+<WallImage
   src={SPACE_CONTENT[1].imageBg1}
-  alt="Ảnh tường đối diện Khu 1"
+  alt="Hình tường đối diện"
+  position={[0, 2, -3.85]}
+  width="900px"
+  height="380px"
 />
-  </Html>
-  <Html
+
+<WallImage
+  src={SPACE_CONTENT[1].imageTrai1}
+  alt="Hình tường trái"
   position={[-4.85, 2, 0]}
   rotation={[0, Math.PI / 2, 0]}
-  transform
-  distanceFactor={1.5}
- style={{ width: "650px", height: "380px" }}
->
-  <img
-    src={SPACE_CONTENT[1].imageTrai1}
-    alt="Hình tường trái"
-    style={{
-      width: "100%",
-      height: "100%",
-      objectFit: "contain",
-    }}
-  />
-</Html>
-<Html
+  width="650px"
+  height="380px"
+/>
+
+<WallImage
+  src={SPACE_CONTENT[1].imagePhai}
+  alt="Hình tường phải"
   position={[4.85, 2, 0]}
   rotation={[0, -Math.PI / 2, 0]}
-  transform
-  distanceFactor={1.5}
- style={{ width: "650px", height: "380px" }}
->
-  <img
-    src={SPACE_CONTENT[1].imagePhai}
-    alt="Hình tường phải"
-    style={{
-      width: "100%",
-      height: "100%",
-      objectFit: "contain",
-    }}
-  />
-</Html>
+  width="650px"
+  height="380px"
+/>
 
       {/* Sàn phòng */}
       <mesh position={[0, 0, 0]} receiveShadow>
