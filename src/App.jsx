@@ -548,7 +548,7 @@ function SpaceInteriorRoom({ space, onBack }) {
 
       {/* Khung màn hình video */}
       <mesh position={[-0.85, 1.4, -3.45]}>
-      <boxGeometry args={[1.54, 0.99, 0.025]} />
+     <boxGeometry args={[1.54, 0.99, 0.008]} />
         <meshStandardMaterial color="#20252b" />
       </mesh>
 
@@ -576,7 +576,7 @@ height: "198px",
 
       {/* Khung màn hình PDF */}
       <mesh position={[0.85, 1.4, -3.45]}>
-       <boxGeometry args={[1.54, 0.99, 0.025]} />
+      <boxGeometry args={[1.54, 0.99, 0.008]} />
         <meshStandardMaterial color="#20252b" />
       </mesh>
 
