@@ -1,12 +1,12 @@
 import { useTexture } from "@react-three/drei";
-
+import trongDong from "./images/trongDong.jpg";
 
 export default function CeilingDrum({
   y,
   position = [0, 0, 0],
   size = 6,
 }) {
- const texture = useTexture(`${import.meta.env.BASE_URL}./images/trongDong.jpg`);
+const texture = useTexture(trongDong);
 
   return (
     <mesh
