@@ -607,20 +607,19 @@ function SpaceInteriorRoom({ space, onBack }) {
   }}
 >
   <iframe
-    src={
-      space.id === 2
-        ? SPACE_CONTENT[2].padlet
-        : SPACE_CONTENT[space.id].pdf
-    }
-    title={space.id === 2 ? "Padlet Khu 2" : "Tài liệu PDF"}
-    allow="camera; microphone; geolocation; display-capture; clipboard-write"
+    src={SPACE_CONTENT[space.id].video}
+    title="Video tư liệu"
+    width="431"
+    height="277"
     style={{
       width: "100%",
       height: "100%",
       border: 0,
+        borderRadius: "7px",
       display: "block",
-      borderRadius: "7px",
     }}
+    allow="autoplay; encrypted-media; picture-in-picture"
+    allowFullScreen
   />
 </Html>
 
@@ -656,17 +655,21 @@ function SpaceInteriorRoom({ space, onBack }) {
     }}
   >
     <iframe
-      src={SPACE_CONTENT[space.id].pdf}
-      title="Tài liệu PDF"
-      style={{
-        width: "100%",
-        height: "100%",
-        border: 0,
-        borderRadius: "7px",
-        display: "block",
-        pointerEvents: "none",
-      }}
-    />
+    src={
+      space.id === 2
+        ? SPACE_CONTENT[2].padlet
+        : SPACE_CONTENT[space.id].pdf
+    }
+    title={space.id === 2 ? "Padlet Khu 2" : "Tài liệu PDF"}
+    allow="camera; microphone; geolocation; display-capture; clipboard-write"
+    style={{
+      width: "100%",
+      height: "100%",
+      border: 0,
+      display: "block",
+      borderRadius: "7px",
+    }}
+  />
   </div>
 </Html>
 
