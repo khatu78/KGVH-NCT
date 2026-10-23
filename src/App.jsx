@@ -523,7 +523,7 @@ function InteractiveSpaces({ onSelect, onOpenKhu1Content }) {
 }
 
 function SpaceInteriorRoom({ space, onBack, setShowPadlet }) {
-  const [pdfFullScreen, setPdfFullScreen] = useState(false);
+
   
   if (!space) return null;
 
