@@ -598,6 +598,7 @@ height: "198px",
           width="280"
           height="180"
           style={{ border: 0, display: "block" }}
+          allowFullScreen
         />
       </Html>
 
