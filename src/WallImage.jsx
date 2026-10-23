@@ -9,17 +9,20 @@ export default function WallImage({ src, alt = "Hình ảnh trưng bày" }) {
 
   return (
     <Html transform distanceFactor={1.5}>
-      <img
-        src={src}
-        alt={alt}
-        onClick={openImage}
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "contain",
-          cursor: "zoom-in",
-        }}
-      />
+     <img
+  src={src}
+  alt={alt}
+  onClick={openImage}
+  draggable={false}
+  style={{
+    display: "block",
+    width: "100%",
+    height: "100%",
+    objectFit: "contain",
+    cursor: "zoom-in",
+    pointerEvents: "auto",
+  }}
+/>
     </Html>
   );
 }

@@ -536,31 +536,33 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
   return (
     <group position={[-22, 0, 5.75]}>
 
-
+{/* Tường đối diện */}
 <WallImage
   src={SPACE_CONTENT[1].imageBg1}
   alt="Hình tường đối diện"
   position={[0, 2, -3.85]}
-  width="900px"
-  height="380px"
+  width="1200px"
+  height="600px"
 />
 
+{/* Tường trái */}
 <WallImage
   src={SPACE_CONTENT[1].imageTrai1}
   alt="Hình tường trái"
   position={[-4.85, 2, 0]}
   rotation={[0, Math.PI / 2, 0]}
-  width="650px"
-  height="380px"
+  width="900px"
+  height="600px"
 />
 
+{/* Tường phải */}
 <WallImage
   src={SPACE_CONTENT[1].imagePhai}
   alt="Hình tường phải"
   position={[4.85, 2, 0]}
   rotation={[0, -Math.PI / 2, 0]}
-  width="650px"
-  height="380px"
+  width="900px"
+  height="600px"
 />
 
       {/* Sàn phòng */}
