@@ -607,6 +607,7 @@ function SpaceInteriorRoom({ space, onBack }) {
     borderRadius: "10px",
     boxSizing: "border-box",
     background: "#000",
+      zIndex: 1000,
   }}
 >
   <div style={{ width: "100%", height: "100%", position: "relative" }}>
