@@ -548,8 +548,8 @@ function SpaceInteriorRoom({ space, onBack }) {
 
       {/* Khung màn hình video */}
       <mesh position={[-0.85, 1.4, -3.45]}>
-     <boxGeometry args={[1.54, 0.99, 0.008]} />
-        <meshStandardMaterial color="#20252b" />
+    <boxGeometry args={[2.16, 1.386, 0.002]} />
+       <meshStandardMaterial color="#777777" />
       </mesh>
 
       {/* Nội dung video */}
@@ -571,13 +571,17 @@ height: "198px",
           style={{ border: 0, display: "block" }}
           allow="autoplay; encrypted-media; picture-in-picture"
           allowFullScreen
+          style={{
+  border: "none",
+  display: "block",
+}}
         />
       </Html>
 
       {/* Khung màn hình PDF */}
       <mesh position={[0.85, 1.4, -3.45]}>
-      <boxGeometry args={[1.54, 0.99, 0.008]} />
-        <meshStandardMaterial color="#20252b" />
+     <boxGeometry args={[2.16, 1.386, 0.002]} />
+      <meshStandardMaterial color="#777777" />
       </mesh>
 
       {/* Nội dung PDF */}
@@ -599,6 +603,10 @@ height: "198px",
           height="180"
           style={{ border: 0, display: "block" }}
           allowFullScreen
+          style={{
+  border: "none",
+  display: "block",
+}}
         />
       </Html>
 
