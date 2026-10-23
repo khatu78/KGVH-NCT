@@ -547,22 +547,21 @@ function SpaceInteriorRoom({ space, onBack }) {
       ))}
 
       {/* Khung màn hình video */}
-      <mesh position={[-0.85, 1.4, -3.45]}>
-     <boxGeometry args={[1.54, 0.99, 0.008]} />
-        <meshStandardMaterial color="#20252b" />
-      </mesh>
+     
 
       {/* Nội dung video */}
       <Html
-        position={[-0.85, 1.4, -3.395]}
-        transform
-        distanceFactor={1.5}
-        style={{
-          width: "308px",
-height: "198px",
-          overflow: "hidden",
-        }}
-      >
+  position={[-0.85, 1.4, -3.45]}
+  transform
+  distanceFactor={1.5}
+  style={{
+    width: "431px",
+    height: "277px",
+    overflow: "hidden",
+    border: "1px solid #999",
+    boxSizing: "border-box",
+  }}
+>
         <iframe
           src="https://www.youtube.com/embed/R5wsX7xQsxY"
           title="Video tư liệu"
@@ -575,23 +574,21 @@ height: "198px",
       </Html>
 
       {/* Khung màn hình PDF */}
-      <mesh position={[0.85, 1.4, -3.45]}>
-      <boxGeometry args={[1.54, 0.99, 0.008]} />
-        <meshStandardMaterial color="#20252b" />
-      </mesh>
+     
 
       {/* Nội dung PDF */}
-      <Html
-        position={[0.85, 1.4, -3.395]}
-        transform
-        distanceFactor={1.5}
-        style={{
-         width: "308px",
-height: "198px",
-          overflow: "hidden",
-          background: "#fff",
-        }}
-      >
+     <Html
+  position={[-0.85, 1.4, -3.45]}
+  transform
+  distanceFactor={1.5}
+  style={{
+    width: "431px",
+    height: "277px",
+    overflow: "hidden",
+    border: "1px solid #999",
+    boxSizing: "border-box",
+  }}
+>
         <iframe
           src={`${import.meta.env.BASE_URL}doc/Khu1.pdf`}
           title="Tài liệu PDF"
