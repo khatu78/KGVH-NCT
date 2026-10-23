@@ -590,6 +590,7 @@ function SpaceInteriorRoom({ space, onBack }) {
 
       {/* Nội dung PDF */}
     
+
 <Html
   position={[0.85, 1.4, -3.45]}
   transform
@@ -601,25 +602,72 @@ function SpaceInteriorRoom({ space, onBack }) {
     margin: 0,
     overflow: "hidden",
     border: "3px solid #70472e",
-  borderRadius: "10px",
+    borderRadius: "10px",
     boxSizing: "border-box",
     background: "#fff",
   }}
 >
-  <iframe
-    src={`${import.meta.env.BASE_URL}doc/Khu1.pdf`}
-    title="Tài liệu PDF"
-    width="431"
-    height="277"
+  <div
+    onClick={() => setPdfFullScreen(true)}
     style={{
       width: "100%",
       height: "100%",
-      border: 0,
-        borderRadius: "7px",
-      display: "block",
+      cursor: "pointer",
     }}
-  />
+  >
+    <iframe
+      src={`${import.meta.env.BASE_URL}doc/Khu1.pdf`}
+      title="Tài liệu PDF"
+      style={{
+        width: "100%",
+        height: "100%",
+        border: 0,
+        borderRadius: "7px",
+        display: "block",
+        pointerEvents: "none",
+      }}
+    />
+  </div>
 </Html>
+
+{pdfFullScreen && (
+  <Html fullscreen>
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 99999,
+        background: "#222",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <button
+        onClick={() => setPdfFullScreen(false)}
+        style={{
+          alignSelf: "flex-end",
+          margin: "10px",
+          padding: "10px 18px",
+          cursor: "pointer",
+        }}
+      >
+        ✕ Đóng PDF
+      </button>
+
+      <iframe
+        src={`${import.meta.env.BASE_URL}doc/Khu1.pdf`}
+        title="PDF toàn màn hình"
+        style={{
+          flex: 1,
+          width: "100%",
+          border: 0,
+          background: "#fff",
+        }}
+      />
+    </div>
+  </Html>
+)}
+
 
 
       {/* Nút quay lại */}
@@ -1223,6 +1271,7 @@ export default function App() {
   const [room2Active, setRoom2Active] = useState(false);
   const [khu1Content, setKhu1Content] = useState(null);
   const [activeSpace, setActiveSpace] = useState(null);
+  const [pdfFullScreen, setPdfFullScreen] = useState(false);
   const [insideSpaceRoom, setInsideSpaceRoom] = useState(false);
   const [navCollapsed, setNavCollapsed] = useState(
     window.matchMedia("(max-width: 600px)").matches,
