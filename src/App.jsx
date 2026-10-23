@@ -607,7 +607,7 @@ function SpaceInteriorRoom({ space, onBack }) {
   }}
 >
   <iframe
-    src="https://www.youtube.com/embed/R5wsX7xQsxY"
+    src={SPACE_CONTENT[space.id].video}
     title="Video tư liệu"
     width="431"
     height="277"
@@ -655,7 +655,7 @@ function SpaceInteriorRoom({ space, onBack }) {
     }}
   >
     <iframe
-      src={`${import.meta.env.BASE_URL}doc/Khu1.pdf`}
+      src={SPACE_CONTENT[space.id].pdf}
       title="Tài liệu PDF"
       style={{
         width: "100%",
