@@ -594,72 +594,40 @@ function SpaceInteriorRoom({ space, onBack }) {
      
 
            {/* Màn hình video trên bàn tròn */}
-      <Html
-        position={[0, 1.05, 0]}
-        transform
-        distanceFactor={1.5}
-        style={{
-          width: "320px",
-          height: "200px",
-          overflow: "hidden",
-          border: "3px solid #70472e",
-          borderRadius: "10px",
-          boxSizing: "border-box",
-          background: "#000",
-        }}
-      >
-        <iframe
-          src={SPACE_CONTENT[space.id].video}
-          title="Video trên bàn tròn"
-          allow="autoplay; encrypted-media; picture-in-picture"
-          allowFullScreen
-          style={{
-            width: "100%",
-            height: "100%",
-            border: 0,
-            display: "block",
-          }}
-        />
-      </Html>
-
-
-      {/* Khung màn hình PDF */}
      
-
-      {/* Nội dung PDF */}
-    
-
 <Html
-  position={[0.85, 1.4, -3.45]}
+  position={[0, 1.05, 0]}
   transform
   distanceFactor={1.5}
   style={{
-    width: "431px",
-    height: "277px",
-    padding: 0,
-    margin: 0,
+    width: "320px",
+    height: "200px",
     overflow: "hidden",
     border: "3px solid #70472e",
     borderRadius: "10px",
     boxSizing: "border-box",
-    background: "#fff",
-    pointerEvents: "auto",
+    background: "#000",
   }}
 >
-  {space.id === 2 && (
-    <div style={{ width: "100%", height: "100%", position: "relative" }}>
-      <iframe
-        src={SPACE_CONTENT[2].padlet}
-        title="Padlet Khu 2"
-        allow="camera; microphone; geolocation; clipboard-write"
-        style={{
-          width: "100%",
-          height: "100%",
-          border: 0,
-          pointerEvents: "none",
-        }}
-      />
+  <div style={{ width: "100%", height: "100%", position: "relative" }}>
+    <iframe
+      src={
+        space.id === 2
+          ? SPACE_CONTENT[2].padlet
+          : SPACE_CONTENT[space.id].video
+      }
+      title={space.id === 2 ? "Padlet Khu 2" : "Video trên bàn"}
+      allow="autoplay; encrypted-media; picture-in-picture"
+      allowFullScreen
+      style={{
+        width: "100%",
+        height: "100%",
+        border: 0,
+        pointerEvents: space.id === 2 ? "none" : "auto",
+      }}
+    />
 
+    {space.id === 2 && (
       <button
         onClick={(e) => {
           e.stopPropagation();
@@ -667,23 +635,29 @@ function SpaceInteriorRoom({ space, onBack }) {
         }}
         style={{
           position: "absolute",
-          right: 6,
-          top: 6,
-          zIndex: 9999,
-          pointerEvents: "auto",
-          padding: "6px 10px",
-          border: "none",
+          top: 5,
+          right: 5,
+          zIndex: 10,
+          padding: "6px 9px",
+          border: 0,
           borderRadius: 6,
           background: "#70472e",
           color: "#fff",
           cursor: "pointer",
+          pointerEvents: "auto",
         }}
       >
         ⛶ Toàn màn hình
       </button>
-    </div>
-  )}
+    )}
+  </div>
 </Html>
+
+
+
+      {/* Khung màn hình PDF */}
+     
+
 
 
 
