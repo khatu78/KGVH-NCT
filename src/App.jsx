@@ -522,8 +522,8 @@ function InteractiveSpaces({ onSelect, onOpenKhu1Content }) {
   );
 }
 
-function SpaceInteriorRoom({ space, onBack, setShowPadlet }) {
-
+function SpaceInteriorRoom({ space, onBack, setShowPadlet, showPadlet }) {
+const [isPadletFullScreen, setIsPadletFullScreen] = useState(false);
   
   if (!space) return null;
 
@@ -596,6 +596,7 @@ function SpaceInteriorRoom({ space, onBack, setShowPadlet }) {
            {/* Màn hình video trên bàn tròn */}
      
 <Html
+visible={!(space.id === 2 && showPadlet)}
   position={[0, 1.05, 0]}
   transform
   distanceFactor={1.5}
@@ -639,10 +640,11 @@ function SpaceInteriorRoom({ space, onBack, setShowPadlet }) {
     e.stopPropagation();
   }}
   onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setShowPadlet(true);
-  }}
+  e.preventDefault();
+  e.stopPropagation();
+  setIsPadletFullScreen(true);
+  setShowPadlet(true);
+}}
   style={{
     position: "absolute",
     top: 5,
@@ -677,6 +679,7 @@ function SpaceInteriorRoom({ space, onBack, setShowPadlet }) {
 
 
       {/* Nút quay lại */}
+      {!isPadletFullScreen && (
       <group
         position={[0, 1.5, 3.7]}
         rotation={[0, Math.PI, 0]}
@@ -706,6 +709,7 @@ function SpaceInteriorRoom({ space, onBack, setShowPadlet }) {
           QUAY VỀ PHÒNG TRƯNG BÀY
         </Text>
       </group>
+      )}
     </group>
   );
 }
@@ -1224,6 +1228,7 @@ function Scene({
    onOpenVideo,
    setKhu1Content,
    setShowPadlet,
+   showPadlet,
 }) {
   return (
     <>
@@ -1256,7 +1261,8 @@ function Scene({
             setActiveSpace(null);
             setSelectedSpace(null);
           }}
-          setShowPadlet={setShowPadlet} 
+          setShowPadlet={setShowPadlet}
+          showPadlet={showPadlet} 
         />
       )}
             <NavigationMarkers current={spotIndex} onMove={onMove} />
@@ -1696,6 +1702,7 @@ export default function App() {
           onOpenVideo={() => setShowVideo(true)}
           setKhu1Content={setKhu1Content}
           setShowPadlet={setShowPadlet}
+          showPadlet={showPadlet}
         />
                      
       </Canvas>
@@ -1891,7 +1898,9 @@ export default function App() {
             }}
           >
             <button
-              onClick={() => setShowPadlet(false)}
+              onClick={() => {
+    setShowPadlet(false);
+  }}
               style={{
                 padding: "12px 18px",
                 border: "none",
@@ -2307,7 +2316,7 @@ max-width: 1400px;
         onClick={returnToPreviousSpot}
         disabled={spotIndex === 0 && !room2Active}
         style={{
-    display: showPortraitSlideshow ? "none" : undefined,
+    display: (showPortraitSlideshow || showPadlet) ? "none" : undefined,
   }}
       >
         {insideSpaceRoom ? "↩ Quay về phòng trưng bày" : "↩ Quay về lối vào"}
