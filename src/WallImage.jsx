@@ -1,14 +1,18 @@
-import { Html } from "@react-three/drei";
+
+import { useTexture } from "@react-three/drei";
 
 export default function WallImage({
   src,
   alt = "Hình ảnh trưng bày",
   position,
   rotation = [0, 0, 0],
-  width = "900px",
-  height = "380px",
+  width = 9,
+  height = 3.8,
 }) {
-  const openImage = () => {
+  const texture = useTexture(src);
+
+  const openImage = (e) => {
+    e.stopPropagation();
     window.dispatchEvent(
       new CustomEvent("open-wall-image", {
         detail: { src, alt },
@@ -17,31 +21,17 @@ export default function WallImage({
   };
 
   return (
-    <Html
+    <mesh
       position={position}
       rotation={rotation}
-      transform
-      distanceFactor={1.5}
-      style={{
-        width,
-        height,
-        pointerEvents: "auto",
-      }}
+      onClick={openImage}
     >
-      <img
-        src={src}
-        alt={alt}
-        onClick={openImage}
-        draggable={false}
-        style={{
-          display: "block",
-          width: "100%",
-          height: "100%",
-          objectFit: "contain",
-          cursor: "zoom-in",
-          pointerEvents: "auto",
-        }}
+      <planeGeometry args={[width, height]} />
+      <meshBasicMaterial
+        map={texture}
+        toneMapped={false}
+        side={2}
       />
-    </Html>
+    </mesh>
   );
 }

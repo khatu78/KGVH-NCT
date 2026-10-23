@@ -535,34 +535,36 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
 
   return (
     <group position={[-22, 0, 5.75]}>
-{/* Tường đối diện */}
+
+{/* Ảnh tường đối diện */}
 <WallImage
   src={SPACE_CONTENT[1].imageBg1}
   alt="Hình tường đối diện"
-  position={[0, 2, -3.85]}
-  width="1200px"
-  height="600px"
+  position={[0, 2, -3.82]}
+  width={9}
+  height={3.8}
 />
 
-{/* Tường trái */}
+{/* Ảnh tường trái */}
 <WallImage
   src={SPACE_CONTENT[1].imageTrai1}
   alt="Hình tường trái"
-  position={[-4.85, 2, 0]}
+  position={[-4.82, 2, 0]}
   rotation={[0, Math.PI / 2, 0]}
-  width="900px"
-  height="600px"
+  width={6.5}
+  height={3.8}
 />
 
-{/* Tường phải */}
+{/* Ảnh tường phải */}
 <WallImage
   src={SPACE_CONTENT[1].imagePhai}
   alt="Hình tường phải"
-  position={[4.85, 2, 0]}
+  position={[4.82, 2, 0]}
   rotation={[0, -Math.PI / 2, 0]}
-  width="900px"
-  height="600px"
+  width={6.5}
+  height={3.8}
 />
+
 
       {/* Sàn phòng */}
       <mesh position={[0, 0, 0]} receiveShadow>
