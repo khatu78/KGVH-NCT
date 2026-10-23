@@ -87,10 +87,13 @@ const exhibits = [
 const SPACE_CONTENT = {
   1: {
     video: "https://www.youtube.com/embed/R5wsX7xQsxY",
-    pdf: `${import.meta.env.BASE_URL}doc/Khu1.pdf`,
-  },
+     imageBg1: `${import.meta.env.BASE_URL}images/bg1.png`,
+     imageTrai1: `${import.meta.env.BASE_URL}images/trai1.png`,
+     imagePhai: `${import.meta.env.BASE_URL}images/phai1.png`,
+      },
   2: {
-    video: "https://www.youtube.com/embed/R5wsX7xQsxY",
+    imagePhai2: `${import.meta.env.BASE_URL}images/phai2.png`,
+     imageTrai2: `${import.meta.env.BASE_URL}images/trai2.png`,
     padlet: "https://padlet.com/embed/ij4p9ovbesqr7jzp",
   },
   3: {
@@ -530,6 +533,60 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
 
   return (
     <group position={[-22, 0, 5.75]}>
+
+
+
+    <Html
+  position={[0, 2, -3.85]}
+  transform
+  distanceFactor={1.5}
+  style={{ width: "700px", height: "280px" }}
+>
+  <img
+    src={SPACE_CONTENT[1].imageBg1}
+    alt="Hình tường đối diện"
+    style={{
+      width: "100%",
+      height: "100%",
+      objectFit: "contain",
+    }}
+  />
+  </Html>
+  <Html
+  position={[-4.85, 2, 0]}
+  rotation={[0, Math.PI / 2, 0]}
+  transform
+  distanceFactor={1.5}
+  style={{ width: "500px", height: "280px" }}
+>
+  <img
+    src={SPACE_CONTENT[1].imageTrai1}
+    alt="Hình tường trái"
+    style={{
+      width: "100%",
+      height: "100%",
+      objectFit: "contain",
+    }}
+  />
+</Html>
+<Html
+  position={[4.85, 2, 0]}
+  rotation={[0, -Math.PI / 2, 0]}
+  transform
+  distanceFactor={1.5}
+  style={{ width: "500px", height: "280px" }}
+>
+  <img
+    src={SPACE_CONTENT[1].imagePhai}
+    alt="Hình tường phải"
+    style={{
+      width: "100%",
+      height: "100%",
+      objectFit: "contain",
+    }}
+  />
+</Html>
+
       {/* Sàn phòng */}
       <mesh position={[0, 0, 0]} receiveShadow>
         <boxGeometry args={[10, 0.2, 8]} />
