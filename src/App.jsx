@@ -1266,6 +1266,7 @@ function Scene({
    setKhu1Content,
    setShowPadlet,
    showPadlet,
+   wallImageFull,
 }) {
   return (
     <>
