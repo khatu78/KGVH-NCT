@@ -674,44 +674,6 @@ function SpaceInteriorRoom({ space, onBack, setShowPadlet }) {
 
 
 
-{pdfFullScreen && (
-  <Html fullscreen>
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 99999,
-        background: "#222",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <button
-        onClick={() => setPdfFullScreen(false)}
-        style={{
-          alignSelf: "flex-end",
-          margin: "10px",
-          padding: "10px 18px",
-          cursor: "pointer",
-        }}
-      >
-        ✕ Đóng PDF
-      </button>
-
-      <iframe
-        src={`${import.meta.env.BASE_URL}doc/Khu1.pdf`}
-        title="PDF toàn màn hình"
-        style={{
-          flex: 1,
-          width: "100%",
-          border: 0,
-          background: "#fff",
-        }}
-      />
-    </div>
-  </Html>
-)}
-
 
 
       {/* Nút quay lại */}
