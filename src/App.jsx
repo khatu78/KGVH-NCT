@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
 import { useVideoTexture } from "@react-three/drei";
-import { ImageFullscreen } from "./ImageFullscreen";
-import { WallImage } from "./WallImage";
+import  ImageFullscreen  from "./ImageFullscreen";
+import  WallImage  from "./WallImage";
 import {
   Environment,
   OrbitControls,
