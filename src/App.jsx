@@ -571,10 +571,6 @@ height: "198px",
           style={{ border: 0, display: "block" }}
           allow="autoplay; encrypted-media; picture-in-picture"
           allowFullScreen
-          style={{
-  border: "none",
-  display: "block",
-}}
         />
       </Html>
 
@@ -603,10 +599,6 @@ height: "198px",
           height="180"
           style={{ border: 0, display: "block" }}
           allowFullScreen
-          style={{
-  border: "none",
-  display: "block",
-}}
         />
       </Html>
 
