@@ -138,8 +138,8 @@ function CameraView({
 
   useEffect(() => {
    if (room2Active && activeSpace && insideSpaceRoom) {
-  destination.current.set(-22, 1.6, 5.75);
-  lookTarget.current.set(-22, 1.6, 1.75);
+destination.current.set(-22, 1.6, 8.2);
+lookTarget.current.set(-22, 1.8, 4.5);
 } else if (room2Active && activeSpace) {
       // Camera đứng ngoài gian đã chọn
       const [x, , z] = activeSpace.position;
