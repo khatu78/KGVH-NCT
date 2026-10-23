@@ -645,6 +645,7 @@ function SpaceInteriorRoom({ space, onBack }) {
     borderRadius: "10px",
     boxSizing: "border-box",
     background: "#fff",
+    pointerEvents: "auto",
   }}
 >
   {space.id === 2 ? (
