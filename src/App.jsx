@@ -535,7 +535,6 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
 
   return (
     <group position={[-22, 0, 5.75]}>
-
 {/* Tường đối diện */}
 <WallImage
   src={SPACE_CONTENT[1].imageBg1}
