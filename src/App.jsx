@@ -1300,6 +1300,7 @@ function Scene({
           }}
           setShowPadlet={setShowPadlet}
           showPadlet={showPadlet} 
+          wallImageFull={wallImageFull}
         />
       )}
             <NavigationMarkers current={spotIndex} onMove={onMove} />
