@@ -631,7 +631,7 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
      
 
            {/* Màn hình video trên bàn tròn */}
-     {!(space.id === 2 && showPadlet) && (
+    {!wallImageFull && !(space.id === 2 && showPadlet) && (
 <Html
 
   position={[0, 1.05, 0]}
