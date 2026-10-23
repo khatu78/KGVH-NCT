@@ -550,54 +550,73 @@ function SpaceInteriorRoom({ space, onBack }) {
      
 
       {/* Nội dung video */}
-      <Html
+      
+<Html
   position={[-0.85, 1.4, -3.45]}
   transform
   distanceFactor={1.5}
   style={{
     width: "431px",
     height: "277px",
+    padding: 0,
+    margin: 0,
     overflow: "hidden",
     border: "1px solid #999",
     boxSizing: "border-box",
+    background: "#000",
   }}
 >
-        <iframe
-          src="https://www.youtube.com/embed/R5wsX7xQsxY"
-          title="Video tư liệu"
-          width="280"
-          height="180"
-          style={{ border: 0, display: "block" }}
-          allow="autoplay; encrypted-media; picture-in-picture"
-          allowFullScreen
-        />
-      </Html>
+  <iframe
+    src="https://www.youtube.com/embed/R5wsX7xQsxY"
+    title="Video tư liệu"
+    width="431"
+    height="277"
+    style={{
+      width: "100%",
+      height: "100%",
+      border: 0,
+      display: "block",
+    }}
+    allow="autoplay; encrypted-media; picture-in-picture"
+    allowFullScreen
+  />
+</Html>
+
 
       {/* Khung màn hình PDF */}
      
 
       {/* Nội dung PDF */}
-     <Html
+    
+<Html
   position={[0.85, 1.4, -3.45]}
   transform
   distanceFactor={1.5}
   style={{
     width: "431px",
     height: "277px",
+    padding: 0,
+    margin: 0,
     overflow: "hidden",
     border: "1px solid #999",
     boxSizing: "border-box",
+    background: "#fff",
   }}
 >
-        <iframe
-          src={`${import.meta.env.BASE_URL}doc/Khu1.pdf`}
-          title="Tài liệu PDF"
-          width="280"
-          height="180"
-          style={{ border: 0, display: "block" }}
-          allowFullScreen
-        />
-      </Html>
+  <iframe
+    src={`${import.meta.env.BASE_URL}doc/Khu1.pdf`}
+    title="Tài liệu PDF"
+    width="431"
+    height="277"
+    style={{
+      width: "100%",
+      height: "100%",
+      border: 0,
+      display: "block",
+    }}
+  />
+</Html>
+
 
       {/* Nút quay lại */}
       <group
