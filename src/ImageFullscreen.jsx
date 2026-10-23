@@ -17,6 +17,7 @@ export default function ImageFullscreen() {
   }, []);
 
   if (!image) return null;
+  console.log("Mở ảnh fullscreen:", Boolean(image));
 
   return (
     <div
