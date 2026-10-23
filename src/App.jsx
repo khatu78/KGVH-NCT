@@ -530,7 +530,7 @@ function InteractiveSpaces({ onSelect, onOpenKhu1Content }) {
 function SpaceInteriorRoom({ space, onBack, setShowPadlet, showPadlet, wallImageFull }) {
 const [isPadletFullScreen, setIsPadletFullScreen] = useState(false);
 console.log("Khu:", space?.id, "showPadlet:", showPadlet);
-  
+  console.log("wallImageFull:", wallImageFull);
   if (!space) return null;
 
   return (
