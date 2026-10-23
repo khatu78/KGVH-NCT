@@ -608,6 +608,7 @@ function SpaceInteriorRoom({ space, onBack }) {
     boxSizing: "border-box",
     background: "#000",
       zIndex: 1000,
+        pointerEvents: "auto",
   }}
 >
   <div style={{ width: "100%", height: "100%", position: "relative" }}>
