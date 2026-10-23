@@ -522,9 +522,9 @@ function InteractiveSpaces({ onSelect, onOpenKhu1Content }) {
   );
 }
 
-function SpaceInteriorRoom({ space, onBack }) {
+function SpaceInteriorRoom({ space, onBack, setShowPadlet }) {
   const [pdfFullScreen, setPdfFullScreen] = useState(false);
-  const [showPadlet, setShowPadlet] = useState(false);
+  
   if (!space) return null;
 
   return (
@@ -1293,6 +1293,7 @@ function Scene({
             setActiveSpace(null);
             setSelectedSpace(null);
           }}
+          setShowPadlet={setShowPadlet}
         />
       )}
             <NavigationMarkers current={spotIndex} onMove={onMove} />
