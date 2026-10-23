@@ -527,7 +527,7 @@ function InteractiveSpaces({ onSelect, onOpenKhu1Content }) {
   );
 }
 
-function SpaceInteriorRoom({ space, onBack, setShowPadlet, showPadlet }) {
+function SpaceInteriorRoom({ space, onBack, setShowPadlet, showPadlet, wallImageFull }) {
 const [isPadletFullScreen, setIsPadletFullScreen] = useState(false);
 console.log("Khu:", space?.id, "showPadlet:", showPadlet);
   
@@ -1753,6 +1753,7 @@ export default function App() {
           setKhu1Content={setKhu1Content}
           setShowPadlet={setShowPadlet}
           showPadlet={showPadlet}
+          wallImageFull={wallImageFull}
         />
                      
       </Canvas>
