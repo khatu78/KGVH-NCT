@@ -595,9 +595,9 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
      
 
            {/* Màn hình video trên bàn tròn */}
-     
+     {!(space.id === 2 && showPadlet) && (
 <Html
-visible={!(space.id === 2 && showPadlet)}
+
   position={[0, 1.05, 0]}
   transform
   distanceFactor={1.5}
@@ -669,7 +669,7 @@ visible={!(space.id === 2 && showPadlet)}
   </div>
 </Html>
 
-
+)}
 
       {/* Khung màn hình PDF */}
      
