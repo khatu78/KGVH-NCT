@@ -572,57 +572,55 @@ function SpaceInteriorRoom({ space, onBack }) {
         {space.title}
       </Text>
 
-      {/* Mặt bàn */}
-      <mesh position={[0, 0.8, -3.15]} castShadow receiveShadow>
-        <boxGeometry args={[3.8, 0.15, 1]} />
-        <meshStandardMaterial color="#70472e" roughness={0.65} />
+           {/* Bàn tròn giữa phòng */}
+      <mesh position={[0, 0.85, 0]} castShadow receiveShadow>
+        <cylinderGeometry args={[1.25, 1.25, 0.15, 64]} />
+        <meshStandardMaterial color="#70472e" roughness={0.55} />
       </mesh>
 
-      {/* Chân bàn */}
-      {[-1.6, 1.6].map((x) => (
-        <mesh key={x} position={[x, 0.4, -3.15]} castShadow>
-          <boxGeometry args={[0.12, 0.8, 0.75]} />
-          <meshStandardMaterial color="#503321" />
-        </mesh>
-      ))}
+      {/* Trụ bàn */}
+      <mesh position={[0, 0.43, 0]} castShadow>
+        <cylinderGeometry args={[0.18, 0.3, 0.7, 32]} />
+        <meshStandardMaterial color="#503321" />
+      </mesh>
+
+      {/* Đế bàn */}
+      <mesh position={[0, 0.1, 0]} castShadow>
+        <cylinderGeometry args={[0.65, 0.65, 0.12, 48]} />
+        <meshStandardMaterial color="#503321" />
+      </mesh>
 
       {/* Khung màn hình video */}
      
 
-      {/* Nội dung video */}
-      
-<Html
-  position={[-0.85, 1.4, -3.45]}
-  transform
-  distanceFactor={1.5}
-  style={{
-    width: "431px",
-    height: "277px",
-    padding: 0,
-    margin: 0,
-    overflow: "hidden",
-    border: "3px solid #70472e",
-  borderRadius: "10px",
-    boxSizing: "border-box",
-    background: "#000",
-  }}
->
-  <iframe
-    src={SPACE_CONTENT[space.id].video}
-    title="Video tư liệu"
-    width="431"
-    height="277"
-    style={{
-      width: "100%",
-      height: "100%",
-      border: 0,
-        borderRadius: "7px",
-      display: "block",
-    }}
-    allow="autoplay; encrypted-media; picture-in-picture"
-    allowFullScreen
-  />
-</Html>
+           {/* Màn hình video trên bàn tròn */}
+      <Html
+        position={[0, 1.05, 0]}
+        transform
+        distanceFactor={1.5}
+        style={{
+          width: "320px",
+          height: "200px",
+          overflow: "hidden",
+          border: "3px solid #70472e",
+          borderRadius: "10px",
+          boxSizing: "border-box",
+          background: "#000",
+        }}
+      >
+        <iframe
+          src={SPACE_CONTENT[space.id].video}
+          title="Video trên bàn tròn"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowFullScreen
+          style={{
+            width: "100%",
+            height: "100%",
+            border: 0,
+            display: "block",
+          }}
+        />
+      </Html>
 
 
       {/* Khung màn hình PDF */}
@@ -648,55 +646,45 @@ function SpaceInteriorRoom({ space, onBack }) {
     pointerEvents: "auto",
   }}
 >
-  {space.id === 2 ? (
-  <div style={{ width: "100%", height: "100%", position: "relative" }}>
-    <iframe
-      src={SPACE_CONTENT[2].padlet}
-      title="Padlet Khu 2"
-      allow="camera; microphone; geolocation; clipboard-write"
-      style={{
-        width: "100%",
-        height: "100%",
-        border: 0,
-        pointerEvents: "none",
-      }}
-    />
+  {space.id === 2 && (
+    <div style={{ width: "100%", height: "100%", position: "relative" }}>
+      <iframe
+        src={SPACE_CONTENT[2].padlet}
+        title="Padlet Khu 2"
+        allow="camera; microphone; geolocation; clipboard-write"
+        style={{
+          width: "100%",
+          height: "100%",
+          border: 0,
+          pointerEvents: "none",
+        }}
+      />
 
-    <button
-  onClick={(e) => {
-    e.stopPropagation();
-    setShowPadlet(true);
-  }}
-  style={{
-    position: "absolute",
-    right: 6,
-    top: 6,
-    zIndex: 9999,
-    pointerEvents: "auto",
-    padding: "6px 10px",
-    border: "none",
-    borderRadius: 6,
-    background: "#70472e",
-    color: "#fff",
-    cursor: "pointer",
-  }}
->
-  ⛶ Toàn màn hình
-</button>
-  </div>
-) : (
-  <iframe
-    src={SPACE_CONTENT[space.id].pdf}
-    title="Tài liệu PDF"
-    style={{
-      width: "100%",
-      height: "100%",
-      border: 0,
-      borderRadius: "7px",
-    }}
-  />
-)}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          setShowPadlet(true);
+        }}
+        style={{
+          position: "absolute",
+          right: 6,
+          top: 6,
+          zIndex: 9999,
+          pointerEvents: "auto",
+          padding: "6px 10px",
+          border: "none",
+          borderRadius: 6,
+          background: "#70472e",
+          color: "#fff",
+          cursor: "pointer",
+        }}
+      >
+        ⛶ Toàn màn hình
+      </button>
+    </div>
+  )}
 </Html>
+
 
 
 {pdfFullScreen && (
