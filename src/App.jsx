@@ -493,84 +493,38 @@ function SpaceInteriorRoom({ space, onBack }) {
       {/* Sàn phòng */}
       <mesh position={[0, 0, 0]} receiveShadow>
         <boxGeometry args={[10, 0.2, 8]} />
-        <meshStandardMaterial color="#d8c9ad" roughness={0.85} />
+        <meshStandardMaterial color="#d8c9ad" />
       </mesh>
 
       {/* Trần */}
       <mesh position={[0, 4, 0]}>
         <boxGeometry args={[10, 0.2, 8]} />
-        <meshStandardMaterial color="#f5f1e8" />
+        <meshStandardMaterial color="#eee6d7" />
       </mesh>
 
-      {/* Tường sau */}
+      {/* Vách sau - đối diện cửa */}
       <mesh position={[0, 2, -4]}>
         <boxGeometry args={[10, 4, 0.2]} />
         <meshStandardMaterial color="#eee6d7" />
       </mesh>
 
-      {/* Tường trái */}
+      {/* Vách trái */}
       <mesh position={[-5, 2, 0]}>
         <boxGeometry args={[0.2, 4, 8]} />
         <meshStandardMaterial color="#eee6d7" />
       </mesh>
 
-      {/* Tường phải */}
+      {/* Vách phải */}
       <mesh position={[5, 2, 0]}>
         <boxGeometry args={[0.2, 4, 8]} />
         <meshStandardMaterial color="#eee6d7" />
       </mesh>
 
-
-      {/* Màn hình video trên tường trái */}
-      <mesh position={[-4.85, 2, -1.2]} rotation={[0, Math.PI / 2, 0]}>
-        <planeGeometry args={[2.8, 1.6]} />
-        <meshBasicMaterial color="#171b22" />
-      </mesh>
-
-      <Html
-        position={[-4.83, 2, -1.2]}
-        rotation={[0, Math.PI / 2, 0]}
-        transform
-        distanceFactor={5}
-      >
-        <iframe
-          width="560"
-          height="315"
-          src="https://www.youtube.com/embed/R5wsX7xQsxY"
-          title="Video Khu 1"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          style={{ border: 0, borderRadius: 8 }}
-        />
-      </Html>
-
-      {/* Màn hình PDF trên tường phải */}
-      <mesh position={[4.85, 2, -1.2]} rotation={[0, -Math.PI / 2, 0]}>
-        <planeGeometry args={[2.8, 1.8]} />
-        <meshBasicMaterial color="#f5f0e5" />
-      </mesh>
-
-      <Html
-        position={[4.83, 2, -1.2]}
-        rotation={[0, -Math.PI / 2, 0]}
-        transform
-        distanceFactor={5}
-      >
-        <iframe
-          src={`${import.meta.env.BASE_URL}doc/Khu1.pdf`}
-          title="Tài liệu Khu 1"
-          width="560"
-          height="360"
-          style={{ border: 0, borderRadius: 8, background: "white" }}
-        />
-      </Html>
-
-
       {/* Tiêu đề phòng */}
       <Text
-        position={[0, 3.2, -3.85]}
-        fontSize={0.35}
-        color="#7c2929"
+        position={[0, 3.3, -3.85]}
+        fontSize={0.3}
+        color="#70472e"
         anchorX="center"
         anchorY="middle"
         maxWidth={8}
@@ -579,7 +533,76 @@ function SpaceInteriorRoom({ space, onBack }) {
         {space.title}
       </Text>
 
-      {/* Biển quay lại đặt gần lối vào */}
+      {/* Mặt bàn */}
+      <mesh position={[0, 0.8, -3.15]} castShadow receiveShadow>
+        <boxGeometry args={[3.8, 0.15, 1]} />
+        <meshStandardMaterial color="#70472e" roughness={0.65} />
+      </mesh>
+
+      {/* Chân bàn */}
+      {[-1.6, 1.6].map((x) => (
+        <mesh key={x} position={[x, 0.4, -3.15]} castShadow>
+          <boxGeometry args={[0.12, 0.8, 0.75]} />
+          <meshStandardMaterial color="#503321" />
+        </mesh>
+      ))}
+
+      {/* Khung màn hình video */}
+      <mesh position={[-0.85, 1.4, -3.45]}>
+        <boxGeometry args={[1.4, 0.9, 0.08]} />
+        <meshStandardMaterial color="#20252b" />
+      </mesh>
+
+      {/* Nội dung video */}
+      <Html
+        position={[-0.85, 1.4, -3.395]}
+        transform
+        distanceFactor={1.5}
+        style={{
+          width: "280px",
+          height: "180px",
+          overflow: "hidden",
+        }}
+      >
+        <iframe
+          src="https://www.youtube.com/embed/R5wsX7xQsxY"
+          title="Video tư liệu"
+          width="280"
+          height="180"
+          style={{ border: 0, display: "block" }}
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowFullScreen
+        />
+      </Html>
+
+      {/* Khung màn hình PDF */}
+      <mesh position={[0.85, 1.4, -3.45]}>
+        <boxGeometry args={[1.4, 0.9, 0.08]} />
+        <meshStandardMaterial color="#20252b" />
+      </mesh>
+
+      {/* Nội dung PDF */}
+      <Html
+        position={[0.85, 1.4, -3.395]}
+        transform
+        distanceFactor={1.5}
+        style={{
+          width: "280px",
+          height: "180px",
+          overflow: "hidden",
+          background: "#fff",
+        }}
+      >
+        <iframe
+          src={`${import.meta.env.BASE_URL}doc/Khu1.pdf`}
+          title="Tài liệu PDF"
+          width="280"
+          height="180"
+          style={{ border: 0, display: "block" }}
+        />
+      </Html>
+
+      {/* Nút quay lại */}
       <group
         position={[0, 1.5, 3.7]}
         rotation={[0, Math.PI, 0]}
@@ -594,20 +617,17 @@ function SpaceInteriorRoom({ space, onBack }) {
           document.body.style.cursor = "auto";
         }}
       >
-        <RoundedBox args={[3.2, 0.65, 0.12]} radius={0.07} smoothness={6}>
-          <meshBasicMaterial color="#681b1b" />
-        </RoundedBox>
+        <mesh>
+          <boxGeometry args={[2.5, 0.55, 0.12]} />
+          <meshStandardMaterial color="#7c2929" />
+        </mesh>
 
         <Text
-          position={[0, 0, 0.15]}
-          fontSize={0.22}
-          color="white"
+          position={[0, 0, 0.07]}
+          fontSize={0.17}
+          color="#fff0c2"
           anchorX="center"
           anchorY="middle"
-          maxWidth={3}
-          textAlign="center"
-          renderOrder={999}
-          material-depthTest={false}
         >
           QUAY VỀ PHÒNG TRƯNG BÀY
         </Text>
@@ -615,6 +635,7 @@ function SpaceInteriorRoom({ space, onBack }) {
     </group>
   );
 }
+
 
 ///căn phòng thứ 2
 
