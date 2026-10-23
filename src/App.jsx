@@ -524,6 +524,7 @@ function InteractiveSpaces({ onSelect, onOpenKhu1Content }) {
 
 function SpaceInteriorRoom({ space, onBack }) {
   const [pdfFullScreen, setPdfFullScreen] = useState(false);
+  const [showPadlet, setShowPadlet] = useState(false);
   if (!space) return null;
 
   return (
@@ -646,22 +647,49 @@ function SpaceInteriorRoom({ space, onBack }) {
     background: "#fff",
   }}
 >
+  {space.id === 2 ? (
+  <div style={{ width: "100%", height: "100%", position: "relative" }}>
+    <iframe
+      src={SPACE_CONTENT[2].padlet}
+      title="Padlet Khu 2"
+      allow="camera; microphone; geolocation; clipboard-write"
+      style={{
+        width: "100%",
+        height: "100%",
+        border: 0,
+      }}
+    />
+
+    <button
+      onClick={() => setShowPadlet(true)}
+      style={{
+        position: "absolute",
+        right: 6,
+        top: 6,
+        zIndex: 10,
+        padding: "6px 10px",
+        border: "none",
+        borderRadius: 6,
+        background: "#70472e",
+        color: "#fff",
+        cursor: "pointer",
+      }}
+    >
+      ⛶ Toàn màn hình
+    </button>
+  </div>
+) : (
   <iframe
-    src={
-      space.id === 2
-        ? SPACE_CONTENT[2].padlet
-        : SPACE_CONTENT[space.id].pdf
-    }
-    title={space.id === 2 ? "Padlet Khu 2" : "Tài liệu PDF"}
-    allow="camera; microphone; geolocation; display-capture; clipboard-write"
+    src={SPACE_CONTENT[space.id].pdf}
+    title="Tài liệu PDF"
     style={{
       width: "100%",
       height: "100%",
       border: 0,
-      display: "block",
       borderRadius: "7px",
     }}
   />
+)}
 </Html>
 
 
