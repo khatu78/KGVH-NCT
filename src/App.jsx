@@ -537,14 +537,71 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
   return (
     <group position={[-22, 0, 5.75]}>
 
-{/* Ảnh tường đối diện */}
-<WallImage
-  src={SPACE_CONTENT[1].imageBg1}
-  alt="Hình tường đối diện"
-  position={[0, 2, -3.82]}
-  width={9}
-  height={3.8}
-/>
+{/* Ảnh tường đối diện ------------------------------------------------------------- */}
+{space.id !== 2 && (
+  <WallImage
+    src={SPACE_CONTENT[1].imageBg1}
+    alt="Hình tường đối diện"
+    position={[0, 2, -3.82]}
+    width={9}
+    height={3.8}
+  />
+)}
+
+{space.id === 2 && showPadlet && (
+  <Html
+    position={[0, 2, -3.78]}
+    transform
+    distanceFactor={1.5}
+    style={{
+      width: "900px",
+      height: "570px",
+      overflow: "hidden",
+      border: "3px solid #70472e",
+      borderRadius: "10px",
+      boxSizing: "border-box",
+      background: "#fff",
+      pointerEvents: "auto",
+    }}
+  >
+    <div style={{ width: "100%", height: "100%", position: "relative" }}>
+      <iframe
+        src={SPACE_CONTENT[2].padlet}
+        title="Padlet Khu 2"
+        allow="camera; microphone; geolocation"
+        allowFullScreen
+        style={{ width: "100%", height: "100%", border: 0 }}
+      />
+
+      <button
+        onPointerDown={(e) => e.stopPropagation()}
+        onMouseDown={(e) => e.stopPropagation()}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsPadletFullScreen(true);
+          setShowPadlet(true);
+        }}
+        style={{
+          position: "absolute",
+          top: 10,
+          right: 10,
+          zIndex: 9999999,
+          padding: "8px 12px",
+          border: 0,
+          borderRadius: 6,
+          background: "#70472e",
+          color: "#fff",
+          cursor: "pointer",
+          pointerEvents: "auto",
+          touchAction: "manipulation",
+        }}
+      >
+        ⛶ Toàn màn hình
+      </button>
+    </div>
+  </Html>
+)}
 
 
 {/* Ảnh tường trái */}
@@ -645,85 +702,48 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
       {/* Khung màn hình video */}
      
 
-           {/* Màn hình video trên bàn tròn */}
-    {!wallImageFull && !(space.id === 2 && showPadlet) && (
-<Html
-
-  position={[0, 1.05, 0]}
-  transform
-  distanceFactor={1.5}
-  style={{
-    width: "320px",
-    height: "200px",
-    overflow: "hidden",
-    border: "3px solid #70472e",
-    borderRadius: "10px",
-    boxSizing: "border-box",
-    background: "#000",
+           {/* Màn hình video trên bàn tròn -----------------------------------------------------------------------*/}
+   {/* Màn hình video trên bàn tròn */}
+{!wallImageFull && (
+  <Html
+    position={[0, 1.05, 0]}
+    transform
+    distanceFactor={1.5}
+    style={{
+      width: "320px",
+      height: "200px",
+      overflow: "hidden",
+      border: "3px solid #70472e",
+      borderRadius: "10px",
+      boxSizing: "border-box",
+      background: "#000",
       zIndex: 1000,
-        pointerEvents: "auto",
-  }}
->
-  <div style={{ width: "100%", height: "100%", position: "relative" }}>
-    <iframe
-      src={
-        space.id === 2
-          ? SPACE_CONTENT[2].padlet
-          : SPACE_CONTENT[space.id].video
-      }
-      title={space.id === 2 ? "Padlet Khu 2" : "Video trên bàn"}
-      allow="autoplay; encrypted-media; picture-in-picture"
-      allowFullScreen
-      style={{
-        width: "100%",
-        height: "100%",
-        border: 0,
-        pointerEvents: space.id === 2 ? "none" : "auto",
-      }}
-    />
+      pointerEvents: "auto",
+    }}
+  >
+    <div style={{ width: "100%", height: "100%" }}>
+      <iframe
+        src={
+          space.id === 1
+            ? SPACE_CONTENT[1].video
+            : space.id === 2
+              ? SPACE_CONTENT[2].video2
+              : SPACE_CONTENT[space.id].video
+        }
+        title="Video trên bàn"
+        allow="autoplay; encrypted-media; picture-in-picture"
+        allowFullScreen
+        style={{
+          width: "100%",
+          height: "100%",
+          border: 0,
+        }}
+      />
+    </div>
+  </Html>
+)}
 
-   {space.id === 2 && (
   
-<button
-  onPointerDown={(e) => {
-    e.stopPropagation();
-  }}
-  onMouseDown={(e) => {
-    e.stopPropagation();
-  }}
-  onClick={(e) => {
-  e.preventDefault();
-  e.stopPropagation();
-  setIsPadletFullScreen(true);
-  setShowPadlet(true);
-}}
-  style={{
-    position: "absolute",
-    top: 5,
-    right: 5,
-    zIndex: 9999999,
-    padding: "8px 10px",
-    border: 0,
-    borderRadius: 6,
-    background: "#70472e",
-    color: "#fff",
-    cursor: "pointer",
-    pointerEvents: "auto",
-    touchAction: "manipulation",
-  }}
->
-  ⛶ Toàn màn hình
-</button>
-
-)}
-    
-  </div>
-</Html>
-
-)}
-
-      {/* Khung màn hình PDF */}
-     
 
 
 
