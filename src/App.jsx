@@ -1601,10 +1601,7 @@ export default function App() {
   };
 
   const handleSelectSpace = (space) => {
-    if (space.id === 1) {
-    setShowLibrary(true);
-    return;
-  }
+    
     setShowPDF(false);
     setShowPadlet(false);
     setSelectedSpace(space);
