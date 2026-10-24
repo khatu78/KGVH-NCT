@@ -558,7 +558,7 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
   <Html
     position={[0, 2, -3.78]}
     transform
-   distanceFactor={0.8}
+   distanceFactor={2}
     style={{
      width: "1280px",
      height: "720px",
