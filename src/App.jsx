@@ -2002,9 +2002,9 @@ export default function App() {
     >
       <button
         onClick={() => {
-          setShowPadlet(false);
-          setIsPadletFullScreen(false);
-        }}
+  setIsPadletFullScreen(false);
+  setShowPadlet(true);
+}}
         style={{
           padding: "12px 18px",
           border: "none",
