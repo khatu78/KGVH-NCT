@@ -548,8 +548,8 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
     height={3.8}
   />
 )}
-
-{space.id === 2 && (
+{/* Padlet trên tường đối diện */}
+{space.id === 2 && showPadlet && !isPadletFullScreen && (
   <Html
     position={[0, 2, -3.78]}
     transform
@@ -569,9 +569,14 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
       <iframe
         src={SPACE_CONTENT[2].padlet}
         title="Padlet Khu 2"
-        allow="camera; microphone; geolocation"
+        allow="autoplay; encrypted-media; picture-in-picture"
         allowFullScreen
-        style={{ width: "100%", height: "100%", border: 0 }}
+        style={{
+          width: "100%",
+          height: "100%",
+          border: 0,
+          pointerEvents: "none",
+        }}
       />
 
       <button
@@ -588,7 +593,7 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
           top: 10,
           right: 10,
           zIndex: 9999999,
-          padding: "8px 12px",
+          padding: "8px 10px",
           border: 0,
           borderRadius: 6,
           background: "#70472e",
@@ -603,7 +608,6 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
     </div>
   </Html>
 )}
-
 
 {/* Ảnh tường trái */}
 <WallImage
