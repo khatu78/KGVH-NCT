@@ -101,7 +101,7 @@ const SPACE_CONTENT = {
     video2: "https://www.youtube.com/embed/Qu3yMoQfWXI",
   },
   3: {
-    video: "https://www.youtube.com/embed/R5wsX7xQsxY",
+    video3: "https://www.youtube.com/embed/WmeF59b1wMY?list=PLIivaUnyJ_yFHIBP1ONslg9roo4HocPEH",
     pdf: `${import.meta.env.BASE_URL}doc/Khu1.pdf`,
   },
   4: {
@@ -558,10 +558,10 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
   <Html
     position={[0, 2, -3.78]}
     transform
-    distanceFactor={1.5}
+   distanceFactor={0.8}
     style={{
-      width: "900px",
-      height: "570px",
+     width: "1280px",
+     height: "720px",
       overflow: "hidden",
       border: "3px solid #70472e",
       borderRadius: "10px",
