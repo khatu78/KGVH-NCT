@@ -1403,20 +1403,19 @@ function Scene({
             <ambientLight intensity={1.5} />
             <directionalLight position={[4, 8, 5]} intensity={2} castShadow />
          
-      <Room
+     <Room
   onOpenVideo={onOpenVideo}
   onExhibit={onExhibit}
-  onSpaceClick={onSpaceClick}
+  onSpaceClick={handleSelectSpace}
   onOpenLibrary={() => {
-    // Nếu bạn muốn giữ nút mở sách cho khu vực khác ngoài sảnh, 
-    // nhưng chặn hoàn toàn không cho nó bật sách lên nữa thì chỉ cần để trống hoặc xử lý ở đây:
-    // window.dispatchEvent(new Event("open-library")); 
+    // Chỉ kích hoạt mở sách khi chọn đúng Tủ sách / Khu 1
+    setShowLibrary(true);
   }}
   onOpenMuseum={() =>
     window.open(
       "https://hochiminh.vn/bao-tang-3d",
       "_blank",
-      "noopener,noreferrer",
+      "noopener,noreferrer"
     )
   }
 />
@@ -1517,16 +1516,14 @@ export default function App() {
     };
   }, []);
 
-  // 🛑 Chặn hoàn toàn sự kiện mở thư viện sách nếu không cần dùng đến nữa
-useEffect(() => {
-  const blockLibraryEvent = (e) => {
-    e.stopImmediatePropagation();
-  };
-  window.addEventListener("open-library", blockLibraryEvent, true);
-  return () => {
-    window.removeEventListener("open-library", blockLibraryEvent, true);
-  };
-}, []);
+  useEffect(() => {
+    const openLibrary = () => setShowLibrary(true);
+    window.addEventListener("open-library", openLibrary);
+
+    return () => {
+      window.removeEventListener("open-library", openLibrary);
+    };
+  }, []);
 
   useEffect(() => {
   const handleImageFullscreen = (e) => {
@@ -1604,6 +1601,10 @@ useEffect(() => {
   };
 
   const handleSelectSpace = (space) => {
+    if (space.id === 1) {
+    setShowLibrary(true);
+    return;
+  }
     setShowPDF(false);
     setShowPadlet(false);
     setSelectedSpace(space);
