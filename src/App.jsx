@@ -1451,6 +1451,7 @@ function Scene({
 
 export default function App() {
   const [room2Active, setRoom2Active] = useState(false);
+  const [selectedKhu3Topic, setSelectedKhu3Topic] = useState(null);
   const [khu1Content, setKhu1Content] = useState(null);
   const [activeSpace, setActiveSpace] = useState(null);
   const [wallImageFull, setWallImageFull] = useState(false);
@@ -1981,6 +1982,86 @@ export default function App() {
     >
       ✕ Đóng video
     </button>
+  </div>
+)}
+
+{selectedKhu3Topic && (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      zIndex: 99999,
+      background: "rgba(0, 0, 0, 0.8)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: "20px",
+    }}
+  >
+    <div
+      style={{
+        width: "650px",
+        maxWidth: "95vw",
+        background: "#fffaf0",
+        borderRadius: "16px",
+        padding: "24px",
+        border: "3px solid #805b32",
+        boxShadow: "0 10px 35px rgba(0,0,0,0.6)",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          borderBottom: "2px solid #d8c9ad",
+          paddingBottom: "12px",
+          marginBottom: "16px",
+        }}
+      >
+        <h3 style={{ margin: 0, color: "#7c2929", fontSize: "18px" }}>
+          🎧 {selectedKhu3Topic.title} (4 Câu chuyện)
+        </h3>
+        <button
+          onClick={() => setSelectedKhu3Topic(null)}
+          style={{
+            border: "none",
+            background: "#7c2929",
+            color: "#fff",
+            padding: "8px 14px",
+            borderRadius: "6px",
+            cursor: "pointer",
+            fontWeight: "bold",
+          }}
+        >
+          ✕ Đóng
+        </button>
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: "14px", maxHeight: "60vh", overflowY: "auto" }}>
+        {selectedKhu3Topic.stories.map((story, index) => (
+          <div
+            key={index}
+            style={{
+              background: "#fff",
+              padding: "12px 16px",
+              borderRadius: "10px",
+              border: "1px solid #e0d0b8",
+              boxShadow: "0 2px 6px rgba(0,0,0,0.05)",
+            }}
+          >
+            <div style={{ fontWeight: "bold", fontSize: "14px", color: "#4a2c11", marginBottom: "8px" }}>
+              📖 {index + 1}. {story.title}
+            </div>
+            <audio
+              controls
+              src={`${import.meta.env.BASE_URL}khu3/${encodeURIComponent(story.file)}`}
+              style={{ width: "100%", height: "36px" }}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
   </div>
 )}
 
