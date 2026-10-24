@@ -564,8 +564,8 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
 <WallImage
   src={
     space.id === 2
-      ? SPACE_CONTENT[2].imageTrai2
-      : SPACE_CONTENT[1].imageTrai1
+      ? SPACE_CONTENT[2].imagePhai2
+      : SPACE_CONTENT[1].imagePhai
   }
   alt="Hình tường phải"
   position={[4.82, 2, 0]}
