@@ -2004,7 +2004,7 @@ export default function App() {
           >
             <button
               onClick={() => {
-    setShowPadlet(false);
+    setShowPadlet(true);
      setIsPadletFullScreen(false);
   }}
               style={{
