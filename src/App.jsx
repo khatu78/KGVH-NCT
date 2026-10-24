@@ -531,6 +531,11 @@ function InteractiveSpaces({ onSelect, onOpenKhu1Content }) {
 
 function SpaceInteriorRoom({ space, onBack, setShowPadlet, showPadlet, wallImageFull }) {
 const [isPadletFullScreen, setIsPadletFullScreen] = useState(false);
+useEffect(() => {
+  if (!showPadlet) {
+    setIsPadletFullScreen(false);
+  }
+}, [showPadlet]);
 console.log("Khu:", space?.id, "showPadlet:", showPadlet);
   console.log("wallImageFull:", wallImageFull);
   if (!space) return null;
@@ -549,7 +554,7 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
   />
 )}
 {/* Padlet trên tường đối diện */}
-{space.id === 2 && showPadlet && !isPadletFullScreen && (
+{space.id === 2 && !isPadletFullScreen && (
   <Html
     position={[0, 2, -3.78]}
     transform
@@ -1976,7 +1981,7 @@ export default function App() {
           </div>
         </div>
       )}
-      {isPadletFullScreen && (
+      {showPadlet && (
   <div
     style={{
       position: "fixed",
@@ -2002,8 +2007,7 @@ export default function App() {
     >
       <button
         onClick={() => {
-  setIsPadletFullScreen(false);
-  setShowPadlet(true);
+setShowPadlet(false);
 }}
         style={{
           padding: "12px 18px",
