@@ -585,7 +585,7 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          setIsPadletFullScreen(true);
+          setIsPadletFullScreen(false);
           setShowPadlet(true);
         }}
         style={{
