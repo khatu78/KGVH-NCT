@@ -922,7 +922,7 @@ function Room({ onExhibit, onSpaceClick, onOpenMuseum, onOpenLibrary,  onOpenVid
       </mesh>
 
       {/* Hoa văn trống đồng trên trần sảnh chính */}
-<CeilingDrum y={ROOM.height + 0.02} size={6} />
+<CeilingDrum y={ROOM.height + 0.05} size={6} />
             {/* Tường sau */}     
       <mesh position={[0, ROOM.height / 2, -ROOM.depth / 2]}>
                 <boxGeometry args={[ROOM.width, ROOM.height, 0.3]} />

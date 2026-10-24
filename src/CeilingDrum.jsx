@@ -11,10 +11,10 @@ const texture = useTexture(
 );
 
   return (
-    <mesh
-      position={[position[0], y, position[2]]}
-      rotation={[-Math.PI / 2, 0, 0]}
-    >
+  <mesh
+  position={[position[0], y, position[2]]}
+  rotation={[-Math.PI / 2, 0, 0]}
+>
       <planeGeometry args={[size, size]} />
       <meshBasicMaterial
         map={texture}
