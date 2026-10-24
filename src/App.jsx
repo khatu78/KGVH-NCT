@@ -580,10 +580,8 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
       </mesh>
       {/* Hoa văn trống đồng trên trần */}
 <CeilingDrum
-  width={10}
-  depth={8}
-  y={4.11}
-  scale={0.8}
+  y={4 - 0.11}
+  size={4}
 />
 
       {/* Vách sau - đối diện cửa */}
@@ -816,11 +814,9 @@ function SecondRoom({ onSpaceClick, setKhu1Content }) {
       </mesh>
 {/* Hoa văn trống đồng trên trần phòng 2 */}
 <CeilingDrum
-  width={20}
-  depth={14}
-  y={5.61}
   position={[-22, 0, 5.75]}
-  scale={0.8}
+  y={5.5 - 0.11}
+  size={6}
 />
       {/* Tường cuối phòng */}
       <mesh position={[-32, 2.75, 5.75]}>
