@@ -1517,14 +1517,16 @@ export default function App() {
     };
   }, []);
 
-  useEffect(() => {
-    const openLibrary = () => setShowLibrary(true);
-    window.addEventListener("open-library", openLibrary);
-
-    return () => {
-      window.removeEventListener("open-library", openLibrary);
-    };
-  }, []);
+  // 🛑 Chặn hoàn toàn sự kiện mở thư viện sách nếu không cần dùng đến nữa
+useEffect(() => {
+  const blockLibraryEvent = (e) => {
+    e.stopImmediatePropagation();
+  };
+  window.addEventListener("open-library", blockLibraryEvent, true);
+  return () => {
+    window.removeEventListener("open-library", blockLibraryEvent, true);
+  };
+}, []);
 
   useEffect(() => {
   const handleImageFullscreen = (e) => {
