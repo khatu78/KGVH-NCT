@@ -1978,7 +1978,7 @@ export default function App() {
           </div>
         </div>
       )}
-      {isPadletFullScreen && (
+      {showPadlet && (
   <div
     style={{
       position: "fixed",
@@ -2003,11 +2003,9 @@ export default function App() {
       }}
     >
       <button
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
+        onClick={() => {
+          setShowPadlet(false);
           setIsPadletFullScreen(false);
-          setShowPadlet(true);
         }}
         style={{
           padding: "12px 18px",
@@ -2015,8 +2013,6 @@ export default function App() {
           cursor: "pointer",
           textAlign: "right",
           fontSize: 16,
-          position: "relative",
-          zIndex: 6001,
           flexShrink: 0,
         }}
       >
