@@ -1395,6 +1395,7 @@ function Scene({
    setShowPadlet,
    showPadlet,
    wallImageFull,
+   setSelectedKhu3Topic,
 }) {
   return (
     <>
@@ -1886,6 +1887,7 @@ export default function App() {
           setShowPadlet={setShowPadlet}
           showPadlet={showPadlet}
           wallImageFull={wallImageFull}
+          setSelectedKhu3Topic={setSelectedKhu3Topic}
         />
                      
       </Canvas>
