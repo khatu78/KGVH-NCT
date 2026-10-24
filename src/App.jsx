@@ -1404,22 +1404,22 @@ function Scene({
             <directionalLight position={[4, 8, 5]} intensity={2} castShadow />
          
       <Room
-      onOpenVideo={onOpenVideo}
-        onExhibit={onExhibit}
-        onSpaceClick={onSpaceClick}
-        onOpenLibrary={(spaceId) => {
-    // Nếu bấm vào Khu 3 thì KHÔNG mở sách nữa
-    if (spaceId === 3) return; 
-    window.dispatchEvent(new Event("open-library"));
+  onOpenVideo={onOpenVideo}
+  onExhibit={onExhibit}
+  onSpaceClick={onSpaceClick}
+  onOpenLibrary={() => {
+    // Nếu bạn muốn giữ nút mở sách cho khu vực khác ngoài sảnh, 
+    // nhưng chặn hoàn toàn không cho nó bật sách lên nữa thì chỉ cần để trống hoặc xử lý ở đây:
+    // window.dispatchEvent(new Event("open-library")); 
   }}
-        onOpenMuseum={() =>
-          window.open(
-            "https://hochiminh.vn/bao-tang-3d",
-            "_blank",
-            "noopener,noreferrer",
-          )
-        }
-      />
+  onOpenMuseum={() =>
+    window.open(
+      "https://hochiminh.vn/bao-tang-3d",
+      "_blank",
+      "noopener,noreferrer",
+    )
+  }
+/>
       {room2Active && !insideSpaceRoom && (
         <SecondRoom onSpaceClick={onSpaceClick}  
         setKhu1Content={setKhu1Content}/>
