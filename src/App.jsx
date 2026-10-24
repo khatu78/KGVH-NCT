@@ -1407,7 +1407,11 @@ function Scene({
       onOpenVideo={onOpenVideo}
         onExhibit={onExhibit}
         onSpaceClick={onSpaceClick}
-        onOpenLibrary={() => window.dispatchEvent(new Event("open-library"))}
+        onOpenLibrary={(spaceId) => {
+    // Nếu bấm vào Khu 3 thì KHÔNG mở sách nữa
+    if (spaceId === 3) return; 
+    window.dispatchEvent(new Event("open-library"));
+  }}
         onOpenMuseum={() =>
           window.open(
             "https://hochiminh.vn/bao-tang-3d",
