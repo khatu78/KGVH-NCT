@@ -101,8 +101,31 @@ const SPACE_CONTENT = {
     video2: "https://www.youtube.com/embed/Qu3yMoQfWXI",
   },
   3: {
-    video3: "https://www.youtube.com/embed/WmeF59b1wMY?list=PLIivaUnyJ_yFHIBP1ONslg9roo4HocPEH",
-    pdf: `${import.meta.env.BASE_URL}doc/Khu1.pdf`,
+    // Video tường phải của khu 3
+    video: "https://www.youtube.com/embed/WmeF59b1wMY?list=PLIivaUnyJ_yFHIBP1ONslg9roo4HocPEH",
+    
+    // Nền tường trái khu 3
+    bgWall: `${import.meta.env.BASE_URL}khu3/Nền tường.png`,
+
+    // 6 chủ đề trên tường trái khu 3
+    topics: [
+      {
+        id: 1,
+        title: "Lối sống giản dị",
+        image: `${import.meta.env.BASE_URL}khu3/Chủ đề 1.png`,
+        stories: [
+          { title: "Ba bộ quần áo của Bác", file: "CĐ1. Ba bộ quần áo của Bác.m4a" },
+          { title: "Ba chiếc ba lô", file: "CĐ1. Ba chiếc ba lô.m4a" },
+          { title: "Bác có phải là vua đâu", file: "CĐ1. Bác có phải là vua đâu.m4a" },
+          { title: "Bác đi thăm rừng Cúc Phương", file: "CĐ1. Bác đi thăm rừng Cúc Phương.m4a" },
+        ],
+      },
+      { id: 2, title: "Chủ đề 2", image: `${import.meta.env.BASE_URL}khu3/Chủ đề 2.png`, stories: [] },
+      { id: 3, title: "Chủ đề 3", image: `${import.meta.env.BASE_URL}khu3/Chủ đề 3.png`, stories: [] },
+      { id: 4, title: "Chủ đề 4", image: `${import.meta.env.BASE_URL}khu3/Chủ đề 4.png`, stories: [] },
+      { id: 5, title: "Chủ đề 5", image: `${import.meta.env.BASE_URL}khu3/Chủ đề 5.png`, stories: [] },
+      { id: 6, title: "Chủ đề 6", image: `${import.meta.env.BASE_URL}khu3/Chủ đề 6.png`, stories: [] },
+    ],
   },
   4: {
     video: "https://www.youtube.com/embed/R5wsX7xQsxY",
@@ -529,15 +552,14 @@ function InteractiveSpaces({ onSelect, onOpenKhu1Content }) {
   );
 }
 
-function SpaceInteriorRoom({ space, onBack, setShowPadlet, showPadlet, wallImageFull }) {
+function SpaceInteriorRoom({ space, onBack, setShowPadlet, showPadlet, wallImageFull, setSelectedKhu3Topic }) {
 const [isPadletFullScreen, setIsPadletFullScreen] = useState(false);
 useEffect(() => {
   if (!showPadlet) {
     setIsPadletFullScreen(false);
   }
 }, [showPadlet]);
-console.log("Khu:", space?.id, "showPadlet:", showPadlet);
-  console.log("wallImageFull:", wallImageFull);
+
   if (!space) return null;
 
   return (
@@ -614,19 +636,72 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
   </Html>
 )}
 
-{/* Ảnh tường trái */}
-<WallImage
- src={
-    space.id === 2
-      ? SPACE_CONTENT[2].imageTrai2
-      : SPACE_CONTENT[1].imageTrai1
-  }
-  alt="Hình tường trái"
-  position={[-4.82, 2, 0]}
-  rotation={[0, Math.PI / 2, 0]}
-  width={6.5}
-  height={3.8}
-/>
+{/* Tường trái: Nếu là Khu 3 thì hiện 6 chủ đề, các khu khác hiện ảnh tường bình thường */}
+{space.id === 3 ? (
+  <Html
+    position={[-4.8, 2, 0]}
+    rotation={[0, Math.PI / 2, 0]}
+    transform
+    distanceFactor={1.5}
+    style={{ width: "850px", height: "500px", pointerEvents: "auto" }}
+  >
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        backgroundImage: `url(${SPACE_CONTENT[3].bgWall})`,
+        backgroundSize: "cover",
+        borderRadius: "12px",
+        padding: "20px",
+        boxSizing: "border-box",
+        display: "grid",
+        gridTemplateColumns: "repeat(3, 1fr)",
+        gap: "16px",
+        alignContent: "center",
+      }}
+    >
+      {SPACE_CONTENT[3].topics.map((topic) => (
+        <div
+          key={topic.id}
+          onClick={() => {
+            if (topic.id === 1) {
+              setSelectedKhu3Topic(topic);
+            } else {
+              alert(`Chủ đề ${topic.id} đang cập nhật!`);
+            }
+          }}
+          style={{
+            cursor: "pointer",
+            borderRadius: "10px",
+            overflow: "hidden",
+            boxShadow: "0 6px 16px rgba(0,0,0,0.3)",
+            border: "2px solid #d4af37",
+            background: "#fff",
+          }}
+        >
+          <img 
+            src={topic.image} 
+            alt={topic.title} 
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} 
+          />
+        </div>
+      ))}
+    </div>
+  </Html>
+) : (
+  <WallImage
+    src={
+      space.id === 2
+        ? SPACE_CONTENT[2].imageTrai2
+        : SPACE_CONTENT[1].imageTrai1
+    }
+    alt="Hình tường trái"
+    position={[-4.82, 2, 0]}
+    rotation={[0, Math.PI / 2, 0]}
+    width={6.5}
+    height={3.8}
+  />
+)}
 
 {/* Ảnh tường phải */}
 <WallImage
@@ -656,7 +731,7 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
       </mesh>
       {/* Hoa văn trống đồng trên trần */}
 <CeilingDrum
-  y={4 - 0.11}
+  y={4.11}
   size={4}
 />
 
@@ -1355,6 +1430,7 @@ function Scene({
           setShowPadlet={setShowPadlet}
           showPadlet={showPadlet} 
           wallImageFull={wallImageFull}
+          setSelectedKhu3Topic={setSelectedKhu3Topic}
         />
       )}
             <NavigationMarkers current={spotIndex} onMove={onMove} />
