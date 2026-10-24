@@ -549,7 +549,7 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
   />
 )}
 {/* Padlet trên tường đối diện */}
-{space.id === 2 && !isPadletFullScreen && (
+{space.id === 2 && showPadlet && !isPadletFullScreen && (
   <Html
     position={[0, 2, -3.78]}
     transform
@@ -709,9 +709,7 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
 
            {/* Màn hình video trên bàn tròn -----------------------------------------------------------------------*/}
    {/* Màn hình video trên bàn tròn */}
-{!wallImageFull &&
-  !isPadletFullScreen &&
-  !(space.id === 2 && showPadlet) && (
+{!wallImageFull && !isPadletFullScreen && (
     <Html
       position={[0, 1.05, 0]}
       transform
