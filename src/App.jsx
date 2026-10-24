@@ -1976,7 +1976,7 @@ export default function App() {
           </div>
         </div>
       )}
-      {showPadlet && (
+      {isPadletFullScreen && (
   <div
     style={{
       position: "fixed",
