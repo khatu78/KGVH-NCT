@@ -7,7 +7,7 @@ export default function CeilingDrum({
   size = 6,
 }) {
 const texture = useTexture(
-  `${import.meta.env.BASE_URL}./images/trongDong.jpg`
+  `${import.meta.env.BASE_URL}./images/trongDong.png`
 );
 
   return (
