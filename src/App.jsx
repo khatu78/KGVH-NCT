@@ -1978,59 +1978,64 @@ export default function App() {
           </div>
         </div>
       )}
-      {showPadlet && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            zIndex: 6000,
-            background: "rgba(0,0,0,0.8)",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: 16,
-          }}
-        >
-          <div
-            style={{
-              width: "95vw",
-              height: "92vh",
-              background: "#fff",
-              borderRadius: 12,
-              overflow: "hidden",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <button
-              onClick={() => {
-    setShowPadlet(true);
-     setIsPadletFullScreen(false);
-  }}
-              style={{
-                padding: "12px 18px",
-                border: "none",
-                cursor: "pointer",
-                textAlign: "right",
-                fontSize: 16,
-              }}
-            >
-              ✕ Đóng Padlet
-            </button>
+      {isPadletFullScreen && (
+  <div
+    style={{
+      position: "fixed",
+      inset: 0,
+      zIndex: 6000,
+      background: "rgba(0,0,0,0.8)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 16,
+    }}
+  >
+    <div
+      style={{
+        width: "95vw",
+        height: "92vh",
+        background: "#fff",
+        borderRadius: 12,
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setIsPadletFullScreen(false);
+          setShowPadlet(true);
+        }}
+        style={{
+          padding: "12px 18px",
+          border: "none",
+          cursor: "pointer",
+          textAlign: "right",
+          fontSize: 16,
+          position: "relative",
+          zIndex: 6001,
+          flexShrink: 0,
+        }}
+      >
+        ✕ Đóng Padlet
+      </button>
 
-            <iframe
-              src="https://padlet.com/embed/ij4p9ovbesqr7jzp"
-              title="Hành trình theo dấu chân Bác"
-              allow="camera; microphone; geolocation; display-capture; clipboard-write"
-              style={{
-                width: "100%",
-                flex: 1,
-                border: 0,
-              }}
-            />
-          </div>
-        </div>
-      )}
+      <iframe
+        src="https://padlet.com/embed/ij4p9ovbesqr7jzp"
+        title="Hành trình theo dấu chân Bác"
+        allow="camera; microphone; geolocation; display-capture; clipboard-write"
+        style={{
+          width: "100%",
+          flex: 1,
+          border: 0,
+        }}
+      />
+    </div>
+  </div>
+)}
       {selectedSpace?.id === 3 && (
         <div
           style={{
