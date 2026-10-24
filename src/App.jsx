@@ -98,7 +98,7 @@ const SPACE_CONTENT = {
     imagePhai2: `${import.meta.env.BASE_URL}images/phai2.png`,
      imageTrai2: `${import.meta.env.BASE_URL}images/trai2.png`,
     padlet: "https://padlet.com/embed/ij4p9ovbesqr7jzp",
-    video2: "https://www.youtube.com/watch?v=Qu3yMoQfWXI",
+    video2: "https://www.youtube.com/embed/Qu3yMoQfWXI",
   },
   3: {
     video: "https://www.youtube.com/embed/R5wsX7xQsxY",
