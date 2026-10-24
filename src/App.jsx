@@ -548,7 +548,11 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
 
 {/* Ảnh tường trái */}
 <WallImage
-  src={SPACE_CONTENT[1].imageTrai1}
+ src={
+    space.id === 2
+      ? SPACE_CONTENT[2].imageTrai2
+      : SPACE_CONTENT[1].imageTrai1
+  }
   alt="Hình tường trái"
   position={[-4.82, 2, 0]}
   rotation={[0, Math.PI / 2, 0]}
@@ -558,7 +562,11 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
 
 {/* Ảnh tường phải */}
 <WallImage
-  src={SPACE_CONTENT[1].imagePhai}
+  src={
+    space.id === 2
+      ? SPACE_CONTENT[2].imageTrai2
+      : SPACE_CONTENT[1].imageTrai1
+  }
   alt="Hình tường phải"
   position={[4.82, 2, 0]}
   rotation={[0, -Math.PI / 2, 0]}
