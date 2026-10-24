@@ -549,7 +549,7 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
   />
 )}
 {/* Padlet trên tường đối diện */}
-{space.id === 2 && showPadlet && !isPadletFullScreen && (
+{space.id === 2 && !isPadletFullScreen && (
   <Html
     position={[0, 2, -3.78]}
     transform
