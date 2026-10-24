@@ -549,7 +549,7 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
   />
 )}
 {/* Padlet trên tường đối diện */}
-{space.id === 2 && !isPadletFullScreen && (
+{space.id === 2 && showPadlet && !isPadletFullScreen && (
   <Html
     position={[0, 2, -3.78]}
     transform
@@ -585,7 +585,7 @@ console.log("Khu:", space?.id, "showPadlet:", showPadlet);
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
-          setIsPadletFullScreen(false);
+          setIsPadletFullScreen(true);
           setShowPadlet(true);
         }}
         style={{
@@ -2005,6 +2005,7 @@ export default function App() {
             <button
               onClick={() => {
     setShowPadlet(false);
+     setIsPadletFullScreen(false);
   }}
               style={{
                 padding: "12px 18px",
